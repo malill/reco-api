@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from pydantic import BaseSettings
 
 
@@ -10,6 +9,5 @@ class Settings(BaseSettings):
         env_file_encoding = 'utf-8'
 
 
-load_dotenv()
 settings = Settings(_env_file='core/envs/dev.env',
                     _env_file_encoding='utf-8')
