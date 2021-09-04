@@ -8,7 +8,8 @@ version = settings.API_V1_STR
 app = FastAPI(title="Recommendation API",
               version=0.1,
               openapi_url=f"{version}/openapi.json",
-              description="REST API that exposes calculated recommendations from Recommender Builder")
+              description=f"REST API that exposes calculated recommendations from Recommender Builder. "
+                          f"App is running in {settings.ENVIRONMENT} mode.")
 
 app.include_router(api_router, prefix=version)
 

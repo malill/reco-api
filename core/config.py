@@ -5,6 +5,13 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     ENVIRONMENT: str
 
+    # database
+    DB_HOST: str
+    DB_PORT: str
+    DB_NAME: str
+    DB_USER: str
+    DB_PASSWORD: str
+
     class Config:
         env_file_encoding = 'utf-8'
 
