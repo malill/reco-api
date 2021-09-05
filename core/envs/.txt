@@ -1,11 +1,10 @@
 # this folder contains connection infos and environmental settings (dev|staging|production)
 # structure:
 
-ENVIRONMENT = "DEMO"
 
-# version
-VERSION = *.*
-ENDPOINT_STR = "/api/v*"
+# base settings
+API_V1_STR = "/api/v*"
+ENVIRONMENT = "DEMO"
 
 # database settings
 DB_HOST = ***********

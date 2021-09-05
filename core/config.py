@@ -2,8 +2,7 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    VERSION: str
-    ENDPOINT_STR: str
+    API_V1_STR: str
     ENVIRONMENT: str
 
     # database
