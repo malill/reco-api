@@ -1,10 +1,9 @@
 from fastapi import FastAPI
-from v1.api import api_router
-
 from core.config import settings
+from api.v1.api import api_router
 
 app = FastAPI(title="Recommendation API",
-              version=0.1,
+              version="0.1",
               openapi_url=f"{settings.API_V1_STR}/openapi.json",
               description=f"REST API that exposes calculated recommendations from Recommender Builder. "
                           f"App is running in {settings.ENVIRONMENT} mode.")
