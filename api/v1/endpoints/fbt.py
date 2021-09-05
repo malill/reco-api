@@ -14,9 +14,9 @@ def get_db():
         db.close()
 
 
-@router.get("/fbt/{item_seed_id}")
-def get_items(item_seed_id: int, db: Session = Depends(get_db)):
-    items = crud.get_items(db, item_seed_id=item_seed_id)
+@router.get("/fbt/{item_id_seed}")
+def get_items(item_id_seed: int, db: Session = Depends(get_db)):
+    items = crud.get_items(db, item_id_seed=item_id_seed)
     if items is None:
         raise HTTPException(status_code=404, detail="User not found")
     return items
