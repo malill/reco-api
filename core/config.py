@@ -11,9 +11,7 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
-
-    SQLALCHEMY_DATABASE_URL: str = "mysql+pymysql://2PyxOR4WcncHrbmc6Pht:ZbBRqN7PWUrd3dtnV50i@wp13.pixelx.cloud:3306" \
-                                   "/reco_builder_dev?charset=utf8"
+    DB_URL: str
 
     class Config:
         env_file_encoding = 'utf-8'
