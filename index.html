@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Reco Carousel Example</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css'>
+  <style>
+    body {
+  background: lightblue;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.main {
+  font-family: Arial;
+  width      : 600px;
+  display    : block;
+  margin     : 0 auto;
+  padding-top: 20px;
+}
+
+.product-container {
+  background-color: darkcyan;
+  text-align      : center;
+  line-height     : 20vh;
+}
+
+.product-id {
+  vertical-align: middle;
+  font-size     : 6vh;
+  font-weight   : bold;
+}
+
+.reco-title {
+  margin     : 20px;
+  margin-top : 40px;
+  font-size  : 20px;
+  font-weight: bold;
+}
+
+.slider-item {
+  background    : #fff;
+  margin        : 10px;
+  padding       : 5px;
+  height        : 100px;
+  text-align    : center;
+  vertical-align: middle;
+  line-height   : 30px;
+}
+
+.slider-item>h3 {
+  font-size: 15px;
+}
+
+.slider-item>p {
+  font-size  : 20px;
+  font-weight: bold;
+}
+
+#addButton {
+  background-color: #4CAF50;
+  border          : none;
+  color           : white;
+  padding         : 15px 32px;
+  text-decoration : none;
+  font-size       : 16px;
+  cursor          : pointer;
+}
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="product-container">
+      <p class="product-id">415
+    </div>
+    <p class="reco-title">Frequently Bought Together ...</p>
+    <div class="slider slider-nav">
+    </div>
+
+    <!-- <button id="addButton">+ add Recos</button> -->
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js'></script>
+  <script>
+    $('.slider-nav').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      focusOnSelect: true,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      responsive: [
+        {
+          breakpoint: 1300,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      productId = $('.product-id').text();
+      $.ajax({
+        url: `https://reco-api-q.herokuapp.com/api/v1/fbt/${productId}`
+      }).then(function (data) {
+        n = $('.slick-slide:not(.slick-cloned)').length / 2 + 1
+        data.forEach(element => {
+          $('.slider').slick('slickAdd', `
+            <div class="slider-item">
+              <h3>${element["item_id"]}</h3>
+              <p>${element["item_name"]}</p>
+            </div>`);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
