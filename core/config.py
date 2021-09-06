@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_URL: str
 
+    # CORS
+    BACKEND_CORS_ORIGINS: str
+
     class Config:
         env_file_encoding = 'utf-8'
 
