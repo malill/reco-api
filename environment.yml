@@ -1,0 +1,16 @@
+name: reco-api
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python==3.8.12
+  - pip
+  - pip:
+      - gunicorn==20.1.0
+      - fastapi==0.68.1
+      - sqlalchemy==1.4.23
+      - PyMySQL==1.0.2
+      - pydantic==1.8.2
+      - python-dotenv==0.19.0
+      - starlette==0.14.2
+      - uvicorn==0.15.0
