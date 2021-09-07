@@ -129,7 +129,6 @@
         $.ajax({
             url: `https://reco-api-p.herokuapp.com/api/v1/unpersonalized/random`
         }).then(function (data) {
-            console.log(data)
             data.forEach(element => {
                 $('#rand-reco-slider').slick('slickAdd', `
             <div class="slider-item">
