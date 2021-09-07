@@ -7,8 +7,8 @@ from core.db.database import Base, engine
 class Item(Base):
     __tablename__ = 'items'
 
-    item_id = Column(Integer, primary_key=True)
-    item_name = Column(String)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
 
 
 class FBT(Base):
@@ -16,7 +16,7 @@ class FBT(Base):
     __tablename__ = 'fbt'
 
     item_id_seed = Column(Integer, primary_key=True)
-    item_id_recommended = Column(Integer, ForeignKey("items.item_id"), primary_key=True)
+    item_id_recommended = Column(Integer, ForeignKey("items.id"), primary_key=True)
 
     item = relationship("Item")
 
