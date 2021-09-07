@@ -127,7 +127,7 @@
     $(document).ready(function () {
 
         $.ajax({
-            url: `https://reco-api-p.herokuapp.com/api/v1/random`
+            url: `https://reco-api-p.herokuapp.com/api/v1/unpersonalized/random`
         }).then(function (data) {
             console.log(data)
             data.forEach(element => {
@@ -144,7 +144,7 @@
 
         productId = $('.product-id').text();
         $.ajax({
-            url: `https://reco-api-p.herokuapp.com/api/v1/fbt/${productId}`
+            url: `https://reco-api-p.herokuapp.com/api/v1/unpersonalized/fbt/${productId}`
         }).then(function (data) {
             data.forEach(element => {
                 $('#fbt-reco-slider').slick('slickAdd', `
