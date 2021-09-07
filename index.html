@@ -9,7 +9,7 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css'>
     <style>
         body {
-
+            background-color: chocolate;
         }
 
         a {
@@ -19,7 +19,7 @@
 
         .main {
             font-family: Arial;
-            width: 600px;
+            width: 700px;
             display: block;
             margin: 0 auto;
             padding-top: 20px;
@@ -28,10 +28,10 @@
         .product-container {
             background-color: darkcyan;
             text-align: center;
-            line-height: 20vh;
+            padding: 50px;
         }
 
-        .product-id {
+        .product-name {
             vertical-align: middle;
             font-size: 6vh;
             font-weight: bold;
@@ -44,20 +44,28 @@
             font-weight: bold;
         }
 
-        .slider-item {
-            background: #fff;
+        .fcb-slider-item {
+            background: lightblue;
             margin: 10px;
-            padding: 5px;
-            height: 100px;
+            padding: 15px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             text-align: center;
-            vertical-align: middle;
-            line-height: 30px;
-            border-style: solid;
-            border-color: black;
         }
 
-        .slider-item > h3 {
+        .slider-product-id {
             font-size: 15px;
+        }
+
+        .slider-product-name {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .slider-product-price {
+            font-size: 25px;
         }
 
         .slider-item > p {
@@ -81,9 +89,14 @@
 <div class="main">
     <div class="product-container">
         <p class="product-id">415
+        <p class="product-name">Badeente</p>
     </div>
-    <p class="reco-title">Frequently Bought Together ...</p>
-    <div class="slider slider-nav">
+
+    <p class="reco-title">Random Recommendations</p>
+    <div id="rand-reco-slider" class="slider slider-nav">
+    </div>
+    <p class="reco-title">Frequently Bought Together</p>
+    <div id="fbt-reco-slider" class="slider slider-nav">
     </div>
 
     <!-- <button id="addButton">+ add Recos</button> -->
@@ -112,19 +125,39 @@
 
 <script>
     $(document).ready(function () {
+
+        $.ajax({
+            url: `https://reco-api-p.herokuapp.com/api/v1/random`
+        }).then(function (data) {
+            console.log(data)
+            data.forEach(element => {
+                $('#rand-reco-slider').slick('slickAdd', `
+            <div class="slider-item">
+                <div class="fcb-slider-item">
+                  <div class="slider-product-id">${element["id"]}</div>
+                  <div class="slider-product-name">${element["name"]}</div>
+                  <div class="slider-product-price">${element["price"]} €</div>
+                  </div>
+            </div>`);
+            });
+        });
+
         productId = $('.product-id').text();
         $.ajax({
             url: `https://reco-api-p.herokuapp.com/api/v1/fbt/${productId}`
         }).then(function (data) {
-            n = $('.slick-slide:not(.slick-cloned)').length / 2 + 1
             data.forEach(element => {
-                $('.slider').slick('slickAdd', `
+                $('#fbt-reco-slider').slick('slickAdd', `
             <div class="slider-item">
-              <h3>${element["id"]}</h3>
-              <p>${element["name"]}</p>
+                <div class="fcb-slider-item">
+                  <div class="slider-product-id">${element["id"]}</div>
+                  <div class="slider-product-name">${element["name"]}</div>
+                  <div class="slider-product-price">${element["price"]} €</div>
+                  </div>
             </div>`);
             });
         });
+
     });
 </script>
 </body>

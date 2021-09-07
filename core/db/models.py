@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 from core.db.database import Base, engine
@@ -9,6 +9,7 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    price = Column(Float)
 
 
 class FBT(Base):
