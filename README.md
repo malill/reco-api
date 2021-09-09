@@ -13,12 +13,20 @@ Note that the project structure is based on
 
 ## Version 0.1 (`/api/v1`)
 
-### `/fbt/{item_id_seed}`
+### `/unpersonalized/random`
 
-Params:
+**Parameter** none
 
-- **item_id_seed** - the item that is used for analyzing which items are pairwise bought together in the past, e.g. this
+**Returns** list of randomly selected products.
+
+
+### `/unpersonalized/fbt/{item_id_seed}`
+
+**Parameter**
+- **item_id_seed** - the item ID that is used for analyzing which items are pairwise bought together in the past, e.g. this
   can be a currently inspected item by the user
+
+**Returns**: list of items that have been bought together with the seed item
 
 # References
 
