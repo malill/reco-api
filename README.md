@@ -2,7 +2,7 @@
 
 This repository provides a REST API that exposes calculated recommendations from **Recommender Builder** (e.g.
 see [recommender-system/reco-builder][reco-builder]). Recommended items can then be consumed by
-e.g. [Slick Slider][Slick Slider] (see GIF below) to show recommendations.
+e.g. [reco-slider][reco-slider] (see GIF below) to show recommendations.
 
 ![Reco Gif](https://santhalus.de/wp-content/uploads/2021/09/reco.gif)
 
@@ -19,12 +19,12 @@ Note that the project structure is based on
 
 **Returns** list of randomly selected products.
 
-
 ### `/unpersonalized/fbt/{item_id_seed}`
 
 **Parameter**
-- **item_id_seed** - the item ID that is used for analyzing which items are pairwise bought together in the past, e.g. this
-  can be a currently inspected item by the user
+
+- **item_id_seed** - the item ID that is used for analyzing which items are pairwise bought together in the past, e.g.
+  this can be a currently inspected item by the user
 
 **Returns**: list of items that have been bought together with the seed item
 
@@ -33,13 +33,12 @@ Note that the project structure is based on
 Repositories:
 
 - https://github.com/recommender-system/reco-builder
-- https://github.com/kenwheeler/slick
 - https://github.com/tiangolo/full-stack-fastapi-postgresql/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app
 - https://github.com/ycd/manage-fastapi
 
 [reco-builder]: https://github.com/recommender-system/reco-builder
 
-[Slick Slider]: https://github.com/kenwheeler/slick
+[reco-slider]: https://github.com/recommender-system/reco-slider
 
 [tiangolo]: https://github.com/tiangolo/full-stack-fastapi-postgresql/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app
 
