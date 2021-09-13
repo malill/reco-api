@@ -8,8 +8,7 @@ class ItemBase(BaseModel):
     # todo: replace product placeholder url
     product_url = "#"
     # todo: replace image placeholder url
-    image_url = "https://img.fcbayern.com/image/upload/q_auto,f_auto/h_300," \
-                "c_pad/eCommerce/produkte/28757/t-shirt-upamecano.jpg "
+    image_url = "https://svgsilh.com/svg/1886001.svg"
 
     @validator('price')
     def check_price(cls, price):
