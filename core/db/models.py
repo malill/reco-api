@@ -1,11 +1,12 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
+from core.config import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT
 from core.db.database import Base, engine
 
 
 class Item(Base):
-    __tablename__ = 'items'
+    __tablename__ = DATABASE_TABLE_CONTENT
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -14,10 +15,10 @@ class Item(Base):
 
 class FBT(Base):
     """ frequently bought together"""
-    __tablename__ = 'fbt'
+    __tablename__ = DATABASE_TABLE_RECS_FBT
 
     item_id_seed = Column(Integer, primary_key=True)
-    item_id_recommended = Column(Integer, ForeignKey("items.id"), primary_key=True)
+    item_id_recommended = Column(Integer, ForeignKey(f"{DATABASE_TABLE_CONTENT}.id"), primary_key=True)
 
     item = relationship("Item")
 
