@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
-from core.config import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT
+from core.constants import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT
 from core.db.database import Base, engine
 
 
