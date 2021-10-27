@@ -11,6 +11,8 @@ class Item(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     price = Column(Float)
+    product_url = Column(String)
+    image_url = Column(String)
 
 
 class FBT(Base):
