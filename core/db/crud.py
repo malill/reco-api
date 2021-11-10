@@ -34,3 +34,7 @@ def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos
         List[Item]: List of frequently bought together items.
     """
     return db.query(models.FBT).filter(models.FBT.item_id_seed == item_id_seed).limit(n_recos).all()
+
+
+def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
+    return db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).limit(n_recos).all()
