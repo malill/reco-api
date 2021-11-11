@@ -5,6 +5,9 @@ from core.constants import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT, DATA
 from core.db.database import Base, engine
 
 
+# TODO: superclass Recommendation_Item for FBT, ICF etc.
+
+
 class Item(Base):
     __tablename__ = DATABASE_TABLE_CONTENT
 
@@ -22,6 +25,9 @@ class FBT(Base):
     item_id_seed = Column(Integer, primary_key=True)
     item_id_recommended = Column(Integer, ForeignKey(f"{DATABASE_TABLE_CONTENT}.id"), primary_key=True)
 
+    confidence = Column(Float)
+    support = Column(Float)
+
     item = relationship("Item")
 
     # TODO: create a model package that can be used by both reco-builder and reco-api (otherwise CODE DUPLICATE)
@@ -34,6 +40,8 @@ class ICF(Base):
 
     item_id_seed = Column(Integer, primary_key=True)
     item_id_recommended = Column(Integer, ForeignKey(f"{DATABASE_TABLE_CONTENT}.id"), primary_key=True)
+
+    similarity = Column(Float)
 
     item = relationship("Item")
     # CODE DUPLICATE OF DOOM

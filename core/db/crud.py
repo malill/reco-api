@@ -7,6 +7,9 @@ import random
 from core.db.models import Item
 
 
+# TODO: all get_* functions need to sort available recos by specific metric (e.g. confidence, similarity ...)
+
+
 def get_random_items(db: Session, n_recos=5) -> List[Item]:
     """Retrieve random items from 'content' db.
 
@@ -37,4 +40,14 @@ def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos
 
 
 def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
+    """Retrieve item based collaborative filtered items from 'recs' db.
+
+    Args:
+        db (Session): Session object used for retrieving items from db.
+        item_id_seed (int): ID of seed item that is used for finding similar items.
+        n_recos (int): Number of items that should be returned.
+
+    Returns:
+        List[Item]: List of similar (item-wise) items.
+    """
     return db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).limit(n_recos).all()

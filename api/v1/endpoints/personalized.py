@@ -21,17 +21,17 @@ def get_db():
 
 @router.get("/personalized/item_based_collaborative_filtering", response_model=List[schemas.Item])
 def get_item_based_collaborative_filtering_items(item_id_seed: int,
-                                         db: Session = Depends(get_db),
-                                         n_recos: int = 5) -> List[Item]:
+                                                 db: Session = Depends(get_db),
+                                                 n_recos: int = 5) -> List[Item]:
     """Return list of items from collaborative filtering given a seed item ID.
 
     Args:
-        item_id_seed (int): ID of seed item that is used for finding frequently bought together items.
+        item_id_seed (int): ID of seed item that is used for finding item-wise similar items.
         db (Session): Session object used for retrieving items from db.
         n_recos (int): Number of items that should be returned.
 
     Returns:
-        List[Item]: List of frequently bought together items.
+        List[Item]: List of similar (item-wise) items.
     """
     items = crud.get_item_based_collaborative_filtering_items(db, item_id_seed=item_id_seed, n_recos=n_recos)
     if items is None:
