@@ -1,12 +1,10 @@
-from http.client import HTTPException
 from typing import List
 
-from fastapi import APIRouter, Depends
-from requests import Session
-
+from fastapi import APIRouter, Depends, HTTPException
 from core.db.database import SessionLocal
-from core.db.models import Item
+from sqlalchemy.orm import Session
 from core.db import crud, schemas
+from core.db.models import Item
 
 router = APIRouter()
 
