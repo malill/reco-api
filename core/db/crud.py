@@ -1,5 +1,5 @@
 from typing import List
-
+import logging
 from sqlalchemy.orm import Session
 from core.db import models
 import random
@@ -7,7 +7,18 @@ import random
 from core.db.models import Item
 
 
-# TODO: all get_* functions need to sort available recos by specific metric (e.g. confidence, similarity ...)
+def sort_by_metric(items, sorting_type, n_recos):
+    try:
+        items.sort(key=lambda i: getattr(i, sorting_type), reverse=True)
+    except AttributeError:
+        logging.error(f"Could not perform sorting '{sorting_type}' ... use unfiltered response from DB")
+    return limit_returned_items(items, n_recos)
+
+
+def limit_returned_items(items, n_recos):
+    if len(items) < n_recos:
+        logging.warning("Number of requested items less than number of items in database")
+    return items[0:n_recos]
 
 
 def get_random_items(db: Session, n_recos=5) -> List[Item]:
@@ -36,7 +47,10 @@ def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos
     Returns:
         List[Item]: List of frequently bought together items.
     """
-    return db.query(models.FBT).filter(models.FBT.item_id_seed == item_id_seed).limit(n_recos).all()
+    return sort_by_metric(
+        db.query(models.FBT).filter(models.FBT.item_id_seed == item_id_seed).all(),
+        "confidence",
+        n_recos)
 
 
 def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
@@ -50,4 +64,7 @@ def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int,
     Returns:
         List[Item]: List of similar (item-wise) items.
     """
-    return db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).limit(n_recos).all()
+    return sort_by_metric(
+        db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).all(),
+        "similarity",
+        n_recos)

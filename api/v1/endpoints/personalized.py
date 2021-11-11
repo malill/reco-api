@@ -36,5 +36,4 @@ def get_item_based_collaborative_filtering_items(item_id_seed: int,
     items = crud.get_item_based_collaborative_filtering_items(db, item_id_seed=item_id_seed, n_recos=n_recos)
     if items is None:
         raise HTTPException(status_code=404, detail="No recommendations found")
-    # TODO: if clause here may cause endpoint return less than n_recos items -> should be moved to crud module
     return [i.item for i in items if i.item is not None]
