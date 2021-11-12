@@ -7,18 +7,10 @@ import random
 from core.db.models import Item
 
 
-def sort_by_metric(items, sorting_type, n_recos):
-    try:
-        items.sort(key=lambda i: getattr(i, sorting_type), reverse=True)
-    except AttributeError:
-        logging.error(f"Could not perform sorting '{sorting_type}' ... use unfiltered response from DB")
-    return limit_returned_items(items, n_recos)
-
-
 def limit_returned_items(items, n_recos):
     """ This function should take care of adding items when len(items) < n_recos """
     if len(items) < n_recos:
-        logging.warning("Number of requested items less than number of items in database")
+        logging.warning(f"Number of requested items ({n_recos}) less than number of items ({len(items)}) in database")
     return items[0:n_recos]
 
 
@@ -38,8 +30,16 @@ def get_random_items(db: Session, n_recos=5) -> List[Item]:
 
 
 def get_latest_items(db: Session, n_recos=5) -> List[Item]:
-    items = db.query(models.Item).order_by(models.Item.creation_time.desc()).limit(n_recos)
-    return limit_returned_items(list(items), n_recos)
+    """Retrieve latest added items from 'recs' db.
+
+    Args:
+        db (Session): Session object used for retrieving items from db.
+        n_recos (int): Number of items that should be returned.
+
+    Returns:
+        List[Item]: List of most recent items.
+    """
+    return limit_returned_items(list(db.query(models.Item).order_by(models.Item.creation_time.desc()).limit(n_recos)), n_recos)
 
 
 def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
@@ -53,10 +53,8 @@ def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos
     Returns:
         List[Item]: List of frequently bought together items.
     """
-    return sort_by_metric(
-        db.query(models.FBT).filter(models.FBT.item_id_seed == item_id_seed).all(),
-        "confidence",
-        n_recos)
+    return limit_returned_items(list(db.query(models.FBT).filter(models.FBT.item_id_seed == item_id_seed).order_by(
+        models.FBT.confidence.desc()).limit(n_recos)), n_recos)
 
 
 def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
@@ -70,7 +68,5 @@ def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int,
     Returns:
         List[Item]: List of similar (item-wise) items.
     """
-    return sort_by_metric(
-        db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).all(),
-        "similarity",
-        n_recos)
+    return limit_returned_items(list(db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).order_by(
+        models.ICF.similarity.desc()).limit(n_recos)), n_recos)
