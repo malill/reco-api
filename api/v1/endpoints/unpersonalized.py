@@ -31,6 +31,20 @@ def get_random_items(db: Session = Depends(get_db), n_recos: int = 5) -> List[It
     return crud.get_random_items(db, n_recos)
 
 
+@router.get("/unpersonalized/latest", response_model=List[schemas.Item])
+def get_latest_items(db: Session = Depends(get_db), n_recos: int = 5) -> List[Item]:
+    """Return list of most recently added items.
+
+    Args:
+        db (Session): Session object used for retrieving items from db.
+        n_recos (int): Number of items that should be returned.
+
+    Returns:
+        List[Item]: List of latest n_recos items.
+    """
+    return crud.get_latest_items(db, n_recos)
+
+
 @router.get("/unpersonalized/fbt", response_model=List[schemas.Item])
 def get_frequently_bought_together_items(item_id_seed: int,
                                          db: Session = Depends(get_db),

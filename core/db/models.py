@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, TIMESTAMP
 from sqlalchemy.orm import relationship
 
 from core.constants import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT, DATABASE_TABLE_RECS_ICF
@@ -16,6 +16,7 @@ class Item(Base):
     price = Column(Float)
     product_url = Column(String)
     image_url = Column(String)
+    creation_time = Column(TIMESTAMP)
 
 
 class FBT(Base):

@@ -16,6 +16,7 @@ def sort_by_metric(items, sorting_type, n_recos):
 
 
 def limit_returned_items(items, n_recos):
+    """ This function should take care of adding items when len(items) < n_recos """
     if len(items) < n_recos:
         logging.warning("Number of requested items less than number of items in database")
     return items[0:n_recos]
@@ -34,6 +35,11 @@ def get_random_items(db: Session, n_recos=5) -> List[Item]:
     rand = random.sample(range(0, db.query(models.Item).count()), n_recos)
     items = db.query(models.Item)
     return list(items[i] for i in rand)
+
+
+def get_latest_items(db: Session, n_recos=5) -> List[Item]:
+    items = db.query(models.Item).order_by(models.Item.creation_time.desc()).limit(n_recos)
+    return limit_returned_items(list(items), n_recos)
 
 
 def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
