@@ -3,6 +3,7 @@ import logging
 from sqlalchemy.orm import Session
 from core.db import models
 import random
+import re
 
 from core.db.models import Item
 
@@ -39,7 +40,8 @@ def get_latest_items(db: Session, n_recos=5) -> List[Item]:
     Returns:
         List[Item]: List of most recent items.
     """
-    return limit_returned_items(list(db.query(models.Item).order_by(models.Item.creation_time.desc()).limit(n_recos)), n_recos)
+    return limit_returned_items(list(db.query(models.Item).order_by(models.Item.creation_time.desc()).limit(n_recos)),
+                                n_recos)
 
 
 def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos=5) -> List[Item]:
@@ -53,6 +55,7 @@ def get_frequently_bought_together_items(db: Session, item_id_seed: int, n_recos
     Returns:
         List[Item]: List of frequently bought together items.
     """
+    item_id_seed = quick_fix_adjust_item_id(item_id_seed)
     return limit_returned_items(list(db.query(models.FBT).filter(models.FBT.item_id_seed == item_id_seed).order_by(
         models.FBT.confidence.desc()).limit(n_recos)), n_recos)
 
@@ -68,5 +71,13 @@ def get_item_based_collaborative_filtering_items(db: Session, item_id_seed: int,
     Returns:
         List[Item]: List of similar (item-wise) items.
     """
+    item_id_seed = quick_fix_adjust_item_id(item_id_seed)
     return limit_returned_items(list(db.query(models.ICF).filter(models.ICF.item_id_seed == item_id_seed).order_by(
         models.ICF.similarity.desc()).limit(n_recos)), n_recos)
+
+
+def quick_fix_adjust_item_id(item_id: int):
+    """ quick fix for variants """
+    if len(str(item_id)) > 4:
+        item_id = str(item_id)[:-3]
+    return int(item_id)
