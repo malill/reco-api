@@ -3,7 +3,6 @@ import logging
 from sqlalchemy.orm import Session
 from core.db import models
 import random
-import re
 
 from core.db.models import Item
 
