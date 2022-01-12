@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import core.config as cfg
+import api.core.config as cfg
 from api.v1.api import api_router
 from starlette.middleware.cors import CORSMiddleware
 

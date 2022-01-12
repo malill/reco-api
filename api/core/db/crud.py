@@ -1,7 +1,7 @@
 from typing import List
 import logging
 from sqlalchemy.orm import Session
-from core.db import models
+from api.core.db import models
 import random
 
 

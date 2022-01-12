@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, TIMESTAMP
 from sqlalchemy.orm import relationship
 
-from core.constants import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT, DATABASE_TABLE_RECS_ICF
-from core.db.database import Base, engine
+from api.core.constants import DATABASE_TABLE_CONTENT, DATABASE_TABLE_RECS_FBT, DATABASE_TABLE_RECS_ICF
+from api.core.db.database import Base, engine
 
 
 # TODO: superclass Recommendation_Item for FBT, ICF etc.
