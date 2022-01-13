@@ -2,7 +2,6 @@ FROM python:3.8.12
 
 WORKDIR /app
 
- # ToDO: copy only necessary folders/files
 COPY /api /app/api
 COPY requirements.txt /app/requirements.txt
 COPY main.py /app/main.py
