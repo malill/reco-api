@@ -1,26 +1,16 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from api.core.db.database import SessionLocal
-from sqlalchemy.orm import Session
-from api.core.db import crud, schemas
-from api.core.db.models import Item
+from motor.motor_asyncio import AsyncIOMotorClient
+from api.core.db.mongodb import get_database
 
-router = APIRouter()
+api_router = APIRouter()
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@router.get("/personalized/item_based_collaborative_filtering", response_model=List[schemas.Item])
+@api_router.get("/personalized/item_based_collaborative_filtering")
 def get_item_based_collaborative_filtering_items(item_id_seed: int,
-                                                 db: Session = Depends(get_db),
-                                                 n_recos: int = 5) -> List[Item]:
+                                                 n_recos: int = 5,
+                                                 db: AsyncIOMotorClient = Depends(get_database)):
     """Return list of items from collaborative filtering given a seed item ID.
 
     Args:
@@ -31,7 +21,9 @@ def get_item_based_collaborative_filtering_items(item_id_seed: int,
     Returns:
         List[Item]: List of similar (item-wise) items.
     """
-    items = crud.get_item_based_collaborative_filtering_items(db, item_id_seed=item_id_seed, n_recos=n_recos)
-    if items is None:
-        raise HTTPException(status_code=404, detail="No recommendations found")
-    return [i.item for i in items if i.item is not None]
+    # items = crud.get_item_based_collaborative_filtering_items(db, item_id_seed=item_id_seed, n_recos=n_recos)
+
+    # if consumables is None:
+    #     raise HTTPException(status_code=404, detail="No recommendations found")
+    # return [i.item for i in consumables if i.item is not None]
+    return "Hello World"
