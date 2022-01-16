@@ -8,14 +8,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import api.core.util.config as cfg
 
 
-def limit_returned_items(items, n_recos):
-    """ This function should take care of adding items when len(items) < n_recos """
-    # TODO: it does not limit but add items if necessary
-    if len(items) < n_recos:
-        logging.warning(f"Number of requested items ({n_recos}) less than number of items ({len(items)}) in database")
-    return items[0:n_recos]
-
-
 async def get_random_consumables(conn: AsyncIOMotorClient, n_recos=5):
     """Retrieve random items from 'consumable' collection.
     Args:
@@ -40,7 +32,7 @@ async def get_latest_consumables(conn: AsyncIOMotorClient,
     cursor = conn[cfg.DB_NAME_EVIDENCE][cfg.COLLECTION_NAME_CONSUMABLE] \
         .find() \
         .sort([('update_time', pymongo.DESCENDING)])  # TODO: needs to be changed into create_time
-    return await cursor.to_list(n_recos)
+    return await cursor.to_list(n_recos) # TODO: check if this returns sorted products of all or n_reco documents
 
 
 async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
@@ -81,3 +73,11 @@ def quick_fix_adjust_item_id(item_id: int):
     if len(str(item_id)) > 4:
         item_id = str(item_id)[:-3]
     return int(item_id)
+
+
+def limit_returned_items(items, n_recos):
+    """ This function should take care of adding items when len(items) < n_recos """
+    # TODO: it does not limit but add items if necessary
+    if len(items) < n_recos:
+        logging.warning(f"Number of requested items ({n_recos}) less than number of items ({len(items)}) in database")
+    return items[0:n_recos]
