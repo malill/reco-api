@@ -17,7 +17,7 @@ async def get_random_consumables(conn: AsyncIOMotorClient, n_recos=5) -> List[Ba
     Returns:
         List[BasicConsumableModel]: List of random consumables.
     """
-    cursor = conn[cfg.DB_NAME_EVIDENCE][cfg.COLLECTION_NAME_CONSUMABLE].find()
+    cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_CONSUMABLE].find()
     res = random.sample(await cursor.to_list(None), n_recos)
     res = [BasicConsumableModel(**i) for i in res]
     return limit_returned_items(res, n_recos)
@@ -32,7 +32,7 @@ async def get_latest_consumables(conn: AsyncIOMotorClient,
     Returns:
         List[BasicConsumableModel]: List of random consumables.
     """
-    cursor = conn[cfg.DB_NAME_EVIDENCE][cfg.COLLECTION_NAME_CONSUMABLE] \
+    cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_CONSUMABLE] \
         .find() \
         .sort([('update_time', pymongo.DESCENDING)])  # TODO: needs to be changed into create_time
     res = await cursor.to_list(n_recos)  # TODO: check if this returns sorted products of all or n_reco documents
@@ -68,7 +68,7 @@ async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
         {'$sort': {'similarity': -1}},
         {'$limit': n_recos}
     ]
-    async for doc in conn[cfg.DB_NAME_RECS][cfg.COLLECTION_NAME_COLLABORATIVE_FILTERING].aggregate(pipeline):
+    async for doc in conn[cfg.DB_NAME][cfg.COLLECTION_NAME_COLLABORATIVE_FILTERING].aggregate(pipeline):
         res.append(BasicConsumableModel(**doc['consumable']))
     return limit_returned_items(res, n_recos)
 
