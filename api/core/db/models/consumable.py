@@ -20,7 +20,7 @@ class BasicConsumableModel(BaseModel):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        extra = Extra.allow
+        # extra = Extra.allow  # for future changes: allow additional attributes for frontend
         schema_extra = {
             "example": {
                 "uid": "12345",

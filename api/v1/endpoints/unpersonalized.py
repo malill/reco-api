@@ -50,4 +50,4 @@ async def item_based_collaborative_filtering_items(item_id_seed: int,
     Returns:
         List[Item]: List of similar (item-wise) items.
     """
-    return await get_item_based_collaborative_filtering_items(db, item_id_seed=item_id_seed, n_recos=n_recos)
+    return await get_item_based_collaborative_filtering_items(db, consumable_id_seed=item_id_seed, n_recos=n_recos)
