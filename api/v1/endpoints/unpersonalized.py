@@ -1,24 +1,17 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
-from core.db.database import SessionLocal
-from sqlalchemy.orm import Session
-from core.db import crud, schemas
-from core.db.models import Item
+from fastapi import APIRouter, Depends
+from motor.motor_asyncio import AsyncIOMotorClient
 
-router = APIRouter()
+from api.core.db.mongodb import get_database
+from api.core.services.main import get_random_consumables, get_latest_consumables, \
+    get_item_based_collaborative_filtering_items
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+api_router = APIRouter()
 
 
-@router.get("/unpersonalized/random", response_model=List[schemas.Item])
-def get_random_items(db: Session = Depends(get_db), n_recos: int = 5) -> List[Item]:
+@api_router.get("/unpersonalized/random")
+async def random_consumables(db: AsyncIOMotorClient = Depends(get_database), n_recos: int = 5):
     """Return list of random items.
 
     Args:
@@ -28,11 +21,11 @@ def get_random_items(db: Session = Depends(get_db), n_recos: int = 5) -> List[It
     Returns:
         List[Item]: List of random items.
     """
-    return crud.get_random_items(db, n_recos)
+    return await get_random_consumables(db, n_recos)
 
 
-@router.get("/unpersonalized/latest", response_model=List[schemas.Item])
-def get_latest_items(db: Session = Depends(get_db), n_recos: int = 5) -> List[Item]:
+@api_router.get("/unpersonalized/latest")
+async def latest_consumables(db: AsyncIOMotorClient = Depends(get_database), n_recos: int = 5):
     """Return list of most recently added items.
 
     Args:
@@ -42,24 +35,19 @@ def get_latest_items(db: Session = Depends(get_db), n_recos: int = 5) -> List[It
     Returns:
         List[Item]: List of latest n_recos items.
     """
-    return crud.get_latest_items(db, n_recos)
+    return await get_latest_consumables(db, n_recos)
 
 
-@router.get("/unpersonalized/fbt", response_model=List[schemas.Item])
-def get_frequently_bought_together_items(item_id_seed: int,
-                                         db: Session = Depends(get_db),
-                                         n_recos: int = 5) -> List[Item]:
-    """Return list of frequently bought together items given a seed item ID.
-
+@api_router.get("/personalized/item_based_collaborative_filtering")
+async def item_based_collaborative_filtering_items(item_id_seed: int,
+                                                   n_recos: int = 5,
+                                                   db: AsyncIOMotorClient = Depends(get_database)):
+    """Return list of items from collaborative filtering given a seed item ID.
     Args:
-        item_id_seed (int): ID of seed item that is used for finding frequently bought together items.
+        item_id_seed (int): ID of seed item that is used for finding item-wise similar items.
         db (Session): Session object used for retrieving items from db.
         n_recos (int): Number of items that should be returned.
-
     Returns:
-        List[Item]: List of frequently bought together items.
+        List[Item]: List of similar (item-wise) items.
     """
-    items = crud.get_frequently_bought_together_items(db, item_id_seed=item_id_seed, n_recos=n_recos)
-    if items is None:
-        raise HTTPException(status_code=404, detail="No recommendations found")
-    return [i.item for i in items if i.item is not None]
+    return await get_item_based_collaborative_filtering_items(db, consumable_id_seed=item_id_seed, n_recos=n_recos)

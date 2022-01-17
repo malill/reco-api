@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
-from api.v1.endpoints import unpersonalized, personalized
+from api.v1.endpoints import unpersonalized
 
 api_router = APIRouter()
-api_router.include_router(unpersonalized.router)
-api_router.include_router(personalized.router)
+api_router.include_router(unpersonalized.api_router)
