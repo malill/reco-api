@@ -32,7 +32,7 @@ async def get_latest_consumables(conn: AsyncIOMotorClient,
     cursor = conn[cfg.DB_NAME_EVIDENCE][cfg.COLLECTION_NAME_CONSUMABLE] \
         .find() \
         .sort([('update_time', pymongo.DESCENDING)])  # TODO: needs to be changed into create_time
-    return await cursor.to_list(n_recos) # TODO: check if this returns sorted products of all or n_reco documents
+    return await cursor.to_list(n_recos)  # TODO: check if this returns sorted products of all or n_reco documents
 
 
 async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
@@ -52,6 +52,22 @@ async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
     sorted_el = await cursor.to_list(None)  # no limit, since we need to retrieve all to get highest similarities
     ids = [str(e['consumable_id_recommended']) for e in sorted_el][:n_recos]
     consumables = await get_consumables(conn, ids)
+
+    pipeline = [{
+        '$lookup': {
+            'from': cfg.COLLECTION_NAME_CONSUMABLE,
+            'localField': 'consumable_id_recommended',
+            'foreignField': 'uid',
+            'as': 'Consumable'
+        }}
+    ]
+    pipeline = [{
+        '$match': {'$expr': {'$eq': ['consumable_id_seed', 419]}}
+    }]
+    #pipeline = [{'$match': {'consumable_id_seed': 415}}]
+    async for doc in conn[cfg.DB_NAME_RECS][cfg.COLLECTION_NAME_COLLABORATIVE_FILTERING].aggregate(pipeline):
+        print(doc)
+
     return consumables
 
 
