@@ -43,8 +43,3 @@ Repositories:
 [tiangolo]: https://github.com/tiangolo/full-stack-fastapi-postgresql/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app
 
 [ycd]: https://github.com/ycd/manage-fastapi
-
-
-<html>
-
-</html>
