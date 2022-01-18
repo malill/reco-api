@@ -6,9 +6,10 @@ from bson import ObjectId
 from pydantic import Field, BaseModel, Extra
 
 
+# copied from reco-collector-api (start)
+
 class BasicConsumableModel(BaseModel):
-    """copied from reco-collector-api"""
-    uid: str = Field(...)
+    id: str = Field(...)  # indentifier (unique among products, blogs, etc. BUT not across!)
     type: str = Field(...)
     name: str = Field(...)
     price: Optional[decimal.Decimal]
@@ -20,10 +21,10 @@ class BasicConsumableModel(BaseModel):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        # extra = Extra.allow  # for future changes: allow additional attributes for frontend
+        # extra = Extra.allow
         schema_extra = {
             "example": {
-                "uid": "12345",
+                "id": "12345",
                 "type": "product",
                 "name": "Garden Gnome Deluxe",
                 "price": "19.99",
@@ -31,3 +32,5 @@ class BasicConsumableModel(BaseModel):
                 "image_url": "https://path-to-consumable-image.com",
             }
         }
+
+# copied from reco-collector-api (end)

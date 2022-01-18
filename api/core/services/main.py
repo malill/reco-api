@@ -60,7 +60,7 @@ async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
             '$lookup': {
                 'from': cfg.COLLECTION_NAME_CONSUMABLE,
                 'localField': 'consumable_id_recommended',
-                'foreignField': '_id',
+                'foreignField': 'id',
                 'as': 'consumable'
             }
         },
