@@ -80,7 +80,7 @@ def quick_fix_adjust_item_id(item_id: int):
     return int(item_id)
 
 
-def limit_returned_items(items, n_recos):
+def limit_returned_items(items, n_recos) -> List[BasicItemModel]:
     """ This function should take care of adding items when len(items) < n_recos """
     # TODO: it does not limit but add items if necessary
     if len(items) < n_recos:

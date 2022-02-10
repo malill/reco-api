@@ -3,13 +3,11 @@ from datetime import datetime
 from typing import Optional
 
 from bson import ObjectId
-from pydantic import Field, BaseModel
+from pydantic import Field, BaseModel, Extra
 
-
-# copied from reco-collector-api (start)
 
 class BasicItemModel(BaseModel):
-    id: str = Field(...)  # indentifier (unique among products, blogs, etc. BUT not across!)
+    id: str = Field(...)  # identifier (unique among products, blogs, etc. BUT not across! UID is _id in MongoDB)
     type: str = Field(...)
     name: str = Field(...)
     price: Optional[decimal.Decimal]
@@ -21,7 +19,7 @@ class BasicItemModel(BaseModel):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        # extra = Extra.allow
+        extra = Extra.allow
         schema_extra = {
             "example": {
                 "id": "12345",
@@ -32,5 +30,3 @@ class BasicItemModel(BaseModel):
                 "image_url": "https://path-to-item-image.com",
             }
         }
-
-# copied from reco-collector-api (end)
