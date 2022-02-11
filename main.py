@@ -7,6 +7,8 @@ from api.core.util.log_config import LogConfig
 from api.v1.api import api_router
 from starlette.middleware.cors import CORSMiddleware
 
+from api.v1.endpoints.redirect.redirect import api_redirect_router
+
 log_config = LogConfig()
 logger = logging.getLogger(__name__)
 
@@ -30,5 +32,6 @@ app.add_event_handler("startup", connect_to_mongo_db)
 app.add_event_handler("shutdown", close_mongo_db_connection)
 
 app.include_router(api_router, prefix=cfg.API_V1_STR)
+app.include_router(api_redirect_router)
 
 logger.info(f"running app version {cfg.API_V1_STR} in {cfg.ENVIRONMENT} mode ...")
