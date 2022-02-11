@@ -4,10 +4,11 @@ from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.mongodb import get_database
-from api.core.services.main import get_random_items, get_latest_items, \
+from api.core.services.recommendations import get_random_items, get_latest_items, \
     get_item_based_collaborative_filtering_items
+from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS
 
-api_router = APIRouter()
+api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION, tags=[TAG_RECOMMENDATIONS])
 
 
 @api_router.get("/unpersonalized/random")
