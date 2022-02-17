@@ -6,9 +6,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.models.item import BasicItemModel
 from api.core.db.mongodb import get_database
-from api.core.util.config import ENDPOINT_ITEM, ENDPOINT_COLLECTION, TAG_COLLECTION, TAG_ITEM
+from api.core.util.config import ENDPOINT_ITEM, ENDPOINT_COLLECTION, TAG_ITEM
 
-api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_ITEM, tags=[TAG_COLLECTION, TAG_ITEM])
+api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_ITEM, tags=[TAG_ITEM])
 
 
 @api_router.get("", response_model=List[BasicItemModel])

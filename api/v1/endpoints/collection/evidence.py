@@ -5,13 +5,13 @@ from fastapi import APIRouter, Depends, Request
 import api.core.services.evidence as service_evidence
 from api.core.db.models.evidence import BasicEvidenceModel
 
-from api.core.util.config import ENDPOINT_COLLECTION, TAG_COLLECTION, TAG_EVIDENCE, ENDPOINT_EVIDENCE
+from api.core.util.config import ENDPOINT_COLLECTION, TAG_EVIDENCE, ENDPOINT_EVIDENCE
 
 from api.core.db.mongodb import AsyncIOMotorClient, get_database
 
 from starlette.responses import JSONResponse
 
-api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_EVIDENCE, tags=[TAG_COLLECTION, TAG_EVIDENCE])
+api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_EVIDENCE, tags=[TAG_EVIDENCE])
 
 
 @api_router.get("", response_model=List[BasicEvidenceModel])

@@ -7,9 +7,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from api.core.db.models.user import BasicUserModel
 from api.core.db.mongodb import get_database
 
-from api.core.util.config import ENDPOINT_COLLECTION, ENDPOINT_USER, TAG_COLLECTION, TAG_USER
+from api.core.util.config import ENDPOINT_COLLECTION, ENDPOINT_USER, TAG_USER
 
-api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_USER, tags=[TAG_COLLECTION, TAG_USER])
+api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_USER, tags=[TAG_USER])
 
 
 @api_router.post("")
