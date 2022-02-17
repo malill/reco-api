@@ -7,7 +7,7 @@ from datetime import datetime
 class BasicEvidenceModel(BaseModel):
     """Basic class that is used for persisting information on user behaviour.
 
-    Attributes: #noqa
+    Attributes:
         name (str): Description of collection that is tracked (e.g. 'view_details', 'purchase', 'order_entry).
         user_id (str, optional): User identifier (e.g. customer ID, fingerprint, cookie ID etc.).
         item_id (str, optional): Can be used when tracking collection for interaction with items.

@@ -5,9 +5,16 @@ from pydantic import BaseModel, Field, Extra
 
 
 class BasicUserModel(BaseModel):
-    keys: dict = Field()
+    """Basic class used to persist user information.
+
+    Attributes:
+        first_name (str, optional): User first name
+        last_name (str, optional): User last name
+        keys (dict): Identifier for user, e.g. cookie values, device information, etc.
+    """
     first_name: Optional[str]
     last_name: Optional[str]
+    keys: dict = Field()
 
     class Config:
         allow_population_by_field_name = True

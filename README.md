@@ -14,8 +14,9 @@ tbd
 
 # Change History
 
-- merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
+- Merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
   services). A user can therefore be created by a single service.
+- Added `first_name` and `last_name` to `BasicUserModel`
 
 # References
 
