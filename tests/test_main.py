@@ -4,7 +4,6 @@ from starlette.testclient import TestClient
 import api.core.services.item as service_item
 from api.core.db.models.item import BasicItemModel
 from api.core.db.mongodb import DataBase
-from api.core.db.mongodb_utils import connect_to_mongo_db
 from main import app
 import api.core.util.config as cfg
 
@@ -32,11 +31,6 @@ def test_read_main(client):
 def test_redirect(client):
     response = client.get("/")
     assert response.request.path_url == "/docs"
-
-
-@pytest.mark.filterwarnings("ignore::DeprecationWarning")
-async def test_mongodb_open_connection():
-    await connect_to_mongo_db()
 
 
 @pytest.mark.filterwarnings("ignore::DeprecationWarning")
