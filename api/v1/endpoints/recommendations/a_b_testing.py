@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 @api_router.get("/testing/ab")
-async def a_b_testing_with_item_id(item_id_seed: int,
+async def a_b_testing_with_item_id(test_name: str,
+                                   item_id_seed: int,
                                    request: Request,
                                    db: AsyncIOMotorClient = Depends(get_database),
                                    n_recos: int = 5):

@@ -44,11 +44,12 @@ def test_insert_user(test_client, test_user):
 
 @pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_ab_testing_with_reco_js_cookie(test_client):
-    res = test_client.get("/api/v1/rec/testing/ab?item_id_seed=123", cookies={cfg.RECO_JS_COOKIE_ID: "cookie_test"})
+    res = test_client.get("/api/v1/rec/testing/ab?test_name=mytest&item_id_seed=123",
+                          cookies={cfg.RECO_JS_COOKIE_ID: "cookie_test"})
     assert res.json() == 'cookie_test'
 
 
 @pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_ab_testing_without_reco_js_cookie(test_client):
-    res = test_client.get("/api/v1/rec/testing/ab?item_id_seed=123")
+    res = test_client.get("/api/v1/rec/testing/ab?test_name=mytest&item_id_seed=123")
     assert res.json() is None
