@@ -8,6 +8,15 @@ from main import app
 import api.core.util.config as cfg
 
 
+async def test_prepare_db():
+    db = DataBase()
+    db.client = AsyncIOMotorClient(cfg.DB_URL,
+                                   maxPoolSize=10,
+                                   minPoolSize=10)
+    if "test" in cfg.DB_NAME.lower():
+        await db.client[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM].drop()
+
+
 @pytest.fixture(scope='session')
 def db():
     db = DataBase()
