@@ -17,11 +17,12 @@ api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_USER, tags=[TAG_USE
 async def get_user(db: AsyncIOMotorClient = Depends(get_database), cookie_key: Optional[str] = None):
     """Returns most probabilistic user matching keys."""
     # TODO: current service get_user returns deterministic user by cookie value
+    print(cookie_key)
     return await service_user.get_user(db, cookie_key)
 
 
 @api_router.post("")
 async def post_user(db: AsyncIOMotorClient = Depends(get_database),
-                    users: List[BasicUserModel] = Body(...)):
+                    user: BasicUserModel = Body(...)):
     """Adds a list of user model entries into database."""
-    return await service_user.create_or_update_users(db, users)
+    return await service_user.create_or_update_user(db, user)
