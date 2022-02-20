@@ -17,6 +17,11 @@ tbd
 - Merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
   services). A user can therefore be created by a single service.
 - Added `first_name` and `last_name` to `BasicUserModel`
+- Added redirect from `/` to `/docs`
+- Created search users by `cookie` function
+- Added testing frameworks `pytest[-asyncio][-env]` and basic test functions to repo
+- Added `roles` to `BasicUserModel`
+- Created `/testing/ab` recommendation endpoint
 
 # References
 
