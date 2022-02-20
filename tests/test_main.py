@@ -9,6 +9,7 @@ import api.core.util.config as cfg
 
 
 async def test_prepare_db():
+    # TODO: find local option for test MongoDB
     db = DataBase()
     db.client = AsyncIOMotorClient(cfg.DB_URL,
                                    maxPoolSize=10,
