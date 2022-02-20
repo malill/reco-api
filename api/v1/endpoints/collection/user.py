@@ -1,5 +1,4 @@
-import string
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import APIRouter, Depends, Body
 import api.core.services.user as service_user

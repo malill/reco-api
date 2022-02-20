@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, Extra
 class BasicUserModel(BaseModel):
     """Basic class used to persist user information.
 
-    Attributes:
+    Attributes: #noqa
         first_name (str, optional): User first name
         last_name (str, optional): User last name
         keys (dict): Identifier for user, e.g. cookie values, device information, etc.

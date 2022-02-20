@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient

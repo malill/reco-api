@@ -12,7 +12,7 @@ class ABTest(BaseModel):
 class CollaborativeFilteringRec(BaseModel):
     """Recommendation entry for collaborative filtering algorithm.
 
-    Attributes:
+    Attributes: #noqa
         item_id_seed (str): ID of item for which recommendations are needed.
         item_id_recommended (str): ID of recommended item.
         similarity (float): Metric of collaborative filtering.
@@ -29,7 +29,7 @@ class CollaborativeFilteringRec(BaseModel):
 class FrequentlyBoughtTogetherRec(BaseModel):
     """Recommendation entry based on frequently bought together association rule.
 
-    Attributes:
+    Attributes: #noqa
         item_id_seed (str): ID of item for which recommendations are needed.
         item_id_recommended (str): ID of recommended item.
         confidence (float): Metric of frequently bought together.
