@@ -1,16 +1,17 @@
 # Recommendation API - Wiki
 
 This repository provides a REST API that exposes calculated recommendations from a **Recommender Builder**. Recommended
-items can then be consumed by a recommendation slider carousel to show recommendations.
+items can then be consumed by a recommendation slider carousel to show recommendations.</br>
+The API also provides endpoints to collect user evidence, i.e. user behavior that is used for analysis and
+recommendation building.
 
 Note that the project structure is based on
-[ycd/manage-fastapi][ycd] and [tiangolo/full-stack-fastapi-postgresql][tiangolo].
+[ycd/manage-fastapi][ycd], [tiangolo/full-stack-fastapi-postgresql][tiangolo]
+and [markqiu/fastapi-mongodb-realworld-example-app][markqiu]
 
-# Endpoints
+# System Landscape
 
-## Version 1.0 (`/api/v1`)
-
-tbd
+![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 
 # Change History
 
@@ -24,6 +25,8 @@ tbd
 - Created `/testing/ab` recommendation endpoint
 
 # References
+
+[markqiu]: https://github.com/markqiu/fastapi-mongodb-realworld-example-app/tree/master/tests
 
 [tiangolo]: https://github.com/tiangolo/full-stack-fastapi-postgresql/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app
 
