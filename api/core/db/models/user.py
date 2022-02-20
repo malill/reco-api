@@ -11,10 +11,12 @@ class BasicUserModel(BaseModel):
         first_name (str, optional): User first name
         last_name (str, optional): User last name
         keys (dict): Identifier for user, e.g. cookie values, device information, etc.
+        roles (set): User roles, e.g. membership, A/B Testing group, etc.
     """
     first_name: Optional[str]
     last_name: Optional[str]
     keys: dict = Field()
+    roles: Optional[list]
 
     class Config:
         allow_population_by_field_name = True
@@ -29,6 +31,7 @@ class BasicUserModel(BaseModel):
                     'cookie': ['cookie_a', 'cookie_b'],
                     'canvas': ['canvas_a', 'canvas_b'],
                     'gp_id': ['123456789']
-                }
+                },
+                "roles": {"fantasy_league", "b2b_customer"}
             }
         }

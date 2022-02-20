@@ -11,7 +11,8 @@ def test_user():
     return {
         "first_name": "Pete",
         "last_name": "Sampras",
-        "keys": {"cookie": ["cookie_test"]}
+        "keys": {"cookie": ["cookie_test"]},
+        "roles": ['u18', 'b2c_customer']
     }
 
 

@@ -34,8 +34,9 @@ async def a_b_testing_with_item_id(item_id_seed: int,
     try:
         reco_js_cookie_id = request.cookies[cfg.RECO_JS_COOKIE_ID]
         user = await service_user.get_user(db, reco_js_cookie_id)
-        # TODO: check if user already belongs to group
-        # TODO: if not set group for him
+        # Note: get_user will always return a user (even if she is new)
+        # TODO: check if user already has role
+        # TODO: if no set role for her
         # TODO: call specific reco function (!) to return items
     except KeyError:
         # this should not happen since every call to reco-api is performed via reco-js that provides a cookie-id
