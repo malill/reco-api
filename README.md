@@ -13,6 +13,36 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu]
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 
+# Installation
+
+## Development
+
+For **local development** use `environment.yml` in order to set up the environment and its specific package
+dependencies. Use `conda env create -f environment.yml` from project folder to create the respective environment. To
+update the conda environment use the following commands
+
+```shell
+conda activate reco-api
+conda env update --file environment.yml --prune
+```
+
+## Docker
+
+Package dependencies are being installed through requirements.txt also contained in the project folder. To create a new
+image (-p x:y means direct local port x to container port y) and run a container:
+
+```shell
+docker build -t reco-api .
+docker run -d --name reco-api -p 9072:9072 --env-file .env reco-api
+```
+
+To build and run docker containers on a RaspberryPi before executing above commands an update of the OS is necessary.
+
+```shell
+wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1-1_armhf.deb
+sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
+```
+
 # Change History
 
 - Merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
