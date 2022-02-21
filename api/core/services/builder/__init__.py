@@ -26,6 +26,7 @@ class BaseRecoBuilder(Generic[T]):
 
     def __init__(self, collection_name):
         self.recs: [T] = []
+        # legacy attribute, recs are stored in single collection - differentiation between recs field "type"
         self.collection_name = collection_name
 
     def run(self):

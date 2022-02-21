@@ -52,6 +52,9 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
   creation)
 - Pytest, ignore DepreciationWarnings
 - Added `CollaborativeFilteringBuilder`
+- Added `EvidencePipeline` class to fetch evidence from collection
+- Created working Collaborative Filtering route
+- Fixed recommendation collection storage error
 
 ## Version 0.1
 
