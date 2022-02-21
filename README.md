@@ -51,6 +51,7 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 - Transform routes `POST` to `PUT` where applicable (PUT is used for pure creation of objects, POST for update or
   creation)
 - Pytest, ignore DepreciationWarnings
+- Added `CollaborativeFilteringBuilder`
 
 ## Version 0.1
 

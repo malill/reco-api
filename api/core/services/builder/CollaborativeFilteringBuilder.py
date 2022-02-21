@@ -5,12 +5,12 @@ import pandas as pd
 import api.core.util.config as cfg
 from api.core.db.models.recommendation import CollaborativeFilteringRec
 from api.core.services.builder import BaseRecoBuilder
-from api.core.util.config import COLLECTION_NAME_COLLABORATIVE_FILTERING
+from api.core.util.config import COLLECTION_NAME_RECOMMENDATIONS
 
 
 class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRec]):
     def __init__(self, df, item_based=True):
-        super().__init__(collection_name=COLLECTION_NAME_COLLABORATIVE_FILTERING)
+        super().__init__(collection_name=COLLECTION_NAME_RECOMMENDATIONS)
 
         self.df = df
         self.item_based = item_based
