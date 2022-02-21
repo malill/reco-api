@@ -27,7 +27,7 @@ async def get_all_evidence(db: AsyncIOMotorClient = Depends(get_database)):
     return await service_evidence.get_all_evidence(db)
 
 
-@api_router.post("")
+@api_router.put("")
 async def post_evidence(request: Request,
                         db: AsyncIOMotorClient = Depends(get_database)):
     """Adds a list of evidence models into database without checking references to other objects.
