@@ -45,6 +45,19 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 
 # Change History
 
+## Version 0.2
+
+- Merge `reco-builder-api` into project :exclamation:
+- Transform routes `POST` to `PUT` where applicable (PUT is used for pure creation of objects, POST for update or
+  creation)
+- Pytest, ignore DepreciationWarnings
+- Added `CollaborativeFilteringBuilder`
+- Added `EvidencePipeline` class to fetch evidence synchronous (:exclamation:) from collection for builders
+- Created working Collaborative Filtering route
+- Fixed recommendation collection storage error
+
+## Version 0.1
+
 - Merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
   services). A user can therefore be created by a single service.
 - Added `first_name` and `last_name` to `BasicUserModel`
