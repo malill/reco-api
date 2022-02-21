@@ -21,6 +21,7 @@ class MongoDBHelper:
 
     def __init__(self, collection):
         self.client = MongoClient(cfg.DB_URL)
+        # TODO: class needs attribute to control "how much" evidence (e.g. age-based) should be fetch for calculations
         self.db = self.client[collection]
 
     def __enter__(self):
