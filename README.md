@@ -1,13 +1,19 @@
 # Recommendation API - Wiki
 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
+
 This repository provides a REST API that exposes calculated recommendations from a **Recommender Builder**. Recommended
 items can then be consumed by a recommendation slider carousel to show recommendations.</br>
 The API also provides endpoints to collect user evidence, i.e. user behavior that is used for analysis and
-recommendation building.
+recommendation building.</br>
+Furthermore, recommendation builder services are also included in the repository.
 
 Note that the project structure is based on
 [ycd/manage-fastapi][ycd], [tiangolo/full-stack-fastapi-postgresql][tiangolo]
-and [markqiu/fastapi-mongodb-realworld-example-app][markqiu]
+and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 # System Landscape
 
@@ -43,6 +49,13 @@ wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1
 sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 ```
 
+The repository also provides a `docker-compose.yml` file to set up a fully working recommender system (no repository
+download needed)
+
+```shell
+docker-compose up -d
+```
+
 # Change History
 
 ## Version 0.2
@@ -55,6 +68,7 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 - Added `EvidencePipeline` class to fetch evidence synchronous (:exclamation:) from collection for builders
 - Created working Collaborative Filtering route
 - Fixed recommendation collection storage error
+- Added `docker-compose.yml` for fully working recommender system
 
 ## Version 0.1
 

@@ -1,5 +1,6 @@
 dnspython==2.1.0
 fastapi==0.68.1
+gunicorn==20.1.0
 motor==2.3.0
 numpy==1.22.2
 pandas==1.4.1

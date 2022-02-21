@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  minio:
+    image: "bitnami/minio:latest"
+    container_name: minio
+    ports:
+      - "9100:9000"
+      - "9101:9001"
+    environment:
+      - MINIO_ACCESS_KEY=admin
+      - MINIO_SECRET_KEY=Init123!
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongo-volume:/data/db
+    ports:
+      - "27017-27019:27017-27019"
+  reco-api:
+    depends_on:
+      - mongo
+    image: malill/reco-api
+    container_name: reco-api
+    environment:
+      API_V1_STR: /api/v1
+      ENVIRONMENT: DOCKER_TEST
+      BACKEND_CORS_ORIGINS: "True"
+      DB_URL: mongodb://root:example@mongo:27017/
+      DB_NAME: environment_t
+      COLLECTION_NAME_EVIDENCE: evidence
+      COLLECTION_NAME_ITEM: item
+      COLLECTION_NAME_RECOMMENDATIONS: recommendations
+    ports:
+      - "9072:9072"
+networks:
+  default:
+    name: recommender-system
