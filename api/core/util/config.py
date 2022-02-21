@@ -13,10 +13,12 @@ BACKEND_CORS_ORIGINS: str = os.environ.get('BACKEND_CORS_ORIGINS')
 # Database connection string
 DB_URL: str = os.environ.get('DB_URL')
 DB_NAME: str = os.environ.get('DB_NAME')
-COLLECTION_NAME_RECOMMENDATIONS: str = os.environ.get('COLLECTION_NAME_RECOMMENDATIONS')
-COLLECTION_NAME_EVIDENCE: str = os.environ.get('COLLECTION_NAME_EVIDENCE')
-COLLECTION_NAME_ITEM = os.environ.get('COLLECTION_NAME_ITEM')
-COLLECTION_NAME_USER = os.environ.get('COLLECTION_NAME_USER')
+
+# Database collection names
+COLLECTION_NAME_EVIDENCE = "evidence"
+COLLECTION_NAME_ITEM = "item"
+COLLECTION_NAME_RECOMMENDATIONS = "recommendations"
+COLLECTION_NAME_USER = "user"
 
 # Database column names
 COLUMN_CONFIDENCE = "confidence"

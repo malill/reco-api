@@ -69,6 +69,7 @@ docker-compose up -d
 - Created working Collaborative Filtering route
 - Fixed recommendation collection storage error
 - Added `docker-compose.yml` for fully working recommender system
+- Remove collection names from environment
 
 ## Version 0.1
 
