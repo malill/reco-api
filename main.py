@@ -7,7 +7,7 @@ from api.core.util.log_config import LogConfig
 from api.v1.api import api_router
 from starlette.middleware.cors import CORSMiddleware
 
-from api.v1.endpoints.redirect.redirect import api_redirect_router
+from api.v1.redirect.redirect import api_redirect_router
 
 log_config = LogConfig()
 logger = logging.getLogger(__name__)

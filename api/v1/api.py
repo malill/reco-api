@@ -1,9 +1,8 @@
 from fastapi import APIRouter
 
-from api.v1.endpoints.collection import evidence
-from api.v1.endpoints.collection import item
-from api.v1.endpoints.collection import user
-from api.v1.endpoints.recommendations import item_based, a_b_testing
+from api.v1.collection import user, item, evidence
+from api.v1.recommendations import item_based
+from api.v1.recommendations import a_b_testing
 
 api_router = APIRouter()
 
