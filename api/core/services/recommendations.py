@@ -25,7 +25,7 @@ async def get_random_items(conn: AsyncIOMotorClient, n_recos=5) -> List[BasicIte
 
 async def get_latest_items(conn: AsyncIOMotorClient,
                            n_recos=5) -> List[BasicItemModel]:
-    """Retrieve latest items from 'item' collection.
+    """Retrieve the latest items from 'item' collection.
     Args:
         conn (AsyncIOMotorClient): Session object used for retrieving items from db.
         n_recos (int): Number of items that should be returned.
