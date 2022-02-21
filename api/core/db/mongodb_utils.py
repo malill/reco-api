@@ -9,11 +9,14 @@ from .mongodb import db
 logger = logging.getLogger(__name__)
 
 
+#################
+## Synchronous ##
+#################
 class MongoDBHelper:
-    """Helper class for MongoDB connection.
+    """Helper class for Recommendation Builder Class(!) to connect to MongoDB.
 
-    Use class in 'with' construct
-    Note that reco-builder-api stores recommendations synchronous into MongoDB (<> reco-collector-api)
+    Use class in 'with' construct. Note, that builder classes store recommendations synchronous into
+    MongoDB (<> collection-/recommendations-services store/retrieve asynchronous)
     """
 
     def __init__(self, collection):
@@ -27,6 +30,9 @@ class MongoDBHelper:
         self.client.close()
 
 
+##################
+## Asynchronous ##
+##################
 async def connect_to_mongo_db():
     logger.info("connect to MongoDB...")
     db.client = AsyncIOMotorClient(cfg.DB_URL,

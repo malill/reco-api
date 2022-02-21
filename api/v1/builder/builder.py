@@ -1,6 +1,7 @@
 import logging
 
-from fastapi import APIRouter
+from fastapi import APIRouter, status
+from starlette.responses import JSONResponse
 
 from api.core.services.builder.CollaborativeFilteringBuilder import CollaborativeFilteringBuilder
 from api.core.services.evidence import EvidencePipeline
@@ -22,4 +23,8 @@ def collaborative_filtering(base: str = 'item'):
     collaborative_filtering_builder.run()
     collaborative_filtering_builder.store_recs()
 
-    return "Hello Builder!"
+    return JSONResponse(content={'builder': str(collaborative_filtering_builder.__class__),
+                                 'status': 'successful',
+                                 'used_evidence_size': len(collaborative_filtering_builder.df),
+                                 'inserted_recs': len(collaborative_filtering_builder.recs)},
+                        status_code=status.HTTP_201_CREATED)

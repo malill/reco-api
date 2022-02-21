@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class EvidencePipeline:
-    """Class to return evidence from collection for builders."""
+    """Class to provide evidence from collection to builders."""
 
     def __init__(self):
         pass
