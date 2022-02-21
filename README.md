@@ -29,11 +29,11 @@ conda env update --file environment.yml --prune
 ## Docker
 
 Package dependencies are being installed through requirements.txt also contained in the project folder. To create a new
-image (-p x:y means direct local port x to container port y) and run a container:
+image and run a container:
 
 ```shell
 docker build -t reco-api .
-docker run -d --name reco-api -p 9072:9072 --env-file .env reco-api
+docker run -d --name reco-api -p [LOCAL_PORT]:9072 --env-file .env reco-api
 ```
 
 To build and run docker containers on a RaspberryPi before executing above commands an update of the OS is necessary.
