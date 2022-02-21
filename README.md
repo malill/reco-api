@@ -53,6 +53,7 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 - Added testing frameworks `pytest[-asyncio][-env]` and basic test functions to repo
 - Added `roles` to `BasicUserModel`
 - Created `/testing/ab` recommendation endpoint
+- Added `groups` attribute to `BasicUserModel`
 
 # References
 
