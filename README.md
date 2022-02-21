@@ -45,6 +45,10 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 
 # Change History
 
+## Version 0.2
+- Merge `reco-builder-api` into project :exclamation:
+
+## Version 0.1
 - Merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
   services). A user can therefore be created by a single service.
 - Added `first_name` and `last_name` to `BasicUserModel`

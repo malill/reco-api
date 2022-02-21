@@ -13,7 +13,7 @@ log_config = LogConfig()
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Recommendation API",
-              version="0.1",
+              version="0.2",
               openapi_url=f"{cfg.API_V1_STR}/openapi.json",
               description=f"REST API that exposes calculated recommendations from Recommender Builder. "
                           f"App is running in {cfg.ENVIRONMENT} mode.")
