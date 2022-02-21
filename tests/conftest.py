@@ -11,8 +11,11 @@ def test_user():
     return {
         "first_name": "Pete",
         "last_name": "Sampras",
-        "keys": {"cookie": ["cookie_test"]},
-        "roles": ['u18', 'b2c_customer']
+        "keys": {"cookie": ["cookie_test"], "ab_test": cfg.ITEM_BASED_COLLABORATIVE_FILTERING},
+        "roles": ['b2c_customer', 'u18'],
+        "groups": {
+            "ab_test": "ibcf"
+        }
     }
 
 

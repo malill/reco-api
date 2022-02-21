@@ -35,6 +35,10 @@ async def a_b_testing_with_item_id(test_name: str,
     try:
         reco_js_cookie_id = request.cookies[cfg.RECO_JS_COOKIE_ID]
         user = await service_user.get_user(db, reco_js_cookie_id)
+        if test_name in user.groups.keys():
+            print("User has test_name group key")
+        else:
+            print("test_name not found at user group keys")
         # Note: get_user will always return a user (even if she is new)
         # TODO: check if user already has role
         # TODO: if no set role for her

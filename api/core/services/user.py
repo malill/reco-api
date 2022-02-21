@@ -24,7 +24,7 @@ async def get_user(conn: AsyncIOMotorClient, cookie_key) -> BasicUserModel:
         logger.warning(f"Found more than one user for cookie_value: {cookie_key}")
         raise HTTPException(status_code=300, detail="Multiple users found")
     else:
-        return res[0]
+        return BasicUserModel(**res[0])
 
 
 async def create_or_update_user(conn: AsyncIOMotorClient, user_model: BasicUserModel):
