@@ -42,6 +42,10 @@ def test_insert_user(test_client, test_user):
     assert response.status_code == 201
 
 
+def test_insert_recommendations(test_client, test_recommendations_ib_cf):
+    print("Implement test")
+
+
 @pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_ab_testing_with_reco_js_cookie(test_client):
     res = test_client.get("/api/v1/rec/testing/ab?test_name=ab_test&item_id_seed=123",

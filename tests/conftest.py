@@ -36,6 +36,17 @@ def test_items():
 
 
 @fixture(scope="session")
+def test_recommendations_ib_cf():
+    return [
+        {"item_id_seed": "1", "item_id_recommended": "101", "similarity": 0.06, "base": "item"},
+        {"item_id_seed": "1", "item_id_recommended": "102", "similarity": 0.07, "base": "item"},
+        {"item_id_seed": "1", "item_id_recommended": "103", "similarity": 0.08, "base": "item"},
+        {"item_id_seed": "1", "item_id_recommended": "104", "similarity": 0.09, "base": "item"},
+        {"item_id_seed": "1", "item_id_recommended": "105", "similarity": 0.1, "base": "item"}
+    ]
+
+
+@fixture(scope="session")
 def test_client(test_user):
     from main import app
     with TestClient(app) as test_client:
