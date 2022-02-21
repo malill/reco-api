@@ -1,4 +1,3 @@
-import pytest
 from motor.motor_asyncio import AsyncIOMotorClient
 
 import api.core.util.config as cfg

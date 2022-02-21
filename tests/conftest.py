@@ -1,8 +1,6 @@
-from motor.motor_asyncio import AsyncIOMotorClient
 from pytest import fixture
 from starlette.testclient import TestClient
 
-from api.core.db.mongodb import get_database, DataBase
 import api.core.util.config as cfg
 
 
