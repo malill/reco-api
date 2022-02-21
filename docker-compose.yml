@@ -31,7 +31,7 @@ services:
       ENVIRONMENT: DOCKER_TEST
       BACKEND_CORS_ORIGINS: "True"
       DB_URL: mongodb://root:example@mongo:27017/
-      DB_NAME: environment_q
+      DB_NAME: environment_t
       COLLECTION_NAME_EVIDENCE: evidence
       COLLECTION_NAME_ITEM: item
       COLLECTION_NAME_RECOMMENDATIONS: recommendations

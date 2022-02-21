@@ -49,6 +49,13 @@ wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1
 sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 ```
 
+The repository also provides a `docker-compose.yml` file to set up a fully working recommender system (no repository
+download needed)
+
+```shell
+docker-compose up -d
+```
+
 # Change History
 
 ## Version 0.2
@@ -61,6 +68,7 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 - Added `EvidencePipeline` class to fetch evidence synchronous (:exclamation:) from collection for builders
 - Created working Collaborative Filtering route
 - Fixed recommendation collection storage error
+- Added `docker-compose.yml` for fully working recommender system
 
 ## Version 0.1
 
