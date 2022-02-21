@@ -9,7 +9,16 @@ class ABTest(BaseModel):
     name: str = Field()
 
 
-class CollaborativeFilteringRec(BaseModel):
+class BasicRecommendationModel(BaseModel):
+    """BaseModel of a recommendation entry.
+
+    Attributes: #noqa
+        type (str): Recommendation algorithm used for entry, e.g. ib_cf, fbt, etc.
+    """
+    type: str = Field()
+
+
+class CollaborativeFilteringRec(BasicRecommendationModel):
     """Recommendation entry for collaborative filtering algorithm.
 
     Attributes: #noqa
@@ -26,7 +35,7 @@ class CollaborativeFilteringRec(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
-class FrequentlyBoughtTogetherRec(BaseModel):
+class FrequentlyBoughtTogetherRec(BasicRecommendationModel):
     """Recommendation entry based on frequently bought together association rule.
 
     Attributes: #noqa

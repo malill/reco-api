@@ -29,11 +29,11 @@ conda env update --file environment.yml --prune
 ## Docker
 
 Package dependencies are being installed through requirements.txt also contained in the project folder. To create a new
-image (-p x:y means direct local port x to container port y) and run a container:
+image and run a container:
 
 ```shell
 docker build -t reco-api .
-docker run -d --name reco-api -p 9072:9072 --env-file .env reco-api
+docker run -d --name reco-api -p [LOCAL_PORT]:9072 --env-file .env reco-api
 ```
 
 To build and run docker containers on a RaspberryPi before executing above commands an update of the OS is necessary.
@@ -45,6 +45,19 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 
 # Change History
 
+## Version 0.2
+
+- Merge `reco-builder-api` into project :exclamation:
+- Transform routes `POST` to `PUT` where applicable (PUT is used for pure creation of objects, POST for update or
+  creation)
+- Pytest, ignore DepreciationWarnings
+- Added `CollaborativeFilteringBuilder`
+- Added `EvidencePipeline` class to fetch evidence synchronous (:exclamation:) from collection for builders
+- Created working Collaborative Filtering route
+- Fixed recommendation collection storage error
+
+## Version 0.1
+
 - Merged `reco-collector` project into `reco-api` since user handling shares too much logic (user creation on both
   services). A user can therefore be created by a single service.
 - Added `first_name` and `last_name` to `BasicUserModel`
@@ -53,6 +66,7 @@ sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 - Added testing frameworks `pytest[-asyncio][-env]` and basic test functions to repo
 - Added `roles` to `BasicUserModel`
 - Created `/testing/ab` recommendation endpoint
+- Added `groups` attribute to `BasicUserModel`
 
 # References
 

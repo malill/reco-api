@@ -68,7 +68,7 @@ async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
         {'$sort': {'similarity': -1}},
         {'$limit': n_recos}
     ]
-    async for doc in conn[cfg.DB_NAME][cfg.COLLECTION_NAME_COLLABORATIVE_FILTERING].aggregate(pipeline):
+    async for doc in conn[cfg.DB_NAME][cfg.COLLECTION_NAME_RECOMMENDATIONS].aggregate(pipeline):
         res.append(BasicItemModel(**doc['item']))
     return limit_returned_items(res, n_recos)
 

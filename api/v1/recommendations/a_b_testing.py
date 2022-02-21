@@ -24,6 +24,8 @@ async def a_b_testing_with_item_id(test_name: str,
     """Endpoint that enables A/B testing between recommendation types.
 
     Args:
+        test_name (str): Name of A/B Test.
+        item_id_seed (str): ID of item for which recommendations are needed.
         request (Request): Object to retrieve identifying values from call.
         db (Session): Session object used for retrieving items from db.
         n_recos (int): Number of items that should be returned.
