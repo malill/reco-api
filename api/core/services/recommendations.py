@@ -40,13 +40,15 @@ async def get_latest_items(conn: AsyncIOMotorClient,
     return limit_returned_items(res, n_recos)
 
 
-async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
-                                                       item_id_seed: int,
-                                                       n_recos=5) -> List[BasicItemModel]:
+async def get_collaborative_filtering_items(conn: AsyncIOMotorClient,
+                                            item_id_seed: int,
+                                            base: str,
+                                            n_recos=5) -> List[BasicItemModel]:
     """Retrieve item based collaborative filtered items from 'recs' db.
     Args:
         conn (AsyncIOMotorClient): Session object used for retrieving items from db.
         item_id_seed (int): ID of seed item that is used for finding similar items.
+        base (str): Type of filtering, i.e. "item" or "used".
         n_recos (int): Number of items that should be returned.
     Returns:
         List[BasicItemModel]: List of similar (item-wise) items.
@@ -54,7 +56,8 @@ async def get_item_based_collaborative_filtering_items(conn: AsyncIOMotorClient,
     res = []
     pipeline = [
         {'$match': {
-            'item_id_seed': str(quick_fix_adjust_item_id(item_id_seed))
+            'item_id_seed': str(quick_fix_adjust_item_id(item_id_seed)),
+            'base': base
         }},
         {
             '$lookup': {

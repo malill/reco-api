@@ -10,12 +10,12 @@ from api.core.db.mongodb import get_database
 from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS
 import api.core.util.config as cfg
 
-api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION, tags=[TAG_RECOMMENDATIONS])
+api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_TESTING, tags=[TAG_RECOMMENDATIONS])
 
 logger = logging.getLogger(__name__)
 
 
-@api_router.get("/testing/ab")
+@api_router.get("/ab")
 async def a_b_testing_with_item_id(test_name: str,
                                    item_id_seed: int,
                                    request: Request,

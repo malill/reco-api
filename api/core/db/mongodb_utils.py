@@ -9,9 +9,8 @@ from .mongodb import db
 logger = logging.getLogger(__name__)
 
 
-#################
-## Synchronous ##
-#################
+# Synchronous ->
+
 class MongoDBHelper:
     """Helper class for Recommendation Builder Class(!) to connect to MongoDB.
 
@@ -31,9 +30,8 @@ class MongoDBHelper:
         self.client.close()
 
 
-##################
-## Asynchronous ##
-##################
+# Asynchronous ->
+
 async def connect_to_mongo_db():
     logger.info("connect to MongoDB...")
     db.client = AsyncIOMotorClient(cfg.DB_URL,

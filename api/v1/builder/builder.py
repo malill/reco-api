@@ -14,17 +14,17 @@ logger.setLevel(logging.INFO)
 
 
 @api_router.put("")
-def collaborative_filtering(base: str = 'item'):
+def collaborative_filtering_builder(base: str = 'item'):
     logger.info(f"Collaborative filtering endpoint called with based {base}")
 
     evidence_pipeline = EvidencePipeline()
 
-    collaborative_filtering_builder = CollaborativeFilteringBuilder(df=evidence_pipeline.get_raw_evidence())
-    collaborative_filtering_builder.run()
-    collaborative_filtering_builder.store_recs()
+    cfb = CollaborativeFilteringBuilder(df=evidence_pipeline.get_raw_evidence())
+    cfb.run()
+    cfb.store_recs()
 
-    return JSONResponse(content={'builder': str(collaborative_filtering_builder.__class__),
+    return JSONResponse(content={'builder': str(cfb.__class__),
                                  'status': 'successful',
-                                 'used_evidence_size': len(collaborative_filtering_builder.df),
-                                 'inserted_recs': len(collaborative_filtering_builder.recs)},
+                                 'used_evidence_size': len(cfb.df),
+                                 'inserted_recs': len(cfb.recs)},
                         status_code=status.HTTP_201_CREATED)
