@@ -19,11 +19,11 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 
-# Installation
+# Installation :hammer:
 
-## Development
+## Local (conda) :snake:
 
-For **local development** use `environment.yml` in order to set up the environment and its specific package
+For local installation with conda use `environment.yml` in order to set up the environment and its specific package
 dependencies. Use `conda env create -f environment.yml` from project folder to create the respective environment. To
 update the conda environment use the following commands
 
@@ -32,7 +32,7 @@ conda activate reco-api
 conda env update --file environment.yml --prune
 ```
 
-## Docker
+## Docker :whale:
 
 Package dependencies are being installed through requirements.txt also contained in the project folder. To create a new
 image and run a container:
