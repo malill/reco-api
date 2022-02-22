@@ -5,17 +5,17 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
 
-This repository provides a REST API that exposes calculated recommendations from a **Recommender Builder**. Recommended
-items can then be consumed by a recommendation slider carousel to show recommendations.</br>
+This repository provides a REST API that exposes recommendations from a **Recommender Builder**. Recommended items can
+then be consumed by a frontend component to show recommendations.</br>
 The API also provides endpoints to collect user evidence, i.e. user behavior that is used for analysis and
 recommendation building.</br>
-Furthermore, recommendation builder services are also included in the repository.
+Furthermore, basic recommendation builder services are also included in the repository.
 
 Note that the project structure is based on
 [ycd/manage-fastapi][ycd], [tiangolo/full-stack-fastapi-postgresql][tiangolo]
 and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
-# System Landscape
+# System Landscape :mag_right:
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 
