@@ -18,6 +18,7 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 # System Landscape :mag_right:
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
+<figcaption align = "center"><b>Fig.1 - Recommender System Landscape (based on Falk ())</b></figcaption>
 
 # Installation :hammer:
 
@@ -83,7 +84,7 @@ docker-compose up -d
 - Created `/testing/ab` recommendation endpoint
 - Added `groups` attribute to `BasicUserModel`
 
-# References
+# References :books:
 
 [markqiu]: https://github.com/markqiu/fastapi-mongodb-realworld-example-app/tree/master/tests
 
