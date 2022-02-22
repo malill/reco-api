@@ -56,7 +56,7 @@ download needed)
 docker-compose up -d
 ```
 
-# Change History
+# Change History :arrows_counterclockwise:
 
 ## Version 0.2
 
