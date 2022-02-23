@@ -23,6 +23,16 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 # Installation :hammer:
 
+For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
+
+```text
+AUTH_USER=****
+AUTH_PASS=****
+
+DB_URL=****
+DB_NAME=****
+```
+
 ## Local (conda) :snake:
 
 For local installation with conda use `environment.yml` in order to set up the environment and its specific package
@@ -32,6 +42,12 @@ update the conda environment use the following commands
 ```shell
 conda activate reco-api
 conda env update --file environment.yml --prune
+```
+
+To run reco-api on port `[PORT]` from command line execute
+
+```shell
+uvicorn main:app --reload --port [PORT]
 ```
 
 ## Docker :whale:
@@ -51,14 +67,22 @@ wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1
 sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 ```
 
-The repository also provides a `docker-compose.yml` file to set up a fully working recommender system (no repository
-download needed)
+## Docker Hub :whale2:
+
+The project is also available on *Docker Hub*. A `docker-compose.yml` file to set up a recommender system (no repository
+download needed) is provided in the repository (replace credentials where applicable).
 
 ```shell
 docker-compose up -d
 ```
 
 # Change History :arrows_counterclockwise:
+
+## Version 1.0 (preview)
+
+- Increased python version `3.8.12`
+- Remove unused environment variables
+- Add HTTP Basic Auth to specific routes
 
 ## Version 0.2
 

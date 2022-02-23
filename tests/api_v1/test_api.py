@@ -1,4 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorClient
+from requests.auth import HTTPBasicAuth
 
 import api.core.util.config as cfg
 from api.core.db.mongodb import DataBase
@@ -28,12 +29,12 @@ def test_redirect(test_client):
 
 
 def test_insert_items(test_client, test_items):
-    response = test_client.post("/api/v1/col/item", json=test_items)
+    response = test_client.post("/api/v1/col/item", json=test_items, auth=HTTPBasicAuth('admin', 'nimda'))
     assert response.status_code == 201
 
 
 def test_insert_user(test_client, test_user):
-    response = test_client.post("/api/v1/col/user", json=test_user)
+    response = test_client.post("/api/v1/col/user", json=test_user, auth=HTTPBasicAuth('admin', 'nimda'))
     assert response.status_code == 201
 
 
