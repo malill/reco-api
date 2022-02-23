@@ -112,6 +112,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Increased python version `3.8.12`
 - Remove unused environment variables
 - Add HTTP Basic Auth to specific routes
+- Add test for inserting recs
 
 ## Version 0.2
 

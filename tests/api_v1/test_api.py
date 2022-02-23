@@ -3,6 +3,7 @@ from requests.auth import HTTPBasicAuth
 
 import api.core.util.config as cfg
 from api.core.db.mongodb import DataBase
+from api.core.services.builder.CollaborativeFilteringBuilder import CollaborativeFilteringBuilder
 
 
 async def test_prepare_db():
@@ -39,11 +40,13 @@ def test_insert_user(test_client, test_user):
 
 
 def test_insert_recommendations(test_client, test_recommendations_ib_cf):
-    print("Implement test")
+    cfb = CollaborativeFilteringBuilder(df=None)
+    cfb.recs = test_recommendations_ib_cf
+    cfb.store_recs()
 
 
 def test_ab_testing_assigned_user(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=123",
+    res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=1",
                           cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
     assert res.json() == 'petes_cookie'
 

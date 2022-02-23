@@ -10,8 +10,6 @@ from api.core.util.config import ENDPOINT_COLLECTION, TAG_EVIDENCE, ENDPOINT_EVI
 
 from api.core.db.mongodb import AsyncIOMotorClient, get_database
 
-from starlette.responses import JSONResponse
-
 api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_EVIDENCE, tags=[TAG_EVIDENCE])
 
 

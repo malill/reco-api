@@ -2,6 +2,7 @@ from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
+from api.core.db.models.recommendation import CollaborativeFilteringRec
 
 
 @fixture(scope="session")
@@ -35,13 +36,20 @@ def test_items():
 
 @fixture(scope="session")
 def test_recommendations_ib_cf():
-    return [
-        {"item_id_seed": "1", "item_id_recommended": "101", "similarity": 0.06, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "102", "similarity": 0.07, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "103", "similarity": 0.08, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "104", "similarity": 0.09, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "105", "similarity": 0.1, "base": "item"}
+    recs = [
+        {"type": cfg.ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "101",
+         "similarity": 0.06, "base": "item"},
+        {"type": cfg.ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "102",
+         "similarity": 0.07, "base": "item"},
+        {"type": cfg.ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "103",
+         "similarity": 0.08, "base": "item"},
+        {"type": cfg.ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "104",
+         "similarity": 0.09, "base": "item"},
+        {"type": cfg.ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "105",
+         "similarity": 0.1, "base": "item"}
     ]
+    res = [CollaborativeFilteringRec(**rec) for rec in recs]
+    return res
 
 
 @fixture(scope="session")
