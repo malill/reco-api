@@ -23,6 +23,13 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 # Installation :hammer:
 
+For installation, you need to provide a `.env` file (check `.env.sample`) and provide following information.
+
+```text
+DB_URL=****
+DB_NAME=****
+```
+
 ## Local (conda) :snake:
 
 For local installation with conda use `environment.yml` in order to set up the environment and its specific package
@@ -51,8 +58,10 @@ wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1
 sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 ```
 
-The repository also provides a `docker-compose.yml` file to set up a fully working recommender system (no repository
-download needed)
+## Docker-Hub :whale2:
+
+The project is also available on *DockerHub*. A `docker-compose.yml` file to set up a recommender system (no repository
+download needed) is provided in the repository (replace credentials where applicable).
 
 ```shell
 docker-compose up -d
@@ -63,6 +72,7 @@ docker-compose up -d
 ## Version 1.0 (preview)
 
 - Increased python version `3.8.12`
+- Remove unused environment variables
 
 ## Version 0.2
 

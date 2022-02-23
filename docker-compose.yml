@@ -32,9 +32,6 @@ services:
       BACKEND_CORS_ORIGINS: "True"
       DB_URL: mongodb://root:example@mongo:27017/
       DB_NAME: environment_t
-      COLLECTION_NAME_EVIDENCE: evidence
-      COLLECTION_NAME_ITEM: item
-      COLLECTION_NAME_RECOMMENDATIONS: recommendations
     ports:
       - "9072:9072"
 networks:
