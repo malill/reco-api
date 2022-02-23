@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
-
+import api.core.services.recommendations as rec_service
 from api.core.db.mongodb import get_database
 from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS, ENDPOINT_UNPERSONALIZED
 
@@ -18,7 +18,7 @@ async def get_random_items(db: AsyncIOMotorClient = Depends(get_database), n_rec
     Returns:
         List[Item]: List of random items.
     """
-    return await get_random_items(db, n_recos)
+    return await rec_service.get_random_items(db, n_recos)
 
 
 @api_router.get("/latest")
@@ -32,4 +32,4 @@ async def get_latest_items(db: AsyncIOMotorClient = Depends(get_database), n_rec
     Returns:
         List[Item]: List of latest n_recos items.
     """
-    return await get_latest_items(db, n_recos)
+    return await rec_service.get_latest_items(db, n_recos)
