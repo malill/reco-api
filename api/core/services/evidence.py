@@ -57,13 +57,10 @@ async def create_evidence(conn: AsyncIOMotorClient, evidence_models: List[BasicE
     return JSONResponse(status_code=status.HTTP_201_CREATED)
 
 
-def add_evidence_model_to_list(evidence_list: List, req: Request, o: dict):
+def add_evidence_model_to_list(evidence_list: List, o: dict):
     """Convert dict object into evidence model and add to list."""
     try:
-        evidence_list.append(BasicEvidenceModel(**o,
-                                                req_headers=req.headers,
-                                                req_client=req.client,
-                                                req_cookies=req.cookies))
+        evidence_list.append(BasicEvidenceModel(**o))
     except ValidationError as e:
         logger.warning(f"Invalid object provided in collection list:{o}", e)
 
@@ -74,7 +71,7 @@ async def process_evidence(request: Request) -> List[BasicEvidenceModel]:
     evidence_list = []
     if isinstance(json, list):
         for o in json:
-            add_evidence_model_to_list(evidence_list, request, o)
+            add_evidence_model_to_list(evidence_list, o)
     elif isinstance(json, dict):
-        add_evidence_model_to_list(evidence_list, request, json)
+        add_evidence_model_to_list(evidence_list, json)
     return evidence_list

@@ -1,29 +1,31 @@
 # Recommendation API - Wiki
 
+![version](https://img.shields.io/badge/version-0.2-blue)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
 
-This repository provides a REST API that exposes calculated recommendations from a **Recommender Builder**. Recommended
-items can then be consumed by a recommendation slider carousel to show recommendations.</br>
+This repository provides a REST API that exposes recommendations from a **Recommender Builder**. Recommended items can
+then be consumed by a frontend component to show recommendations.</br>
 The API also provides endpoints to collect user evidence, i.e. user behavior that is used for analysis and
 recommendation building.</br>
-Furthermore, recommendation builder services are also included in the repository.
+Furthermore, basic recommendation builder services are also included in the repository.
 
 Note that the project structure is based on
 [ycd/manage-fastapi][ycd], [tiangolo/full-stack-fastapi-postgresql][tiangolo]
 and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
-# System Landscape
+# System Landscape :mag_right:
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
+<figcaption align = "center"><b>Fig.1 - Recommender System Landscape (based on Falk (2019))</b></figcaption>
 
-# Installation
+# Installation :hammer:
 
-## Development
+## Local (conda) :snake:
 
-For **local development** use `environment.yml` in order to set up the environment and its specific package
+For local installation with conda use `environment.yml` in order to set up the environment and its specific package
 dependencies. Use `conda env create -f environment.yml` from project folder to create the respective environment. To
 update the conda environment use the following commands
 
@@ -32,7 +34,7 @@ conda activate reco-api
 conda env update --file environment.yml --prune
 ```
 
-## Docker
+## Docker :whale:
 
 Package dependencies are being installed through requirements.txt also contained in the project folder. To create a new
 image and run a container:
@@ -56,7 +58,7 @@ download needed)
 docker-compose up -d
 ```
 
-# Change History
+# Change History :arrows_counterclockwise:
 
 ## Version 0.2
 
@@ -70,6 +72,7 @@ docker-compose up -d
 - Fixed recommendation collection storage error
 - Added `docker-compose.yml` for fully working recommender system
 - Remove collection names from environment
+- Fixed missing recommendation service import
 
 ## Version 0.1
 
@@ -83,7 +86,9 @@ docker-compose up -d
 - Created `/testing/ab` recommendation endpoint
 - Added `groups` attribute to `BasicUserModel`
 
-# References
+# References :books:
+
+Falk, Kim. **Practical recommender systems**. Simon and Schuster, 2019.
 
 [markqiu]: https://github.com/markqiu/fastapi-mongodb-realworld-example-app/tree/master/tests
 
