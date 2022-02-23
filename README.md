@@ -26,6 +26,9 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
 
 ```text
+AUTH_USER=****
+AUTH_PASS=****
+
 DB_URL=****
 DB_NAME=****
 ```
