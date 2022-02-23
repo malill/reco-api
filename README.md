@@ -60,6 +60,10 @@ docker-compose up -d
 
 # Change History :arrows_counterclockwise:
 
+## Version 1.0 (preview)
+
+- Increased python version `3.8.12`
+
 ## Version 0.2
 
 - Merge `reco-builder-api` into project :exclamation:
