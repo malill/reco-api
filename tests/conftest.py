@@ -9,10 +9,10 @@ def test_user():
     return {
         "first_name": "Pete",
         "last_name": "Sampras",
-        "keys": {"cookie": ["cookie_test"], "ab_test": cfg.ITEM_BASED_COLLABORATIVE_FILTERING},
+        "keys": {"cookie": ["petes_cookie"], "canvas": ["01234", "56789"]},
         "roles": ['b2c_customer', 'u18'],
         "groups": {
-            "ab_test": "ibcf"
+            "ab_test1": cfg.ITEM_BASED_COLLABORATIVE_FILTERING
         }
     }
 

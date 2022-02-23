@@ -92,6 +92,14 @@ The repository provides basic recommendation building methods.
 
 **Collaborative Filtering**
 
+# Routes :globe_with_meridians:
+
+## A/B Test
+
+You can run A/B tests to evaluate different recommendation methods.
+
+
+
 # Security :lock:
 
 Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file

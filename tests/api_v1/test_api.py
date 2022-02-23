@@ -42,12 +42,13 @@ def test_insert_recommendations(test_client, test_recommendations_ib_cf):
     print("Implement test")
 
 
-def test_ab_testing_with_reco_js_cookie(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?test_name=ab_test&item_id_seed=123",
-                          cookies={cfg.RECO_JS_COOKIE_ID: "cookie_test"})
-    assert res.json() == 'cookie_test'
+def test_ab_testing_assigned_user(test_client):
+    res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=123",
+                          cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
+    assert res.json() == 'petes_cookie'
 
 
-def test_ab_testing_without_reco_js_cookie(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?test_name=mytest&item_id_seed=123")
-    assert res.json() is None
+def test_ab_testing_unassigned_user(test_client):
+    res = test_client.get("/api/v1/rec/test/ab?name=ab_test2&item_id_seed=123",
+                          cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
+    assert res.json() == 'petes_cookie'

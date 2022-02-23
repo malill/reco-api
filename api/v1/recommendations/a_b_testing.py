@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -16,15 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 @api_router.get("/ab")
-async def a_b_testing_with_item_id(test_name: str,
-                                   item_id_seed: int,
-                                   request: Request,
-                                   db: AsyncIOMotorClient = Depends(get_database),
-                                   n_recos: int = 5):
+async def a_b_testing(name: str,
+                      request: Request,
+                      db: AsyncIOMotorClient = Depends(get_database),
+                      item_id_seed: Optional[int] = None,
+                      n_recos: int = 5):
     """Endpoint that enables A/B testing between recommendation types.
 
     Args:
-        test_name (str): Name of A/B Test.
+        name (str): Name of A/B Test (used to fetch respective recommendations algorithms).
         item_id_seed (str): ID of item for which recommendations are needed.
         request (Request): Object to retrieve identifying values from call.
         db (Session): Session object used for retrieving items from db.
@@ -33,21 +34,22 @@ async def a_b_testing_with_item_id(test_name: str,
     Returns:
         List[Item]: List of random items.
     """
-    reco_js_cookie_id = None
+    reco_cookie_value = None
     try:
-        reco_js_cookie_id = request.cookies[cfg.RECO_JS_COOKIE_ID]
-        user = await service_user.get_user(db, reco_js_cookie_id)
-        if test_name in user.groups.keys():
-            print("User has test_name group key")
+        # every call to reco-api is expected to contain a reco-cookie-id
+        reco_cookie_value = request.cookies[cfg.RECO_COOKIE_ID]
+        user = await service_user.get_user(db, reco_cookie_value)  # will always return a user even if new user
+        if name in user.groups.keys():
+            # user is assigned to test group
+            print(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
+            # -> fetch from resp. recommendation method
         else:
-            print("test_name not found at user group keys")
-        # Note: get_user will always return a user (even if she is new)
+            # user is not assigned to test group -> assign user and fetch from resp. recommendation method
+            print(f"A/B test name '{name}' NOT found for user {str(user._id)}")
         # TODO: check if user already has role
-        # TODO: if no set role for her
+        # TODO: if no set group (!) for her
         # TODO: call specific reco function (!) to return items
     except KeyError:
-        # this should not happen since every call to reco-api is performed via reco-js that provides a cookie-id
-        # TODO: handle exception (e.g. raise error?)
-        logger.error("could not find cookie id in request")
+        print("could not find cookie id in request")
 
-    return reco_js_cookie_id
+    return reco_cookie_value
