@@ -23,7 +23,7 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 # Installation :hammer:
 
-For installation, you need to provide a `.env` file (check `.env.sample`) and provide following information.
+For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
 
 ```text
 DB_URL=****
@@ -39,6 +39,12 @@ update the conda environment use the following commands
 ```shell
 conda activate reco-api
 conda env update --file environment.yml --prune
+```
+
+To run reco-api on port `[PORT]` from command line execute
+
+```shell
+uvicorn main:app --reload --port [PORT]
 ```
 
 ## Docker :whale:
@@ -58,9 +64,9 @@ wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1
 sudo dpkg -i libseccomp2_2.5.1-1~bpo10+1_armhf.deb
 ```
 
-## Docker-Hub :whale2:
+## Docker Hub :whale2:
 
-The project is also available on *DockerHub*. A `docker-compose.yml` file to set up a recommender system (no repository
+The project is also available on *Docker Hub*. A `docker-compose.yml` file to set up a recommender system (no repository
 download needed) is provided in the repository (replace credentials where applicable).
 
 ```shell
