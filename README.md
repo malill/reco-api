@@ -79,6 +79,19 @@ download needed) is provided in the repository (replace credentials where applic
 docker-compose up -d
 ```
 
+# Recommendation Building Methods :construction_worker:
+
+The repository provides basic recommendation building methods.
+
+## Non-Personalized Methods
+
+**Random Items**</br>
+**Latest Items**
+
+## Personalized Methods
+
+**Collaborative Filtering**
+
 # Security :lock:
 
 Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file
