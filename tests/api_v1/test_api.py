@@ -48,7 +48,7 @@ def test_insert_recommendations(test_client, test_recommendations_ib_cf):
 def test_ab_testing_assigned_user(test_client):
     res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=1",
                           cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
-    assert res.json() == 'petes_cookie'
+    assert len(res.json()) == 5
 
 
 def test_ab_testing_unassigned_user(test_client):

@@ -10,6 +10,7 @@ import api.core.services.user as service_user
 from api.core.db.mongodb import get_database
 from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS
 import api.core.util.config as cfg
+from api.v1.recommendations.recommendation_dict import reco_dict
 
 api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_TESTING, tags=[TAG_RECOMMENDATIONS])
 
@@ -42,9 +43,11 @@ async def a_b_testing(name: str,
         if name in user.groups.keys():
             # user is assigned to test group
             print(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
-            # -> fetch from resp. recommendation method
+            fun = reco_dict[user.groups[name]]
+            recs = await fun(db, item_id_seed=item_id_seed, base="item")  # TODO: bad implementation
+            return recs
         else:
-            # user is not assigned to test group -> assign user and fetch from resp. recommendation method
+            # user is not assigned to test group -> assign user + fetch from resp. recommendation method
             print(f"A/B test name '{name}' NOT found for user {str(user._id)}")
         # TODO: check if user already has role
         # TODO: if no set group (!) for her

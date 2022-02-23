@@ -21,16 +21,12 @@ def test_user():
 @fixture(scope="session")
 def test_items():
     return [
-        {
-            "id": "testID1",
-            "type": "product",
-            "name": "Fancy Test Item"
-        },
-        {
-            "id": "testID2",
-            "type": "content",
-            "name": "Lame Test Content"
-        }
+        {"id": "1", "type": "product", "name": "Fancy Test Item 1"},
+        {"id": "101", "type": "product", "name": "Fancy Test Item 101"},
+        {"id": "102", "type": "product", "name": "Fancy Test Item 102"},
+        {"id": "103", "type": "product", "name": "Fancy Test Item 103"},
+        {"id": "104", "type": "product", "name": "Fancy Test Item 104"},
+        {"id": "105", "type": "product", "name": "Fancy Test Item 105"},
     ]
 
 
