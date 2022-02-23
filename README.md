@@ -76,6 +76,11 @@ download needed) is provided in the repository (replace credentials where applic
 docker-compose up -d
 ```
 
+# Security :lock:
+
+Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file
+under `AUTH_USER` and `AUTH_PASS`.
+
 # Change History :arrows_counterclockwise:
 
 ## Version 1.0 (preview)
