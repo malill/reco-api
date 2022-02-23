@@ -7,6 +7,10 @@ load_dotenv()
 API_V1_STR: str = os.environ.get('API_V1_STR')
 ENVIRONMENT: str = os.environ.get('ENVIRONMENT')
 
+# (Basic) Auth
+AUTH_USER: str = os.environ.get('AUTH_USER')
+AUTH_PASS: str = os.environ.get('AUTH_PASS')
+
 # CORS
 BACKEND_CORS_ORIGINS: str = os.environ.get('BACKEND_CORS_ORIGINS')
 

@@ -79,6 +79,7 @@ docker-compose up -d
 
 - Increased python version `3.8.12`
 - Remove unused environment variables
+- Add HTTP Basic Auth to specific routes
 
 ## Version 0.2
 
