@@ -16,10 +16,10 @@ api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_USER, tags=[TAG_USE
 @api_router.get("", response_model=BasicUserModel)
 async def get_user(auth: str = Depends(check_basic_auth),
                    db: AsyncIOMotorClient = Depends(get_database),
-                   cookie_key: Optional[str] = None):
+                   cookie_value: Optional[str] = None):
     """Returns most probabilistic user matching keys."""
     # TODO: current service get_user returns deterministic user by cookie value
-    return await service_user.get_user(db, cookie_key)
+    return await service_user.get_user(db, cookie_value)
 
 
 @api_router.post("")

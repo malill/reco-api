@@ -11,18 +11,21 @@ import api.core.util.config as cfg
 logger = logging.getLogger(__name__)
 
 
-async def get_user(conn: AsyncIOMotorClient, cookie_key) -> BasicUserModel:
-    """Probabilistic fetch method for user based on cookie value."""
-    cursor = get_user_collection(conn).find({'keys.cookie': cookie_key})  # cookie_key is deterministic fetch
+async def get_user(conn: AsyncIOMotorClient, cookie_value) -> BasicUserModel:
+    """Probabilistic fetch method for user based on cookie value.
+    Method will always return a BasicUserModel even when not found."""
+    cursor = get_user_collection(conn).find({'keys.cookie': cookie_value})
     res = await cursor.to_list(None)
     if len(res) == 0:
         # TODO: handle no user found -> maybe probabilistic fetch?
         # TODO: create user logic
-        logger.warning(f"No user found for cookie_value {cookie_key}")
-        raise HTTPException(status_code=404, detail="User not found")
+        logger.info(f"No user found for cookie_value {cookie_value} -> creating new user")
+        new_user = BasicUserModel(keys={"cookie": [cookie_value]})
+        await create_user(conn, new_user)
+        return new_user
     elif len(res) > 1:
         # TODO: handle multiple users -> maybe probabilistic fetch?
-        logger.warning(f"Found more than one user for cookie_value: {cookie_key}")
+        logger.warning(f"Found more than one user for cookie_value: {cookie_value}")
         raise HTTPException(status_code=300, detail="Multiple users found")
     else:
         return BasicUserModel(**res[0])
