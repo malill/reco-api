@@ -1,8 +1,17 @@
+from motor.motor_asyncio import AsyncIOMotorClient
 from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
 from api.core.db.models.recommendation import CollaborativeFilteringRec
+from api.core.db.mongodb import DataBase
+
+
+@fixture(scope="session")
+def test_client():
+    from main import app
+    with TestClient(app) as test_client:
+        yield test_client
 
 
 @fixture(scope="session")
@@ -19,14 +28,14 @@ def test_user():
 
 
 @fixture(scope="session")
-def test_items():
+def test_product_items():
     return [
         {"id": "1", "type": "product", "name": "Fancy Test Item 1"},
-        {"id": "101", "type": "product", "name": "Fancy Test Item 101"},
-        {"id": "102", "type": "product", "name": "Fancy Test Item 102"},
-        {"id": "103", "type": "product", "name": "Fancy Test Item 103"},
-        {"id": "104", "type": "product", "name": "Fancy Test Item 104"},
-        {"id": "105", "type": "product", "name": "Fancy Test Item 105"},
+        {"id": "2", "type": "product", "name": "Fancy Test Item 2"},
+        {"id": "3", "type": "product", "name": "Fancy Test Item 3"},
+        {"id": "4", "type": "product", "name": "Fancy Test Item 4"},
+        {"id": "5", "type": "product", "name": "Fancy Test Item 5"},
+        {"id": "6", "type": "product", "name": "Fancy Test Item 6"},
     ]
 
 
@@ -46,10 +55,3 @@ def test_recommendations_ib_cf():
     ]
     res = [CollaborativeFilteringRec(**rec) for rec in recs]
     return res
-
-
-@fixture(scope="session")
-def test_client(test_user):
-    from main import app
-    with TestClient(app) as test_client:
-        yield test_client

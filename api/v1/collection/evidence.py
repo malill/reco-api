@@ -2,9 +2,9 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Request
 
-import api.core.services.evidence as service_evidence
+import api.core.services.collection.evidence as service_evidence
 from api.core.db.models.evidence import BasicEvidenceModel
-from api.core.services.auth import check_basic_auth
+from api.core.services.authentification.basic_auth import check_basic_auth
 
 from api.core.util.config import ENDPOINT_COLLECTION, TAG_EVIDENCE, ENDPOINT_EVIDENCE
 

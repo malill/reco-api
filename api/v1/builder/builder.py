@@ -3,9 +3,9 @@ import logging
 from fastapi import APIRouter, status, Depends
 from starlette.responses import JSONResponse
 
-from api.core.services.auth import check_basic_auth
+from api.core.services.authentification.basic_auth import check_basic_auth
 from api.core.services.builder.CollaborativeFilteringBuilder import CollaborativeFilteringBuilder
-from api.core.services.evidence import EvidencePipeline
+from api.core.services.collection.evidence import EvidencePipeline
 from api.core.util.config import ENDPOINT_BUILDER, TAG_BUILDER
 
 api_router = APIRouter(prefix=ENDPOINT_BUILDER, tags=[TAG_BUILDER])
@@ -17,7 +17,7 @@ logger.setLevel(logging.INFO)
 @api_router.put("")
 def collaborative_filtering_builder(auth: str = Depends(check_basic_auth),
                                     base: str = 'item'):
-    """Runs CF builder and stores recommendations in db."""
+    """Runs CF builder and stores reco in db."""
     logger.info(f"Collaborative filtering endpoint called with based {base}")
 
     evidence_pipeline = EvidencePipeline()

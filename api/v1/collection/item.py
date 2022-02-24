@@ -1,12 +1,12 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, Body
-import api.core.services.item as service_item
+import api.core.services.collection.item as service_item
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.models.item import BasicItemModel
 from api.core.db.mongodb import get_database
-from api.core.services.auth import check_basic_auth
+from api.core.services.authentification.basic_auth import check_basic_auth
 from api.core.util.config import ENDPOINT_ITEM, ENDPOINT_COLLECTION, TAG_ITEM
 
 api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_ITEM, tags=[TAG_ITEM])

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
-import api.core.services.recommendations as rec_service
+import api.core.services.reco.recommendation as rec_service
 from api.core.db.mongodb import get_database
 from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS, ENDPOINT_UNPERSONALIZED
 

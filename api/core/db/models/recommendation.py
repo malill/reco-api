@@ -7,13 +7,13 @@ from pydantic import BaseModel, Field
 
 
 class BasicRecommendationModel(BaseModel):
-    """BaseModel of a recommendation entry.
+    """BaseModel of a reco entry.
 
     Attributes: #noqa
         type (str): Recommendation algorithm used for entry, e.g. ib_cf, fbt, etc.
-        item_id_seed (str): ID of item for which recommendations are needed.
+        item_id_seed (str): ID of item for which reco are needed.
         item_id_recommended (str): ID of recommended item.
-        timestamp (datetime): Current timestamp.
+        timestamp (datetime): Current timestamp. Can be used for versioning reco.
     """
     type: str = Field()
     item_id_seed: str = Field()

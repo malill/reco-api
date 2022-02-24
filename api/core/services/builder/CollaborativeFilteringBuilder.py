@@ -13,6 +13,7 @@ class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRec]):
         super().__init__(collection_name=COLLECTION_NAME_RECOMMENDATIONS)
 
         self.df = df
+        self.d = None
         self.item_based = item_based
         self.map_u = {}
         self.map_l = {}

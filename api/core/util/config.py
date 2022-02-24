@@ -21,7 +21,7 @@ DB_NAME: str = os.environ.get('DB_NAME')
 # Database collection names
 COLLECTION_NAME_EVIDENCE = "evidence"
 COLLECTION_NAME_ITEM = "item"
-COLLECTION_NAME_RECOMMENDATIONS = "recommendations"
+COLLECTION_NAME_RECOMMENDATIONS = "reco"
 COLLECTION_NAME_SPLITTING_CONFIG = "splitting"
 COLLECTION_NAME_USER = "user"
 

@@ -4,11 +4,11 @@ from typing import List
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
 
-import api.core.services.user as service_user
+import api.core.services.collection.user as service_user
 import api.core.util.config as cfg
 from api.core.db.models.splitting import SplittingModel
 
-from api.core.services.recommendations import reco_dict
+from api.core.services.reco.recommendation import reco_dict
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +57,7 @@ async def get_split_recos(db: AsyncIOMotorClient, name: str, reco_cookie_id: str
 
 async def draw_splitting_method(conn: AsyncIOMotorClient,
                                 name: str):
-    """Get a recommendation method from splitting"""
+    """Get a reco method from splitting"""
     splitting = await get_splitting(conn, name)
     print(splitting)
     return "hallo"

@@ -12,16 +12,16 @@ class BaseRecoBuilder(Generic[T]):
 
     attributes:
     - recs: list[Generic[T]]
-            each list entry contains an instance of recommendation model
+            each list entry contains an instance of reco model
     - collection_name: str
-            the collection of database where recommendations can be persisted
+            the collection of database where reco can be persisted
 
     methods:
     - run(self): None
             performing run() on an instance of a builder class calculates
-            the recommendations and stores them in attribute recs (see above)
+            the reco and stores them in attribute recs (see above)
     - store_recs(self): None
-            persists recommendations in self.collection_name of database (from .env)
+            persists reco in self.collection_name of database (from .env)
     """
 
     def __init__(self, collection_name):
