@@ -19,10 +19,10 @@ DB_URL: str = os.environ.get('DB_URL')
 DB_NAME: str = os.environ.get('DB_NAME')
 
 # Database collection names
-COLLECTION_AB_TESTING_CONFIG = "ab_testing_config"
 COLLECTION_NAME_EVIDENCE = "evidence"
 COLLECTION_NAME_ITEM = "item"
 COLLECTION_NAME_RECOMMENDATIONS = "recommendations"
+COLLECTION_NAME_SPLITTING_CONFIG = "splitting_config"
 COLLECTION_NAME_USER = "user"
 
 # Database column names
@@ -57,7 +57,7 @@ ENDPOINT_RECOMMENDATION = "/rec"
 ENDPOINT_EVIDENCE = "/evidence"
 ENDPOINT_ITEM = "/item"
 ENDPOINT_PERSONALIZED = "/pers"
-ENDPOINT_TESTING = "/test"
+ENDPOINT_SPLITTING = "/split"
 ENDPOINT_UNPERSONALIZED = "/unpers"
 ENDPOINT_USER = "/user"
 # Routes 3rd level

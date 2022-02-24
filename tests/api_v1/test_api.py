@@ -56,19 +56,19 @@ def test_insert_recommendations(test_client, test_recommendations_ib_cf):
     cfb.store_recs()
 
 
-def test_ab_testing_assigned_user(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=1",
+def test_splitting_assigned_user(test_client):
+    res = test_client.get("/api/v1/rec/split?name=split1&item_id_seed=1",
                           cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
     assert len(res.json()) == 5
 
 
-def test_ab_testing_unassigned_user(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?name=ab_test2&item_id_seed=1",
+def test_splitting_unassigned_user(test_client):
+    res = test_client.get("/api/v1/rec/split?name=split2&item_id_seed=1",
                           cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
     assert len(res.json()) == 5
 
 
-def test_ab_testing_new_user(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=1",
+def test_splitting_new_user(test_client):
+    res = test_client.get("/api/v1/rec/split?name=split11&item_id_seed=1",
                           cookies={cfg.RECO_COOKIE_ID: "andres_cookie"})
     assert len(res.json()) == 5

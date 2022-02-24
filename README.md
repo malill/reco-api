@@ -99,9 +99,14 @@ The repository provides basic recommendation building methods.
 
 The API provides a swagger UI to view all available routes.
 
-## A/B Test
+## Splitting :left_right_arrow:
 
-You can run A/B tests to evaluate different recommendation methods.
+*Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
+different recommendation methods.
+
+To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
+call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
+methods `methods`.
 
 # Security :lock:
 

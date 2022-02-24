@@ -36,7 +36,7 @@ class BasicUserModel(BaseModel):
                 },
                 "roles": {"fantasy_league", "b2b_customer"},
                 "groups": {
-                    "ab_test": "reco_method_x"
+                    "splitting1": "cf_ib"
                 }
             }
         }
