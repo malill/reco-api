@@ -1,12 +1,12 @@
 from typing import Optional, List
 
 from fastapi import APIRouter, Depends, Body
-import api.core.services.user as service_user
+import api.core.services.collection.user as service_user
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.models.user import BasicUserModel
 from api.core.db.mongodb import get_database
-from api.core.services.auth import check_basic_auth
+from api.core.services.authentification.basic_auth import check_basic_auth
 
 from api.core.util.config import ENDPOINT_COLLECTION, ENDPOINT_USER, TAG_USER
 
@@ -33,3 +33,10 @@ async def post_user(auth: str = Depends(check_basic_auth),
                     user: BasicUserModel = Body(...)):
     """Adds a new user model entry into database (no identity check)."""
     return await service_user.create_user(db, user)
+
+
+@api_router.delete("", response_model=int)
+async def delete_users_by_cookie(cookie_value: str,
+                                 auth: str = Depends(check_basic_auth),
+                                 db: AsyncIOMotorClient = Depends(get_database)):
+    return await service_user.delete_users_by_cookie(db, cookie_value)

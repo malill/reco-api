@@ -7,7 +7,7 @@ from pydantic import Field, BaseModel, Extra
 
 
 class BasicItemModel(BaseModel):
-    """Basic class for products, blogs etc. used for recommendations"""
+    """Basic class for products, blogs etc. used for reco"""
 
     id: str = Field(...)  # identifier (unique among products, blogs, etc. BUT not across! UID is _id in MongoDB)
     type: str = Field(...)

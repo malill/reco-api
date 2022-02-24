@@ -46,14 +46,10 @@ async def get_all_evidence(conn: AsyncIOMotorClient) -> List[BasicEvidenceModel]
     return evidence
 
 
-async def create_evidence(conn: AsyncIOMotorClient, evidence_models: List[BasicEvidenceModel]):
-    """Inserts collection object(s) to db.
-
-    Returns:
-        JSONResponse: Status of insert command.
-    """
+async def create_evidence(conn: AsyncIOMotorClient, evidence_list: List[BasicEvidenceModel]) -> JSONResponse:
+    """Inserts list of evidence objects to db."""
     t = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_EVIDENCE]
-    await t.insert_many([jsonable_encoder(e, exclude_none=True) for e in evidence_models])
+    await t.insert_many([jsonable_encoder(e, exclude_none=True) for e in evidence_list])
     return JSONResponse(status_code=status.HTTP_201_CREATED)
 
 
@@ -65,13 +61,6 @@ def add_evidence_model_to_list(evidence_list: List, o: dict):
         logger.warning(f"Invalid object provided in collection list:{o}", e)
 
 
-async def process_evidence(request: Request) -> List[BasicEvidenceModel]:
-    """Check if request contains single evidence or list of evidence and returns list of evidence models."""
-    json = await request.json()
-    evidence_list = []
-    if isinstance(json, list):
-        for o in json:
-            add_evidence_model_to_list(evidence_list, o)
-    elif isinstance(json, dict):
-        add_evidence_model_to_list(evidence_list, json)
-    return evidence_list
+async def process_evidence(object_list: List[BasicEvidenceModel]) -> List[BasicEvidenceModel]:
+    """Modify objects to prepare list of BasicEvidenceModels."""
+    return object_list

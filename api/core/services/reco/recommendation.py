@@ -1,3 +1,5 @@
+# "A recommendation is an item"
+
 import logging
 import random
 from typing import List
@@ -45,7 +47,7 @@ async def get_collaborative_filtering_items(conn: AsyncIOMotorClient,
                                             item_id_seed: int,
                                             base: str,
                                             n_recos=5) -> List[BasicItemModel]:
-    """Retrieve item based collaborative filtered items from 'recs' db.
+    """Retrieve item based collaborative filtered items from 'relation' db.
     Args:
         conn (AsyncIOMotorClient): Session object used for retrieving items from db.
         item_id_seed (int): ID of seed item that is used for finding similar items.
@@ -72,7 +74,7 @@ async def get_collaborative_filtering_items(conn: AsyncIOMotorClient,
         {'$sort': {'similarity': -1}},
         {'$limit': n_recos}
     ]
-    async for doc in conn[cfg.DB_NAME][cfg.COLLECTION_NAME_RECOMMENDATIONS].aggregate(pipeline):
+    async for doc in conn[cfg.DB_NAME][cfg.COLLECTION_NAME_RELATIONS].aggregate(pipeline):
         res.append(BasicItemModel(**doc['item']))
     return limit_returned_items(res, n_recos)
 
