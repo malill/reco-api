@@ -6,8 +6,13 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
 
-This repository provides a REST API that exposes recommendations from a **Recommender Builder**. Recommended items can
-then be consumed by a frontend component to show recommendations.</br>
+This repository provides a REST API that exposes recommendations from a **recommender builder**. Recommended items can
+then be consumed by a frontend component to show recommendations.
+
+> A **recommendation** is an **item** that is derived from a **relation**. An **item** is an object a **user** can interact
+> with, e.g. product, movie, article ... Interaction between **users** and **items** lead to **evidence** which can be used
+> to derive further **relations** and therefore more (precise) recommendations.
+
 The API also provides endpoints to collect user evidence, i.e. user behavior that is used for analysis and
 recommendation building.</br>
 Furthermore, basic recommendation builder services are also included in the repository.
@@ -19,7 +24,8 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 # System Landscape :mag_right:
 
 The basic recommendation system infrastructure is based on Kim Falk's *Practical Recommender Systems* (2019). The
-repository provides services for **evidence collection**, **recommendation building** and **recommendation serving**.
+repository provides services highlighted in red, i.e. **evidence collection**, **recommendation building** and
+**recommendation serving**.
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 <figcaption align = "center"><b>Fig.1 - Recommender System Landscape - based on Falk (2019)</b></figcaption>

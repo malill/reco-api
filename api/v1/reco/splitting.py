@@ -55,8 +55,7 @@ async def get_split_recos(name: str,
                           item_id_seed: int,
                           db: AsyncIOMotorClient = Depends(get_database),
                           n_recos: int = 5):
-    """Endpoint that returns split reco (= reco from a method
-    that is defined in a splitting).
+    """Endpoint that returns split recommendations (= recos from a method that is defined in a splitting).
 
     Args:
         name (str): Name of A/B Test (used to fetch respective reco algorithms).
@@ -66,7 +65,7 @@ async def get_split_recos(name: str,
         n_recos (int): Number of items that should be returned.
 
     Returns:
-        List[Item]: List of random items.
+        List[Item]: List of recommendations.
     """
     try:
         reco_cookie_id = request.cookies[cfg.RECO_COOKIE_ID]
