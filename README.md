@@ -18,8 +18,11 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 # System Landscape :mag_right:
 
+The basic recommendation system infrastructure is based on Kim Falk's *Practical Recommender Systems* (2019). The
+repository provides services for **evidence collection**, **recommendation building** and **recommendation serving**.
+
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
-<figcaption align = "center"><b>Fig.1 - Recommender System Landscape (based on Falk (2019))</b></figcaption>
+<figcaption align = "center"><b>Fig.1 - Recommender System Landscape - based on Falk (2019)</b></figcaption>
 
 # Installation :hammer:
 
@@ -76,6 +79,40 @@ download needed) is provided in the repository (replace credentials where applic
 docker-compose up -d
 ```
 
+# Recommendation Building Methods :construction_worker:
+
+The repository provides basic recommendation building methods.
+
+> Recommendation entries `REs` always inherit from `BasicRecommendationModel`. If a `RecommendationBuilder` creates new
+> `REs`, old `REs` are kept. Endpoints always return the most recent calculated `REs`.
+
+## Non-Personalized Methods
+
+**Random Items**</br>
+**Latest Items**
+
+## Personalized Methods
+
+**Collaborative Filtering**
+
+# Routes :globe_with_meridians:
+
+The API provides a swagger UI to view all available routes.
+
+## Splitting :left_right_arrow:
+
+*Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
+different recommendation methods.
+
+To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
+call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
+methods `methods`.
+
+# Security :lock:
+
+Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file
+under `AUTH_USER` and `AUTH_PASS`.
+
 # Change History :arrows_counterclockwise:
 
 ## Version 1.0 (preview)
@@ -83,6 +120,11 @@ docker-compose up -d
 - Increased python version `3.8.12`
 - Remove unused environment variables
 - Add HTTP Basic Auth to specific routes
+- Add test for inserting recs
+- Create get all users route
+- Add basic A/B testing logic and routes (:exclamation:)
+- Move `timestamp`, `item_id_seed` and `item_id_recommended` to parent class `BasicRecommendationModel`
+- Rename A/B testing to **splitting**
 
 ## Version 0.2
 

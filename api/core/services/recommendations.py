@@ -4,9 +4,10 @@ from typing import List
 
 import pymongo
 from motor.motor_asyncio import AsyncIOMotorClient
-
 import api.core.util.config as cfg
 from api.core.db.models.item import BasicItemModel
+
+logger = logging.getLogger(__name__)
 
 
 async def get_random_items(conn: AsyncIOMotorClient, n_recos=5) -> List[BasicItemModel]:
@@ -90,3 +91,9 @@ def limit_returned_items(items, n_recos) -> List[BasicItemModel]:
         logging.warning(
             f"Number of requested items ({n_recos}) less than number of items ({len(items)}) in database")
     return items[0:n_recos]
+
+
+reco_dict = {
+    cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING: get_collaborative_filtering_items,
+    cfg.TYPE_RANDOM_RECOMMENDATIONS: get_random_items
+}

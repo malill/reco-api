@@ -2,6 +2,7 @@ from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
+from api.core.db.models.recommendation import CollaborativeFilteringRec
 
 
 @fixture(scope="session")
@@ -9,10 +10,10 @@ def test_user():
     return {
         "first_name": "Pete",
         "last_name": "Sampras",
-        "keys": {"cookie": ["cookie_test"], "ab_test": cfg.ITEM_BASED_COLLABORATIVE_FILTERING},
+        "keys": {"cookie": ["petes_cookie"], "canvas": ["01234", "56789"]},
         "roles": ['b2c_customer', 'u18'],
         "groups": {
-            "ab_test": "ibcf"
+            "ab_test1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
         }
     }
 
@@ -20,28 +21,31 @@ def test_user():
 @fixture(scope="session")
 def test_items():
     return [
-        {
-            "id": "testID1",
-            "type": "product",
-            "name": "Fancy Test Item"
-        },
-        {
-            "id": "testID2",
-            "type": "content",
-            "name": "Lame Test Content"
-        }
+        {"id": "1", "type": "product", "name": "Fancy Test Item 1"},
+        {"id": "101", "type": "product", "name": "Fancy Test Item 101"},
+        {"id": "102", "type": "product", "name": "Fancy Test Item 102"},
+        {"id": "103", "type": "product", "name": "Fancy Test Item 103"},
+        {"id": "104", "type": "product", "name": "Fancy Test Item 104"},
+        {"id": "105", "type": "product", "name": "Fancy Test Item 105"},
     ]
 
 
 @fixture(scope="session")
 def test_recommendations_ib_cf():
-    return [
-        {"item_id_seed": "1", "item_id_recommended": "101", "similarity": 0.06, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "102", "similarity": 0.07, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "103", "similarity": 0.08, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "104", "similarity": 0.09, "base": "item"},
-        {"item_id_seed": "1", "item_id_recommended": "105", "similarity": 0.1, "base": "item"}
+    recs = [
+        {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "101",
+         "similarity": 0.06, "base": "item"},
+        {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "102",
+         "similarity": 0.07, "base": "item"},
+        {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "103",
+         "similarity": 0.08, "base": "item"},
+        {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "104",
+         "similarity": 0.09, "base": "item"},
+        {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "105",
+         "similarity": 0.1, "base": "item"}
     ]
+    res = [CollaborativeFilteringRec(**rec) for rec in recs]
+    return res
 
 
 @fixture(scope="session")

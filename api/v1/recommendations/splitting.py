@@ -1,0 +1,58 @@
+import logging
+from typing import List
+
+from fastapi import APIRouter, Depends
+from motor.motor_asyncio import AsyncIOMotorClient
+from fastapi import Request
+
+import api.core.services.splitting as service_split
+import api.core.services.recommendations as service_reco
+
+from api.core.db.mongodb import get_database
+from api.core.services.auth import check_basic_auth
+import api.core.util.config as cfg
+
+api_router = APIRouter(prefix=cfg.ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_SPLITTING, tags=[cfg.TAG_SPLITTING])
+
+logger = logging.getLogger(__name__)
+
+
+@api_router.post("/config")
+async def set_splitting_config(name: str,
+                               methods: list,
+                               db: AsyncIOMotorClient = Depends(get_database),
+                               auth: str = Depends(check_basic_auth)):
+    """Route to create a A/B testing setup."""
+    splitting = await service_split.set_splitting_config(db, name, methods)
+    return splitting
+
+
+@api_router.get("/")
+async def get_splitting(name: str,
+                        request: Request,
+                        item_id_seed: int,
+                        db: AsyncIOMotorClient = Depends(get_database),
+                        n_recos: int = 5):
+    """Endpoint that enables A/B testing between recommendation types.
+
+    Args:
+        name (str): Name of A/B Test (used to fetch respective recommendations algorithms).
+        request (Request): Object to retrieve identifying values from call.
+        item_id_seed (str): ID of item for which recommendations are needed.
+        db (Session): Session object used for retrieving items from db.
+        n_recos (int): Number of items that should be returned.
+
+    Returns:
+        List[Item]: List of random items.
+    """
+    try:
+        reco_cookie_id = request.cookies[cfg.RECO_COOKIE_ID]
+        items = await service_split.get_splitting_items(db, name, reco_cookie_id, item_id_seed, n_recos)
+        return items
+    except KeyError:
+        logger.error("Could not find cookie id in request")
+    except NotImplementedError:
+        logger.error(f"No recommendation method found for A/B test [{name}]")
+
+    logger.error(f"Could not request recommendation method for A/B test [{name}] ... returning random recommendations")
+    return await service_reco.get_random_items(db, n_recos)
