@@ -26,6 +26,12 @@ async def get_splitting(name: str,
     return splitting
 
 
+@api_router.get("/config/all", response_model=List[SplittingModel])
+async def get_all_splittings(db: AsyncIOMotorClient = Depends(get_database),
+                             auth: str = Depends(check_basic_auth)):
+    return await service_split.get_all_splittings(db)
+
+
 @api_router.post("/config", response_model=SplittingModel)
 async def set_splitting(name: str,
                         methods: list,

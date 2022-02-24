@@ -3,7 +3,6 @@ from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
-from starlette import status
 
 import api.core.services.user as service_user
 import api.core.util.config as cfg
@@ -17,6 +16,10 @@ logger = logging.getLogger(__name__)
 async def get_splitting(conn: AsyncIOMotorClient, name: str):
     res = await get_splitting_collection(conn).find_one({'name': name})
     return res
+
+
+async def get_all_splittings(conn: AsyncIOMotorClient):
+    return await get_splitting_collection(conn).find().to_list(None)
 
 
 async def set_splitting(conn: AsyncIOMotorClient, name: str, methods: List):
