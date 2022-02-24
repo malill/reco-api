@@ -46,7 +46,7 @@ async def get_all_evidence(conn: AsyncIOMotorClient) -> List[BasicEvidenceModel]
     return evidence
 
 
-async def create_evidence(conn: AsyncIOMotorClient, evidence_list: List[BasicEvidenceModel]):
+async def create_evidence(conn: AsyncIOMotorClient, evidence_list: List[BasicEvidenceModel]) -> JSONResponse:
     """Inserts list of evidence objects to db."""
     t = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_EVIDENCE]
     await t.insert_many([jsonable_encoder(e, exclude_none=True) for e in evidence_list])

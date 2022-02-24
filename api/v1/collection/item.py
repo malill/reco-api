@@ -19,7 +19,7 @@ async def get_all_items(auth: str = Depends(check_basic_auth),
     return await service_item.get_all_items(db)
 
 
-@api_router.post("")
+@api_router.post("", response_model=str)
 async def post_items(auth: str = Depends(check_basic_auth),
                      db: AsyncIOMotorClient = Depends(get_database),
                      item_models: List[BasicItemModel] = Body(...)):

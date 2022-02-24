@@ -7,6 +7,7 @@ from fastapi import Request
 
 import api.core.services.reco.splitting as service_split
 import api.core.services.reco.recommendation as service_reco
+from api.core.db.models.item import BasicItemModel
 from api.core.db.models.splitting import SplittingModel
 
 from api.core.db.mongodb import get_database
@@ -49,7 +50,7 @@ async def delete_splitting(name: str,
     return await service_split.delete_splitting(db, name)
 
 
-@api_router.get("/")
+@api_router.get("/", response_model=List[BasicItemModel])
 async def get_split_recos(name: str,
                           request: Request,
                           item_id_seed: int,

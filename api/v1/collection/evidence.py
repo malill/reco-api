@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 
 import api.core.services.collection.evidence as service_evidence
 from api.core.db.models.evidence import BasicEvidenceModel
@@ -20,7 +20,7 @@ async def get_all_evidence(auth: str = Depends(check_basic_auth),
     return await service_evidence.get_all_evidence(db)
 
 
-@api_router.put("")
+@api_router.put("", response_model=str)
 async def put_evidence(evidence: List[BasicEvidenceModel],
                        db: AsyncIOMotorClient = Depends(get_database)):
     """Adds a list of evidence models into MongoDB."""

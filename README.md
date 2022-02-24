@@ -133,6 +133,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Rename A/B testing to **splitting**
 - Added delete users by cookie value route
 - Rename recommendations to relations where applicable
+- Fixed missing API response models
 
 ## Version 0.2
 

@@ -1,3 +1,5 @@
+# "A recommendation is an item"
+
 import logging
 import random
 from typing import List

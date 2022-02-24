@@ -23,8 +23,7 @@ async def get_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> Li
 
 
 async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
-    """Probabilistic fetch method for user based on cookie value.
-    Method will insert a new BasicUserModel when not found."""
+    """Probabilistic fetch method for user based on cookie. Method will insert a new BasicUserModel when not found."""
     users = await get_users_by_cookie(conn, cookie_value)
     if len(users) == 0:
         logger.info(f"No user found for cookie_value {cookie_value} -> creating new user")
@@ -55,7 +54,7 @@ async def update_user_group(conn: AsyncIOMotorClient, user: BasicUserModel, grou
     return user
 
 
-async def delete_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str):
+async def delete_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> int:
     """Deletes user(s) by cookie value and returns number of deleted objects."""
     res = await get_user_collection(conn).delete_many(filter={'keys.cookie': cookie_value})
     return res.deleted_count
