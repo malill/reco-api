@@ -9,12 +9,12 @@
 This repository provides a REST API that exposes recommendations from a **recommender builder**. Recommended items can
 then be consumed by a frontend component to show recommendations.
 
-> A **recommendation** is an **item** that is derived from a **relation**. An **item** is an object a **user** can interact
-> with, e.g. product, movie, article ... Interaction between **users** and **items** lead to **evidence** which can be used
-> to derive further **relations** and therefore more (precise) recommendations.
+> A **personalized recommendation** is an **item** that is derived from a **relation**. An **item** is an object a
+> **user** can interact with, e.g. product, movie, article ... Interaction between **users** and **items** lead to
+> **evidence** which can be used to derive further **relations** and therefore more (precise) recommendations.
 
-The API also provides endpoints to collect user evidence, i.e. user behavior that is used for analysis and
-recommendation building.</br>
+The API also provides services to collect user evidence, i.e. user behavior that is used for analysis and recommendation
+building.</br>
 Furthermore, basic recommendation builder services are also included in the repository.
 
 Note that the project structure is based on
