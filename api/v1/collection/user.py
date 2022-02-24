@@ -36,7 +36,7 @@ async def post_user(auth: str = Depends(check_basic_auth),
 
 
 @api_router.delete("")
-async def delete_user_by_cookie(cookie: str,
-                                auth: str = Depends(check_basic_auth),
-                                db: AsyncIOMotorClient = Depends(get_database)):
-    return await service_user.delete_users_by_cookie(db, cookie)
+async def delete_users_by_cookie(cookie_value: str,
+                                 auth: str = Depends(check_basic_auth),
+                                 db: AsyncIOMotorClient = Depends(get_database)):
+    return await service_user.delete_users_by_cookie(db, cookie_value)

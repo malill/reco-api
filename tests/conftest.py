@@ -26,6 +26,7 @@ def test_user1():
         }
     }
 
+
 @fixture(scope="session")
 def test_user2():
     return {
@@ -40,7 +41,7 @@ def test_user2():
 
 
 @fixture(scope="session")
-def test_product_items():
+def test_items():
     return [
         {"id": "1", "type": "product", "name": "Fancy Test Item 1"},
         {"id": "2", "type": "product", "name": "Fancy Test Item 2"},
