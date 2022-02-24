@@ -16,6 +16,13 @@ api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_TESTING, ta
 logger = logging.getLogger(__name__)
 
 
+@api_router.post("/ab/config")
+async def a_b_testing_config(name: str, methods: list, db: AsyncIOMotorClient = Depends(get_database)):
+    """Route to create a A/B testing setup."""
+    ab_test = await service_reco.set_ab_testing_config(db, name, methods)
+    return ab_test
+
+
 @api_router.get("/ab")
 async def a_b_testing(name: str,
                       request: Request,

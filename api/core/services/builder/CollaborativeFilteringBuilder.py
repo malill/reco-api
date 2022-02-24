@@ -77,6 +77,6 @@ class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRec]):
         for b in a:
             c = dict(b)
             c["base"] = "item"
-            rec = CollaborativeFilteringRec(**c, type=cfg.COLLABORATIVE_FILTERING)
+            rec = CollaborativeFilteringRec(**c, type=cfg.TYPE_COLLABORATIVE_FILTERING)
             s.append(rec)
         return s

@@ -44,15 +44,15 @@ async def create_user(conn: AsyncIOMotorClient, user_model: BasicUserModel) -> B
     return user_model
 
 
-async def update_user_group(conn: AsyncIOMotorClient, user_model: BasicUserModel, group_name: str,
+async def update_user_group(conn: AsyncIOMotorClient, user: BasicUserModel, group_name: str,
                             group_value: str) -> BasicUserModel:
-    """Adds user to group 'group_name' with 'group_value'."""
-    if user_model.groups is None:
-        user_model.groups = {}
-    await get_user_collection(conn).update_one(filter={'_id': user_model._id},
+    """Adds user to group 'group_name' with 'group_value' and stores results in MongoDB."""
+    if user.groups is None:
+        user.groups = {}
+    await get_user_collection(conn).update_one(filter={'_id': user._id},
                                                update={'$set': {f"groups.{group_name}": group_value}})
-    user_model.groups[group_name] = group_value
-    return user_model
+    user.groups[group_name] = group_value
+    return user
 
 
 def get_user_collection(conn: AsyncIOMotorClient):
