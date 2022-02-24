@@ -38,7 +38,7 @@ async def a_b_testing(name: str,
     """
     try:
         # every call to reco-api is expected to contain at least a reco-cookie-id
-        user = await service_user.get_user(db, request.cookies[cfg.RECO_COOKIE_ID])
+        user = await service_user.get_user_by_cookie(db, request.cookies[cfg.RECO_COOKIE_ID])
         if (user.groups is not None) and (name in user.groups.keys()):
             print(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
         else:

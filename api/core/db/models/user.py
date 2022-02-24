@@ -14,7 +14,6 @@ class BasicUserModel(BaseModel):
         roles (list, optional): User roles, e.g. membership(s), preference(s) etc.
         groups (dict(str, str), optional): 1-1 assignments of user to groups with values
     """
-    _id: ObjectId = Field()
     keys: dict = Field()
     first_name: Optional[str]
     last_name: Optional[str]
@@ -37,7 +36,7 @@ class BasicUserModel(BaseModel):
                 },
                 "roles": {"fantasy_league", "b2b_customer"},
                 "groups": {
-                    "ab_test": "ibcf"
+                    "ab_test": "reco_method_x"
                 }
             }
         }
