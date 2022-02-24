@@ -6,6 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import Request
 
 import api.core.services.user as service_user
+import api.core.services.recommendations as service_reco
 
 from api.core.db.mongodb import get_database
 from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS
@@ -35,24 +36,22 @@ async def a_b_testing(name: str,
     Returns:
         List[Item]: List of random items.
     """
-    reco_cookie_value = None
     try:
-        # every call to reco-api is expected to contain a reco-cookie-id
-        reco_cookie_value = request.cookies[cfg.RECO_COOKIE_ID]
-        user = await service_user.get_user(db, reco_cookie_value)  # will always return a user even if new user
-        if name in user.groups.keys():
-            # user is assigned to AB test group
-            print(f"A/B test name '{name}' found for user {str(user.uid)} with value {user.groups[name]}")
-            fun = reco_dict[user.groups[name]]
-            # TODO: bad implementation (can also be moved after if/else clause)
-            recs = await fun(db, item_id_seed=item_id_seed, base="item")
-            return recs
+        # every call to reco-api is expected to contain at least a reco-cookie-id
+        user = await service_user.get_user(db, request.cookies[cfg.RECO_COOKIE_ID])
+        if (user.groups is not None) and (name in user.groups.keys()):
+            print(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
         else:
-            # user is not assigned to AB test group (new user or already existing but first calling user)
-            print(f"A/B test name '{name}' NOT found for user {str(user.uid)}")
-            await service_user.update_user_group(db, user, name, "dummy_group")
+            print(f"A/B test name '{name}' NOT found for user {str(user._id)}")
+            # TODO: bad since we make 2 MongoDB calls when user is new (create w/o group and then update group)
+            user = await service_user.update_user_group(
+                db, user, name, await service_reco.draw_ab_test_recommendation_method(db, "test"))
+
+        fun = reco_dict[user.groups[name]]
+        recs = await fun(db, item_id_seed=item_id_seed, base="item")
+        return recs
     except KeyError:
         print("could not find cookie id in request")
         print("OR could not find recommendation method!")
 
-    return reco_cookie_value
+    return "todo something"

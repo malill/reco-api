@@ -79,7 +79,7 @@ async def get_collaborative_filtering_items(conn: AsyncIOMotorClient,
 async def draw_ab_test_recommendation_method(conn: AsyncIOMotorClient,
                                              name: str):
     """Get a recommendation method from AB test."""
-    print("Time to draw!")
+    return cfg.ITEM_BASED_COLLABORATIVE_FILTERING
 
 
 def quick_fix_adjust_item_id(item_id: int):

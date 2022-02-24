@@ -32,7 +32,7 @@ def test_redirect(test_client):
 
 def test_insert_user(test_client, test_user):
     response = test_client.post("/api/v1/col/user", json=test_user, auth=HTTPBasicAuth('admin', 'nimda'))
-    assert response.status_code == 201
+    assert response.json()["first_name"] == "Pete"
 
 
 def test_get_user_existing(test_client):
@@ -63,6 +63,12 @@ def test_ab_testing_assigned_user(test_client):
 
 
 def test_ab_testing_unassigned_user(test_client):
-    res = test_client.get("/api/v1/rec/test/ab?name=ab_test2&item_id_seed=123",
+    res = test_client.get("/api/v1/rec/test/ab?name=ab_test2&item_id_seed=1",
                           cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
-    assert res.json() == 'petes_cookie'
+    assert len(res.json()) == 5
+
+
+def test_ab_testing_new_user(test_client):
+    res = test_client.get("/api/v1/rec/test/ab?name=ab_test1&item_id_seed=1",
+                          cookies={cfg.RECO_COOKIE_ID: "andres_cookie"})
+    assert len(res.json()) == 5

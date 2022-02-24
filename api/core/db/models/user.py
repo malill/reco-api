@@ -41,7 +41,3 @@ class BasicUserModel(BaseModel):
                 }
             }
         }
-
-    @property
-    def uid(self):
-        return self._id
