@@ -3,6 +3,7 @@ from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
+from starlette import status
 
 import api.core.services.user as service_user
 import api.core.util.config as cfg
@@ -13,16 +14,26 @@ from api.core.services.recommendations import reco_dict
 logger = logging.getLogger(__name__)
 
 
-async def set_splitting_config(conn: AsyncIOMotorClient, name: str, methods: List):
+async def get_splitting(conn: AsyncIOMotorClient, name: str):
+    res = await get_splitting_collection(conn).find_one({'name': name})
+    return res
+
+
+async def set_splitting(conn: AsyncIOMotorClient, name: str, methods: List):
     splitting = SplittingModel(name=name, methods=methods)
     entry_req = jsonable_encoder(splitting, exclude_none=True)
-    cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_SPLITTING_CONFIG]
-    await cursor.find_one_and_update({'name': splitting.name}, {"$set": entry_req},
-                                     upsert=True)
+    await get_splitting_collection(conn).find_one_and_update({'name': splitting.name}, {"$set": entry_req},
+                                                             upsert=True)
     return splitting
 
 
-async def get_splitting_items(db: AsyncIOMotorClient, name: str, reco_cookie_id: str, item_id_seed: int, n_recos: int):
+async def delete_splitting(conn: AsyncIOMotorClient, name: str) -> int:
+    """Deletes splitting by name and returns number of deleted objects."""
+    res = await get_splitting_collection(conn).delete_one({'name': name})
+    return res.deleted_count
+
+
+async def get_split_recos(db: AsyncIOMotorClient, name: str, reco_cookie_id: str, item_id_seed: int, n_recos: int):
     try:
         user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
         if (user.groups is not None) and (name in user.groups.keys()):
@@ -43,6 +54,11 @@ async def get_splitting_items(db: AsyncIOMotorClient, name: str, reco_cookie_id:
 
 async def draw_splitting_method(conn: AsyncIOMotorClient,
                                 name: str):
-    """Get a recommendation method from AB test."""
-    #
+    """Get a recommendation method from splitting"""
+    splitting = await get_splitting(conn, name)
+    print(splitting)
     return "hallo"
+
+
+def get_splitting_collection(conn: AsyncIOMotorClient):
+    return conn[cfg.DB_NAME][cfg.COLLECTION_NAME_SPLITTING_CONFIG]
