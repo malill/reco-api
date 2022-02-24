@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -37,21 +37,27 @@ async def a_b_testing(name: str,
         List[Item]: List of random items.
     """
     try:
-        # every call to reco-api is expected to contain at least a reco-cookie-id
-        user = await service_user.get_user_by_cookie(db, request.cookies[cfg.RECO_COOKIE_ID])
-        if (user.groups is not None) and (name in user.groups.keys()):
-            print(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
-        else:
-            print(f"A/B test name '{name}' NOT found for user {str(user._id)}")
-            # TODO: bad since we make 2 MongoDB calls when user is new (create w/o group and then update group)
-            user = await service_user.update_user_group(
-                db, user, name, await service_reco.draw_ab_test_recommendation_method(db, "test"))
+        reco_cookie_id = request.cookies[cfg.RECO_COOKIE_ID]
 
-        fun = reco_dict[user.groups[name]]
-        recs = await fun(db, item_id_seed=item_id_seed, base="item")
-        return recs
+        try:
+            user = await service_user.get_or_create_user_by_cookie(conn=db,
+                                                                   cookie_value=reco_cookie_id)
+            if (user.groups is not None) and (name in user.groups.keys()):
+                logger.info(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
+            else:
+                logger.info(f"A/B test name '{name}' NOT found for user {str(user._id)}")
+                # TODO: bad since we make 2 MongoDB calls when user is new (create w/o group and then update group)
+                user = await service_user.update_user_group(
+                    db, user, name, await service_reco.draw_ab_test_recommendation_method(db, "test"))
+
+            fun = reco_dict[user.groups[name]]
+            recs = await fun(db, item_id_seed=item_id_seed, base="item")
+            return recs
+        except KeyError:
+            print(f"Could not find recommendation method for A/B test [{name}]")
+
     except KeyError:
-        print("could not find cookie id in request")
-        print("OR could not find recommendation method!")
+        logger.error("Could not find cookie id in request")
 
-    return "todo something"
+    logger.error(f"Could not request recommendation method for A/B test [{name}] ... returning random recommendations")
+    return await service_reco.get_random_items(conn=db, n_recos=n_recos)
