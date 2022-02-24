@@ -9,16 +9,19 @@ import api.core.services.splitting as service_split
 import api.core.services.recommendations as service_reco
 
 from api.core.db.mongodb import get_database
-from api.core.util.config import ENDPOINT_RECOMMENDATION, TAG_RECOMMENDATIONS
+from api.core.services.auth import check_basic_auth
 import api.core.util.config as cfg
 
-api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_SPLITTING, tags=[TAG_RECOMMENDATIONS])
+api_router = APIRouter(prefix=cfg.ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_SPLITTING, tags=[cfg.TAG_SPLITTING])
 
 logger = logging.getLogger(__name__)
 
 
 @api_router.post("/config")
-async def set_splitting_config(name: str, methods: list, db: AsyncIOMotorClient = Depends(get_database)):
+async def set_splitting_config(name: str,
+                               methods: list,
+                               db: AsyncIOMotorClient = Depends(get_database),
+                               auth: str = Depends(check_basic_auth)):
     """Route to create a A/B testing setup."""
     splitting = await service_split.set_splitting_config(db, name, methods)
     return splitting
