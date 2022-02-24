@@ -83,6 +83,9 @@ docker-compose up -d
 
 The repository provides basic recommendation building methods.
 
+> Recommendation entries `REs` always inherit from `BasicRecommendationModel`. If a `RecommendationBuilder` creates new
+> `REs`, old `REs` are kept. Endpoints always return the most recent calculated `REs`.
+
 ## Non-Personalized Methods
 
 **Random Items**</br>
@@ -98,8 +101,6 @@ The repository provides basic recommendation building methods.
 
 You can run A/B tests to evaluate different recommendation methods.
 
-
-
 # Security :lock:
 
 Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file
@@ -113,6 +114,9 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Remove unused environment variables
 - Add HTTP Basic Auth to specific routes
 - Add test for inserting recs
+- Create get all users route
+- Add basic A/B testing logic and routes (:exclamation:)
+- Move `timestamp`, `item_id_seed` and `item_id_recommended` to parent class `BasicRecommendationModel`
 
 ## Version 0.2
 
