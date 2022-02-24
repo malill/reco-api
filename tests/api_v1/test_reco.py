@@ -2,10 +2,10 @@ from api.core.services.builder.CollaborativeFilteringBuilder import Collaborativ
 import api.core.util.config as cfg
 
 
-def test_insert_recommendations(test_client, test_recommendations_ib_cf):
+def test_insert_relations(test_client, test_relations_ib_cf):
     cfb = CollaborativeFilteringBuilder(df=None)
-    cfb.recs = test_recommendations_ib_cf
-    cfb.store_recs()
+    cfb.relations = test_relations_ib_cf
+    cfb.store_relations()
 
 
 def test_splitting_assigned_user(test_client):

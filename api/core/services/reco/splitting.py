@@ -36,7 +36,7 @@ async def delete_splitting(conn: AsyncIOMotorClient, name: str) -> int:
     return res.deleted_count
 
 
-async def get_split_recos(db: AsyncIOMotorClient, name: str, reco_cookie_id: str, item_id_seed: int, n_recos: int):
+async def get_split_recommendations(db: AsyncIOMotorClient, name: str, reco_cookie_id: str, item_id_seed: int, n_recos: int):
     try:
         user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
         if (user.groups is not None) and (name in user.groups.keys()):
@@ -49,8 +49,8 @@ async def get_split_recos(db: AsyncIOMotorClient, name: str, reco_cookie_id: str
                                                         group_value=await draw_splitting_method(db, name))
 
         fun = reco_dict[user.groups[name]]
-        recs = await fun(db, item_id_seed=item_id_seed, base="item", n_recos=n_recos)
-        return recs
+        recommendations = await fun(db, item_id_seed=item_id_seed, base="item", n_recos=n_recos)
+        return recommendations
     except KeyError:
         raise NotImplementedError()
 

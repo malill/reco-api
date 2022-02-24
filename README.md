@@ -132,6 +132,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Move `timestamp`, `item_id_seed` and `item_id_recommended` to parent class `BasicRecommendationModel`
 - Rename A/B testing to **splitting**
 - Added delete users by cookie value route
+- Rename recommendations to relations where applicable
 
 ## Version 0.2
 

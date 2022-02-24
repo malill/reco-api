@@ -69,7 +69,7 @@ async def get_split_recos(name: str,
     """
     try:
         reco_cookie_id = request.cookies[cfg.RECO_COOKIE_ID]
-        items = await service_split.get_split_recos(db, name, reco_cookie_id, item_id_seed, n_recos)
+        items = await service_split.get_split_recommendations(db, name, reco_cookie_id, item_id_seed, n_recos)
         return items
     except KeyError:
         logger.error("Could not find cookie id in request")

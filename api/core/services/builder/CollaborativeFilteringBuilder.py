@@ -3,14 +3,14 @@ from scipy.sparse import csr_matrix
 import numpy as np
 import pandas as pd
 import api.core.util.config as cfg
-from api.core.db.models.recommendation import CollaborativeFilteringRec
+from api.core.db.models.relation import CollaborativeFilteringRelation
 from api.core.services.builder import BaseRecoBuilder
-from api.core.util.config import COLLECTION_NAME_RECOMMENDATIONS
+from api.core.util.config import COLLECTION_NAME_RELATIONS
 
 
-class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRec]):
+class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRelation]):
     def __init__(self, df, item_based=True):
-        super().__init__(collection_name=COLLECTION_NAME_RECOMMENDATIONS)
+        super().__init__()
 
         self.df = df
         self.d = None
@@ -23,7 +23,7 @@ class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRec]):
     def run(self):
         self.create_ratings_matrix()
         self.similarity = self.pairwise_jacquard()
-        self.recs = self.sort_similarity()
+        self.relations = self.sort_similarity()
 
     def create_ratings_matrix(self):
         # Group interactions
@@ -61,23 +61,23 @@ class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRec]):
         self.d = pd.DataFrame(self.similarity)
         self.d.values[[np.arange(self.d.shape[0])] * 2] = 0  # sets diagonal to 0
 
-        recs_dict = []
+        relation_list = []
 
         key_list = list(self.map_l.keys())
 
         for col in self.d:
             n_recos = 10
             for i, s in self.d[col].nlargest(n_recos).iteritems():
-                recs_dict.append((key_list[col], key_list[i], s))
-        recs = self.convert_to_models(recs_dict)
-        return recs
+                relation_list.append((key_list[col], key_list[i], s))
+        relations = self.convert_to_models(relation_list)
+        return relations
 
-    def convert_to_models(self, recs_dict):
-        a = [dict(zip(cfg.COLUMNS_RECS_ICF, values)) for values in recs_dict]
+    def convert_to_models(self, relations):
+        a = [dict(zip(cfg.COLUMNS_RELATION_ICF, values)) for values in relations]
         s = []
         for b in a:
             c = dict(b)
             c["base"] = "item"
-            rec = CollaborativeFilteringRec(**c, type=cfg.TYPE_COLLABORATIVE_FILTERING)
+            rec = CollaborativeFilteringRelation(**c, type=cfg.TYPE_COLLABORATIVE_FILTERING)
             s.append(rec)
         return s

@@ -24,10 +24,10 @@ def collaborative_filtering_builder(auth: str = Depends(check_basic_auth),
 
     cfb = CollaborativeFilteringBuilder(df=evidence_pipeline.get_raw_evidence())
     cfb.run()
-    cfb.store_recs()
+    cfb.store_relations()
 
     return JSONResponse(content={'builder': str(cfb.__class__),
                                  'status': 'successful',
                                  'used_evidence_size': len(cfb.df),
-                                 'inserted_recs': len(cfb.recs)},
+                                 'inserted_relations': len(cfb.relations)},
                         status_code=status.HTTP_201_CREATED)

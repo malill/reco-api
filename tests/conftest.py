@@ -3,7 +3,7 @@ from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
-from api.core.db.models.recommendation import CollaborativeFilteringRec
+from api.core.db.models.relation import CollaborativeFilteringRelation
 from api.core.db.mongodb import DataBase
 
 
@@ -53,8 +53,8 @@ def test_items():
 
 
 @fixture(scope="session")
-def test_recommendations_ib_cf():
-    recs = [
+def test_relations_ib_cf():
+    relations = [
         {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "101",
          "similarity": 0.06, "base": "item"},
         {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "102",
@@ -66,5 +66,5 @@ def test_recommendations_ib_cf():
         {"type": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING, "item_id_seed": "1", "item_id_recommended": "105",
          "similarity": 0.1, "base": "item"}
     ]
-    res = [CollaborativeFilteringRec(**rec) for rec in recs]
+    res = [CollaborativeFilteringRelation(**rec) for rec in relations]
     return res

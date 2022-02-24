@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 # TODO: id references (seed, recommended) should contain the mongodb _id and not the id (=attribute of item)
 
 
-class BasicRecommendationModel(BaseModel):
-    """BaseModel of a reco entry.
+class BasicRelationModel(BaseModel):
+    """BaseModel of a relation entry that leads to recommendations.
 
     Attributes: #noqa
         type (str): Recommendation algorithm used for entry, e.g. ib_cf, fbt, etc.
@@ -21,8 +21,8 @@ class BasicRecommendationModel(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
-class CollaborativeFilteringRec(BasicRecommendationModel):
-    """Recommendation entry for collaborative filtering algorithm.
+class CollaborativeFilteringRelation(BasicRelationModel):
+    """Relation class for collaborative filtering algorithm.
 
     Attributes: #noqa
         similarity (float): Metric of collaborative filtering.
@@ -32,8 +32,8 @@ class CollaborativeFilteringRec(BasicRecommendationModel):
     base: str = Field(...)  # user/item
 
 
-class FrequentlyBoughtTogetherRec(BasicRecommendationModel):
-    """Recommendation entry based on frequently bought together association rule.
+class FrequentlyBoughtTogetherRelation(BasicRelationModel):
+    """Relation class based on frequently bought together association rule.
 
     Attributes: #noqa
         confidence (float): Metric of frequently bought together.
