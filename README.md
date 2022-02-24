@@ -97,6 +97,8 @@ The repository provides basic recommendation building methods.
 
 # Routes :globe_with_meridians:
 
+The API provides a swagger UI to view all available routes.
+
 ## A/B Test
 
 You can run A/B tests to evaluate different recommendation methods.

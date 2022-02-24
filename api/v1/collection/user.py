@@ -20,11 +20,10 @@ async def get_all_user(auth: str = Depends(check_basic_auth),
 
 
 @api_router.get("", response_model=BasicUserModel)
-async def get_user_by_cookie(auth: str = Depends(check_basic_auth),
-                             db: AsyncIOMotorClient = Depends(get_database),
-                             cookie_value: Optional[str] = None):
+async def get_or_create_user_by_cookie(auth: str = Depends(check_basic_auth),
+                                       db: AsyncIOMotorClient = Depends(get_database),
+                                       cookie_value: Optional[str] = None):
     """Returns most probabilistic user matching keys or creates new user when none is found."""
-    # TODO: current service get_user returns deterministic user by cookie value
     return await service_user.get_or_create_user_by_cookie(db, cookie_value)
 
 

@@ -31,7 +31,7 @@ async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: s
         return await create_user(conn, BasicUserModel(keys={"cookie": [cookie_value]}))
     elif len(users) > 1:
         # TODO: handle multiple users -> maybe probabilistic fetch?
-        logger.warning(f"Found more than one user for cookie_value: {cookie_value}")
+        logger.error(f"Found more than one user for cookie_value: {cookie_value}")
         raise HTTPException(status_code=300, detail="Multiple users found")
     else:
         return BasicUserModel(**users[0])
