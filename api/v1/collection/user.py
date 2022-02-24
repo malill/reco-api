@@ -27,4 +27,4 @@ async def post_user(auth: str = Depends(check_basic_auth),
                     db: AsyncIOMotorClient = Depends(get_database),
                     user: BasicUserModel = Body(...)):
     """Adds a list of user model entries into database."""
-    return await service_user.create_or_update_user(db, user)
+    return await service_user.create_user(db, user)

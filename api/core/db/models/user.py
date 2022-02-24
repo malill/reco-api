@@ -8,12 +8,13 @@ class BasicUserModel(BaseModel):
     """Basic class used to persist user information.
 
     Attributes: #noqa
-        keys (dict): Identifier for user, e.g. cookie values, device information, etc.
+        keys (dict(str, list)): Identifier (1-n assignments) for user, e.g. cookie values, device information, etc.
         first_name (str, optional): User first name
         last_name (str, optional): User last name
         roles (list, optional): User roles, e.g. membership(s), preference(s) etc.
-        groups (dict, optional): Similiar to user roles but groups have different levels, e.g. ab_test: fbt/random
+        groups (dict(str, str), optional): 1-1 assignments of user to groups with values
     """
+    _id: ObjectId = Field()
     keys: dict = Field()
     first_name: Optional[str]
     last_name: Optional[str]
@@ -40,3 +41,7 @@ class BasicUserModel(BaseModel):
                 }
             }
         }
+
+    @property
+    def uid(self):
+        return self._id

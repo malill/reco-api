@@ -76,6 +76,12 @@ async def get_collaborative_filtering_items(conn: AsyncIOMotorClient,
     return limit_returned_items(res, n_recos)
 
 
+async def draw_ab_test_recommendation_method(conn: AsyncIOMotorClient,
+                                             name: str):
+    """Get a recommendation method from AB test."""
+    print("Time to draw!")
+
+
 def quick_fix_adjust_item_id(item_id: int):
     """ quick fix for variants """
     if len(str(item_id)) > 4:

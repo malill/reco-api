@@ -17,6 +17,7 @@ async def test_prepare_db():
         # delete productive data
         await db.client[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM].drop()
         await db.client[cfg.DB_NAME][cfg.COLLECTION_NAME_USER].drop()
+        await db.client[cfg.DB_NAME][cfg.COLLECTION_NAME_RECOMMENDATIONS].drop()
 
 
 def test_read_main(test_client):

@@ -41,18 +41,18 @@ async def a_b_testing(name: str,
         reco_cookie_value = request.cookies[cfg.RECO_COOKIE_ID]
         user = await service_user.get_user(db, reco_cookie_value)  # will always return a user even if new user
         if name in user.groups.keys():
-            # user is assigned to test group
-            print(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
+            # user is assigned to AB test group
+            print(f"A/B test name '{name}' found for user {str(user.uid)} with value {user.groups[name]}")
             fun = reco_dict[user.groups[name]]
-            recs = await fun(db, item_id_seed=item_id_seed, base="item")  # TODO: bad implementation
+            # TODO: bad implementation (can also be moved after if/else clause)
+            recs = await fun(db, item_id_seed=item_id_seed, base="item")
             return recs
         else:
-            # user is not assigned to test group -> assign user + fetch from resp. recommendation method
-            print(f"A/B test name '{name}' NOT found for user {str(user._id)}")
-        # TODO: check if user already has role
-        # TODO: if no set group (!) for her
-        # TODO: call specific reco function (!) to return items
+            # user is not assigned to AB test group (new user or already existing but first calling user)
+            print(f"A/B test name '{name}' NOT found for user {str(user.uid)}")
+            await service_user.update_user_group(db, user, name, "dummy_group")
     except KeyError:
         print("could not find cookie id in request")
+        print("OR could not find recommendation method!")
 
     return reco_cookie_value
