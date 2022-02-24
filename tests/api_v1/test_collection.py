@@ -1,6 +1,13 @@
 from requests.auth import HTTPBasicAuth
 
 
+# EVIDENCE
+
+def test_insert_evidence(test_client, test_evidence):
+    response = test_client.put("/api/v1/col/evidence", json=test_evidence)
+    assert response.status_code == 201
+
+
 # ITEMS
 
 def test_insert_items(test_client, test_items):

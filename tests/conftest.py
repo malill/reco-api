@@ -1,10 +1,11 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+import json
+
 from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
+from api.core.db.models.evidence import BasicEvidenceModel
 from api.core.db.models.relation import CollaborativeFilteringRelation
-from api.core.db.mongodb import DataBase
 
 
 @fixture(scope="session")
@@ -68,3 +69,10 @@ def test_relations_ib_cf():
     ]
     res = [CollaborativeFilteringRelation(**rec) for rec in relations]
     return res
+
+
+@fixture(scope="session")
+def test_evidence():
+    with open('tests/mock/evidence.json') as json_file:
+        data = json.load(json_file)
+    return data

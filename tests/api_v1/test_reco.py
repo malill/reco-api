@@ -1,11 +1,10 @@
-from api.core.services.builder.CollaborativeFilteringBuilder import CollaborativeFilteringBuilder
+from requests.auth import HTTPBasicAuth
 import api.core.util.config as cfg
 
 
-def test_insert_relations(test_client, test_relations_ib_cf):
-    cfb = CollaborativeFilteringBuilder(df=None)
-    cfb.relations = test_relations_ib_cf
-    cfb.store_relations()
+def test_ib_cf_builder(test_client, test_evidence):
+    res = test_client.put("/api/v1/bld", auth=HTTPBasicAuth('admin', 'nimda'))
+    assert res.status_code == 201
 
 
 def test_splitting_assigned_user(test_client):
