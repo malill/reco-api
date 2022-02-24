@@ -25,7 +25,7 @@ and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
 The basic recommendation system infrastructure is based on Kim Falk's *Practical Recommender Systems* (2019). The
 repository provides services highlighted in red, i.e. **evidence collection**, **recommendation building** and
-**recommendation serving**.
+**recommendation serving**. Currently, the repository uses MongoDB :leaves: for persistence.
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 <figcaption align = "center"><b>Fig.1 - Recommender System Landscape - based on Falk (2019)</b></figcaption>
