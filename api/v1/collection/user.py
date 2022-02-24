@@ -33,3 +33,10 @@ async def post_user(auth: str = Depends(check_basic_auth),
                     user: BasicUserModel = Body(...)):
     """Adds a new user model entry into database (no identity check)."""
     return await service_user.create_user(db, user)
+
+
+@api_router.delete("")
+async def delete_user_by_cookie(cookie: str,
+                                auth: str = Depends(check_basic_auth),
+                                db: AsyncIOMotorClient = Depends(get_database)):
+    return await service_user.delete_users_by_cookie(db, cookie)

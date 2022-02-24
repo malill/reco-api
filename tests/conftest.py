@@ -15,14 +15,26 @@ def test_client():
 
 
 @fixture(scope="session")
-def test_user():
+def test_user1():
     return {
         "first_name": "Pete",
         "last_name": "Sampras",
         "keys": {"cookie": ["petes_cookie"], "canvas": ["01234", "56789"]},
-        "roles": ['b2c_customer', 'u18'],
+        "roles": ['shooter', 'english'],
         "groups": {
             "ab_test1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
+        }
+    }
+
+@fixture(scope="session")
+def test_user2():
+    return {
+        "first_name": "Raphael",
+        "last_name": "Nadal",
+        "keys": {"cookie": ["raphaels_cookie"], "canvas": ["abcde", "fghij"]},
+        "roles": ['left_handed'],
+        "groups": {
+            "ab_test2": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
         }
     }
 

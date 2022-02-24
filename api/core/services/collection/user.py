@@ -55,5 +55,11 @@ async def update_user_group(conn: AsyncIOMotorClient, user: BasicUserModel, grou
     return user
 
 
+async def delete_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str):
+    """Deletes user(s) by cookie value and returns number of deleted objects."""
+    res = await get_user_collection(conn).delete_many(filter={'keys.cookie': cookie_value})
+    return res.deleted_count
+
+
 def get_user_collection(conn: AsyncIOMotorClient):
     return conn[cfg.DB_NAME][cfg.COLLECTION_NAME_USER]

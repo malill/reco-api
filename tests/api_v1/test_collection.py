@@ -1,8 +1,8 @@
 from requests.auth import HTTPBasicAuth
 
 
-def test_insert_user(test_client, test_user):
-    response = test_client.post("/api/v1/col/user", json=test_user, auth=HTTPBasicAuth('admin', 'nimda'))
+def test_insert_user(test_client, test_user1):
+    response = test_client.post("/api/v1/col/user", json=test_user1, auth=HTTPBasicAuth('admin', 'nimda'))
     assert response.json()["first_name"] == "Pete"
 
 
