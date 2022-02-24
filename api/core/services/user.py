@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
-from fastapi import status, HTTPException
+from fastapi import HTTPException
 
 from api.core.db.models.user import BasicUserModel
 import api.core.util.config as cfg

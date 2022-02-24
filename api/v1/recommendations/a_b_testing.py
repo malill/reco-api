@@ -1,10 +1,11 @@
 import logging
-from typing import Optional, List
+from typing import List
 
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import Request
 
+import api.core.services.a_b_testing as service_ab_testing
 import api.core.services.recommendations as service_reco
 
 from api.core.db.mongodb import get_database
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 @api_router.post("/ab/config")
 async def a_b_testing_config(name: str, methods: list, db: AsyncIOMotorClient = Depends(get_database)):
     """Route to create a A/B testing setup."""
-    ab_test = await service_reco.set_ab_testing_config(db, name, methods)
+    ab_test = await service_ab_testing.set_ab_testing_config(db, name, methods)
     return ab_test
 
 
@@ -43,7 +44,7 @@ async def a_b_testing(name: str,
     """
     try:
         reco_cookie_id = request.cookies[cfg.RECO_COOKIE_ID]
-        items = await service_reco.get_ab_testing_items(db, name, reco_cookie_id, item_id_seed, n_recos)
+        items = await service_ab_testing.get_ab_testing_items(db, name, reco_cookie_id, item_id_seed, n_recos)
         return items
     except KeyError:
         logger.error("Could not find cookie id in request")
