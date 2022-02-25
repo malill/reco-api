@@ -1,4 +1,4 @@
-# "A recommendation is an item"
+# "A recommendation is an item!"
 
 import logging
 import random

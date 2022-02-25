@@ -5,7 +5,7 @@ from requests.auth import HTTPBasicAuth
 
 def test_insert_evidence(test_client, test_evidence):
     response = test_client.put("/api/v1/col/evidence", json=test_evidence)
-    assert response.status_code == 201
+    assert response.json() == len(test_evidence)
 
 
 # ITEMS

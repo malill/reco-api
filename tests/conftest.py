@@ -23,7 +23,7 @@ def test_user1():
         "keys": {"cookie": ["petes_cookie"], "canvas": ["01234", "56789"]},
         "roles": ['shooter', 'english'],
         "groups": {
-            "ab_test1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
+            "split1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
         }
     }
 
@@ -76,3 +76,8 @@ def test_evidence():
     with open('tests/mock/evidence.json') as json_file:
         data = json.load(json_file)
     return data
+
+
+@fixture(scope="session")
+def test_splitting():
+    return [cfg.TYPE_RANDOM_RECOMMENDATIONS, cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING]

@@ -124,6 +124,10 @@ Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of
 Recommendation routes include **splitting** and **item** services. Different to collection route **item services** from
 recommendation route represent **personalized** and **unpersonalized recommendations**.
 
+### Personalized Recommendations Item `/per`
+
+### Unpersonalized Recommendations Item `/unpers`
+
 ### Splitting `/split` :left_right_arrow:
 
 *Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
@@ -132,8 +136,6 @@ different recommendation methods. Recommendations retrieved from a splitting set
 To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
 methods `methods`.
-
-### Item `/item`
 
 # Security :lock:
 
