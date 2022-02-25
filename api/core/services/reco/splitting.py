@@ -9,7 +9,7 @@ import api.core.services.collection.user as service_user
 import api.core.util.config as cfg
 from api.core.db.models.splitting import BasicSplittingModel
 
-from api.core.services.reco.recommendation import reco_dict
+from api.core.services.reco.recommendation import reco_str2fun
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ async def get_split_recommendations(db: AsyncIOMotorClient, split_name: str, rec
             user = await service_user.update_user_group(db, user,
                                                         group_name=split_name,
                                                         group_value=await draw_splitting_method(db, split_name))
-        fun = reco_dict[user.groups[split_name]]
+        fun = reco_str2fun[user.groups[split_name]]
         recommendations = await fun(db, item_id_seed=item_id_seed, base="item")
         return recommendations
     except KeyError:
@@ -67,7 +67,7 @@ async def draw_splitting_method(conn: AsyncIOMotorClient,
         return cfg.TYPE_RANDOM_RECOMMENDATIONS
     split_model = BasicSplittingModel(**splitting)
     method_str = np.random.choice(split_model.methods)
-    if method_str in reco_dict.keys():
+    if method_str in reco_str2fun.keys():
         return method_str
     else:
         logger.error(
