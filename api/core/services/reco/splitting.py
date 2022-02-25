@@ -7,7 +7,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 import api.core.services.collection.user as service_user
 import api.core.util.config as cfg
-from api.core.db.models.splitting import SplittingModel
+from api.core.db.models.splitting import BasicSplittingModel
 
 from api.core.services.reco.recommendation import reco_dict
 
@@ -24,7 +24,7 @@ async def get_all_splittings(conn: AsyncIOMotorClient):
 
 
 async def set_splitting(conn: AsyncIOMotorClient, name: str, methods: List):
-    splitting = SplittingModel(name=name, methods=methods)
+    splitting = BasicSplittingModel(name=name, methods=methods)
     entry_req = jsonable_encoder(splitting, exclude_none=True)
     await get_splitting_collection(conn).find_one_and_update({'name': splitting.name}, {"$set": entry_req},
                                                              upsert=True)
@@ -61,7 +61,7 @@ async def draw_splitting_method(conn: AsyncIOMotorClient,
                                 split_name: str) -> str:
     """Draw a reco method from splitting."""
     splitting = await get_splitting(conn, split_name)
-    split_model = SplittingModel(**splitting)
+    split_model = BasicSplittingModel(**splitting)
     method_str = np.random.choice(split_model.methods)
     if method_str in reco_dict.keys():
         return method_str

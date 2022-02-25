@@ -8,7 +8,7 @@ from fastapi import Request
 import api.core.services.reco.splitting as service_split
 import api.core.services.reco.recommendation as service_reco
 from api.core.db.models.item import BasicItemModel
-from api.core.db.models.splitting import SplittingModel
+from api.core.db.models.splitting import BasicSplittingModel
 
 from api.core.db.mongodb import get_database
 from api.core.services.authentification.basic_auth import check_basic_auth
@@ -19,7 +19,7 @@ api_router = APIRouter(prefix=cfg.ENDPOINT_RECOMMENDATION + cfg.ENDPOINT_SPLITTI
 logger = logging.getLogger(__name__)
 
 
-@api_router.get("/config", response_model=SplittingModel)
+@api_router.get("/config", response_model=BasicSplittingModel)
 async def get_splitting(name: str,
                         db: AsyncIOMotorClient = Depends(get_database),
                         auth: str = Depends(check_basic_auth)):
@@ -27,13 +27,13 @@ async def get_splitting(name: str,
     return splitting
 
 
-@api_router.get("/config/all", response_model=List[SplittingModel])
+@api_router.get("/config/all", response_model=List[BasicSplittingModel])
 async def get_all_splittings(db: AsyncIOMotorClient = Depends(get_database),
                              auth: str = Depends(check_basic_auth)):
     return await service_split.get_all_splittings(db)
 
 
-@api_router.post("/config", response_model=SplittingModel)
+@api_router.post("/config", response_model=BasicSplittingModel)
 async def set_splitting(name: str,
                         methods: list,
                         db: AsyncIOMotorClient = Depends(get_database),

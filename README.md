@@ -21,6 +21,8 @@ Note that the project structure is based on
 [ycd/manage-fastapi][ycd], [tiangolo/full-stack-fastapi-postgresql][tiangolo]
 and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
+> Preview: use **reco-js** frontend framework to consume **reco-api**!
+
 # System Landscape :mag_right:
 
 The basic recommendation system infrastructure is based on Kim Falk's *Practical Recommender Systems* (2019). The
@@ -86,6 +88,16 @@ docker-compose up -d
 ```
 
 # Models :cd:
+
+**BasicEvidenceModel**
+
+**BasicItemModel**
+
+**BasicRelationModel**
+
+**BasicSplittingModel**
+
+**BasicUserModel**
 
 # Recommendation Building Methods :construction_worker:
 
