@@ -1,4 +1,5 @@
 from typing import Optional
+from datetime import datetime
 
 from bson import ObjectId
 from pydantic import BaseModel, Field, Extra
@@ -38,6 +39,7 @@ class BasicUserModel(BaseModel):
     last_name: Optional[str]
     roles: Optional[list]
     groups: Optional[dict]
+    update_time: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
         allow_population_by_field_name = True

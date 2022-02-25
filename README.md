@@ -176,6 +176,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Return number inserted evidence objects for PUT route
 - Add `keys` attribute to `BasicEvidenceModel` to identify user
 - Create `BasicUserKeysModel` to handle user keys
+- Add `updateTime` to `BasicUserModel`
 
 ## Version 0.2
 
