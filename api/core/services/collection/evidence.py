@@ -6,9 +6,7 @@ from fastapi import Request
 from typing import List
 
 from fastapi.encoders import jsonable_encoder
-from fastapi import status
 from pydantic import ValidationError
-from starlette.responses import JSONResponse
 
 import api.core.util.config as cfg
 from motor.motor_asyncio import AsyncIOMotorClient

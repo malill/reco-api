@@ -159,6 +159,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Fixed missing API response models
 - Add flexible search query scripts to project
 - Return number inserted evidence objects for PUT route
+- Add `keys` attribute to `BasicEvidenceModel` to identify user
 
 ## Version 0.2
 

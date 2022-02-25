@@ -52,7 +52,7 @@ async def delete_splitting(name: str,
 
 @api_router.get("/", response_model=List[BasicItemModel])
 async def get_split_recos(name: str,
-                          request: Request,
+                          req: Request,
                           item_id_seed: int,
                           db: AsyncIOMotorClient = Depends(get_database),
                           n_recos: int = 5):
@@ -60,7 +60,7 @@ async def get_split_recos(name: str,
 
     Args:
         name (str): Name of A/B Test (used to fetch respective reco algorithms).
-        request (Request): Object to retrieve identifying values from call.
+        req (Request): Object to retrieve identifying values from call.
         item_id_seed (str): ID of item for which reco are needed.
         db (Session): Session object used for retrieving items from db.
         n_recos (int): Number of items that should be returned.
@@ -69,7 +69,7 @@ async def get_split_recos(name: str,
         List[Item]: List of recommendations.
     """
     try:
-        reco_cookie_id = request.cookies[cfg.RECO_COOKIE_ID]
+        reco_cookie_id = req.cookies[cfg.RECO_COOKIE_ID]
         items = await service_split.get_split_recommendations(db, name, reco_cookie_id, item_id_seed, n_recos)
         return items
     except KeyError:
