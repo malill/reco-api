@@ -12,7 +12,7 @@ from api.core.db.models.item import BasicItemModel
 logger = logging.getLogger(__name__)
 
 
-async def get_random_items(conn: AsyncIOMotorClient, n_recos=5) -> List[BasicItemModel]:
+async def get_random_items(conn: AsyncIOMotorClient, n_recos=5, **kwargs) -> List[BasicItemModel]:
     """Retrieve random items from 'item' collection.
     Args:
         conn (AsyncIOMotorClient): Session object used for retrieving items from db.

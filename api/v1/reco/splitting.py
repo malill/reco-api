@@ -7,6 +7,7 @@ from fastapi import Request
 
 import api.core.services.reco.splitting as service_split
 import api.core.services.reco.recommendation as service_reco
+import api.core.services.misc.misc as service_misc
 from api.core.db.models.item import BasicItemModel
 from api.core.db.models.splitting import BasicSplittingModel
 
@@ -69,8 +70,8 @@ async def get_split_recos(name: str,
         List[Item]: List of recommendations.
     """
     try:
-        reco_cookie_id = req.cookies[cfg.RECO_COOKIE_ID]
-        items = await service_split.get_split_recommendations(db, name, reco_cookie_id, item_id_seed, n_recos)
+        user_keys = service_misc.get_user_keys_from_request_header(req)
+        items = await service_split.get_split_recommendations(db, name, user_keys.cookie[0], item_id_seed, n_recos)
         return items
     except KeyError:
         logger.error("Could not find cookie id in request")

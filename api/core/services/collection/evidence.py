@@ -9,6 +9,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 
 import api.core.util.config as cfg
+import api.core.services.misc.misc as service_misc
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.models.evidence import BasicEvidenceModel
@@ -72,12 +73,7 @@ async def process_evidence(req: Request, object_list: List) -> List[BasicEvidenc
             user_keys = BasicUserKeys(user_id=str(o.get("user_id")))
             evidence_list.append(BasicEvidenceModel(**o, keys=user_keys))
         else:
-            user_keys = get_user_keys_from_request_header(req)
+            user_keys = service_misc.get_user_keys_from_request_header(req)
             evidence_list.append(BasicEvidenceModel(**o, keys=user_keys))
 
     return evidence_list
-
-
-def get_user_keys_from_request_header(req: Request) -> BasicUserKeys:
-    return BasicUserKeys(cookie=[req.headers.get(cfg.RECO_COOKIE_ID)],
-                         canvas=[req.headers.get(cfg.RECO_CANVAS_ID)], boing="ha")

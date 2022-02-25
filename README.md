@@ -98,6 +98,7 @@ docker-compose up -d
 **BasicSplittingModel**
 
 **BasicUserKeys**
+(not persisted)
 
 **BasicUserModel**
 
@@ -174,7 +175,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Add flexible search query scripts to project
 - Return number inserted evidence objects for PUT route
 - Add `keys` attribute to `BasicEvidenceModel` to identify user
-- Create `BasicUserKeysModel` to store user keys
+- Create `BasicUserKeysModel` to handle user keys
 
 ## Version 0.2
 

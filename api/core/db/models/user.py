@@ -5,7 +5,8 @@ from pydantic import BaseModel, Field, Extra
 
 
 class BasicUserKeys(BaseModel):
-    """Identifier(1 - n assignments) for user, e.g.cookie values, device information, etc."""
+    """Identifier(1 - n assignments) for user, e.g.cookie values, device information, etc. Class is only used to
+    handle user keys, not persisted in MongoDB."""
     cookie: Optional[list]
     canvas: Optional[list]
 
