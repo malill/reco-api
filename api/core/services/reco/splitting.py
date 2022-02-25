@@ -36,19 +36,19 @@ async def delete_splitting(conn: AsyncIOMotorClient, name: str) -> int:
     return res.deleted_count
 
 
-async def get_split_recommendations(db: AsyncIOMotorClient, name: str, reco_cookie_id: str, item_id_seed: int,
+async def get_split_recommendations(db: AsyncIOMotorClient, split_name: str, reco_cookie_id: str, item_id_seed: int,
                                     n_recos: int):
     try:
         user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
-        if (user.groups is not None) and (name in user.groups.keys()):
-            logger.info(f"A/B test name '{name}' found for user {str(user._id)} with value {user.groups[name]}")
+        if (user.groups is not None) and (split_name in user.groups.keys()):
+            logger.info(f"A/B test name '{split_name}' found for user {str(user._id)} with value {user.groups[split_name]}")
         else:
-            logger.info(f"A/B test name '{name}' NOT found for user {str(user._id)}")
+            logger.info(f"A/B test name '{split_name}' NOT found for user {str(user._id)}")
             # TODO: bad since we make 2 MongoDB calls when user is new (create w/o group and then update group)
             user = await service_user.update_user_group(db, user,
-                                                        group_name=name,
-                                                        group_value=await draw_splitting_method(db, name))
-        fun = reco_dict[user.groups[name]]
+                                                        group_name=split_name,
+                                                        group_value=await draw_splitting_method(db, split_name))
+        fun = reco_dict[user.groups[split_name]]
         recommendations = await fun(db, item_id_seed=item_id_seed, base="item")
         return recommendations
     except KeyError:
@@ -56,9 +56,9 @@ async def get_split_recommendations(db: AsyncIOMotorClient, name: str, reco_cook
 
 
 async def draw_splitting_method(conn: AsyncIOMotorClient,
-                                name: str):
+                                split_name: str):
     """Get a reco method from splitting"""
-    splitting = await get_splitting(conn, name)
+    splitting = await get_splitting(conn, split_name)
     print(splitting)
     return cfg.TYPE_RANDOM_RECOMMENDATIONS
 
