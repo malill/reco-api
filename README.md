@@ -134,6 +134,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Added delete users by cookie value route
 - Rename recommendations to relations where applicable
 - Fixed missing API response models
+- Add flexible search query scripts to project
 
 ## Version 0.2
 
