@@ -40,6 +40,7 @@ COLUMNS_RELATION_ICF = [COLUMN_ITEM_ID_SEED, COLUMN_ITEM_ID_RECOMMENDED, COLUMN_
 
 # reco-js
 RECO_COOKIE_ID = "reco-cookie-id"
+RECO_CANVAS_ID = "reco-canvas-id"
 
 # Recommendation types
 TYPE_COLLABORATIVE_FILTERING = "cf"

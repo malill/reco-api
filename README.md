@@ -97,6 +97,8 @@ docker-compose up -d
 
 **BasicSplittingModel**
 
+**BasicUserKeys**
+
 **BasicUserModel**
 
 # Recommendation Building Methods :construction_worker:
@@ -172,6 +174,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Add flexible search query scripts to project
 - Return number inserted evidence objects for PUT route
 - Add `keys` attribute to `BasicEvidenceModel` to identify user
+- Create `BasicUserKeysModel` to store user keys
 
 ## Version 0.2
 

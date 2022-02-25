@@ -12,6 +12,7 @@ import api.core.util.config as cfg
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.models.evidence import BasicEvidenceModel
+from api.core.db.models.user import BasicUserKeys
 from api.core.db.mongodb_utils import MongoDBHelper
 
 logger = logging.getLogger(__name__)
@@ -59,6 +60,24 @@ def add_evidence_model_to_list(evidence_list: List, o: dict):
         logger.warning(f"Invalid object provided in collection list:{o}", e)
 
 
-async def process_evidence(object_list: List[BasicEvidenceModel]) -> List[BasicEvidenceModel]:
-    """Modify objects to prepare list of BasicEvidenceModels."""
-    return object_list
+async def process_evidence(req: Request, object_list: List) -> List[BasicEvidenceModel]:
+    """Modify objects to prepare list of BasicEvidenceModels. For each RequestBody entry a check if 'keys' are provided
+    is performed and if so these keys are used for EvidenceModel. If not the request header is checked for keys and if
+    available these keys are used."""
+    evidence_list = []
+    for o in object_list:
+        if "keys" in o.keys():
+            evidence_list.append(BasicEvidenceModel(**o))
+        elif "user_id" in o.keys():
+            user_keys = BasicUserKeys(user_id=str(o.get("user_id")))
+            evidence_list.append(BasicEvidenceModel(**o, keys=user_keys))
+        else:
+            user_keys = get_user_keys_from_request_header(req)
+            evidence_list.append(BasicEvidenceModel(**o, keys=user_keys))
+
+    return evidence_list
+
+
+def get_user_keys_from_request_header(req: Request) -> BasicUserKeys:
+    return BasicUserKeys(cookie=[req.headers.get(cfg.RECO_COOKIE_ID)],
+                         canvas=[req.headers.get(cfg.RECO_CANVAS_ID)], boing="ha")
