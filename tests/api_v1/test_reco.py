@@ -21,7 +21,7 @@ def test_insert_splitting(test_client, test_splitting1, test_splitting2):
 
 
 def test_get_splitting(test_client, test_splitting1):
-    res = test_client.get("/api/v1/rec/split/config?name=split1'", auth=HTTPBasicAuth('admin', 'nimda'))
+    res = test_client.get("/api/v1/rec/split/config?name=split1", auth=HTTPBasicAuth('admin', 'nimda'))
     assert res.json()["methods"] == test_splitting1
 
 
@@ -34,7 +34,7 @@ def test_splitting_assigned_user(test_client):
 
 
 def test_splitting_unassigned_user(test_client):
-    res = test_client.get("/api/v1/rec/split?name=split2&item_id_seed=1",
+    res = test_client.get("/api/v1/rec/split?name=split2&item_id_seed=419",
                           cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
     assert len(res.json()) == 5
 

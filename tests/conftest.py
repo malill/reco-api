@@ -43,14 +43,9 @@ def test_user2():
 
 @fixture(scope="session")
 def test_items():
-    return [
-        {"id": "1", "type": "product", "name": "Fancy Test Item 1"},
-        {"id": "2", "type": "product", "name": "Fancy Test Item 2"},
-        {"id": "3", "type": "product", "name": "Fancy Test Item 3"},
-        {"id": "4", "type": "product", "name": "Fancy Test Item 4"},
-        {"id": "5", "type": "product", "name": "Fancy Test Item 5"},
-        {"id": "6", "type": "product", "name": "Fancy Test Item 6"},
-    ]
+    with open('tests/mock/items.json') as json_file:
+        data = json.load(json_file)
+    return data
 
 
 @fixture(scope="session")
