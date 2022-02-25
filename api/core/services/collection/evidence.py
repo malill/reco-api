@@ -63,8 +63,10 @@ def add_evidence_model_to_list(evidence_list: List, o: dict):
 
 async def process_evidence(req: Request, object_list: List) -> List[BasicEvidenceModel]:
     """Modify objects to prepare list of BasicEvidenceModels. For each RequestBody entry a check if 'keys' are provided
-    is performed and if so these keys are used for EvidenceModel. If not the request header is checked for keys and if
-    available these keys are used."""
+    is performed and if so these keys are used for EvidenceModel. If user_id is provided in entry this is used for
+    user keys. If both checks wrong the request header is checked for keys and if available these keys are used.
+
+    -> Method does NOT create a new user if unknown! (<> get_split_recommendations(..))"""
     evidence_list = []
     for o in object_list:
         if "keys" in o.keys():

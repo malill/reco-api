@@ -39,6 +39,7 @@ async def delete_splitting(conn: AsyncIOMotorClient, name: str) -> int:
 
 async def get_split_recommendations(db: AsyncIOMotorClient, split_name: str, reco_cookie_id: str, item_id_seed: int,
                                     n_recos: int):
+    """-> Method DOES create a new user if unknown! (<> process_evidence(..))"""
     try:
         user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
         if (user.groups is not None) and (split_name in user.groups.keys()):
