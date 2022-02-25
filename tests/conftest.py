@@ -79,5 +79,10 @@ def test_evidence():
 
 
 @fixture(scope="session")
-def test_splitting():
+def test_splitting1():
+    return [cfg.TYPE_RANDOM_RECOMMENDATIONS, cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING]
+
+
+@fixture(scope="session")
+def test_splitting2():
     return [cfg.TYPE_RANDOM_RECOMMENDATIONS, cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING]

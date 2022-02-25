@@ -11,15 +11,18 @@ def test_ib_cf_builder(test_client, test_evidence):
 
 # SPLITTING CONFIG
 
-def test_insert_splitting(test_client, test_splitting):
-    res = test_client.post("/api/v1/rec/split/config?name=split1'", json=test_splitting,
+def test_insert_splitting(test_client, test_splitting1, test_splitting2):
+    res = test_client.post("/api/v1/rec/split/config?name=split1", json=test_splitting1,
+                           auth=HTTPBasicAuth('admin', 'nimda'))
+    assert res.status_code == 200
+    res = test_client.post("/api/v1/rec/split/config?name=split2", json=test_splitting2,
                            auth=HTTPBasicAuth('admin', 'nimda'))
     assert res.status_code == 200
 
 
-def test_get_splitting(test_client, test_splitting):
+def test_get_splitting(test_client, test_splitting1):
     res = test_client.get("/api/v1/rec/split/config?name=split1'", auth=HTTPBasicAuth('admin', 'nimda'))
-    assert res.json()["methods"] == test_splitting
+    assert res.json()["methods"] == test_splitting1
 
 
 # SPLIT RECOS
