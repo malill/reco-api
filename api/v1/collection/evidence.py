@@ -20,9 +20,9 @@ async def get_all_evidence(auth: str = Depends(check_basic_auth),
     return await service_evidence.get_all_evidence(db)
 
 
-@api_router.put("", response_model=str)
+@api_router.put("", response_model=int)
 async def put_evidence(evidence: List[BasicEvidenceModel],
                        db: AsyncIOMotorClient = Depends(get_database)):
-    """Adds a list of evidence models into MongoDB."""
+    """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
     evidence = await service_evidence.process_evidence(evidence)
     return await service_evidence.create_evidence(db, evidence)

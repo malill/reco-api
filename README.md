@@ -85,6 +85,8 @@ download needed) is provided in the repository (replace credentials where applic
 docker-compose up -d
 ```
 
+# Models :cd:
+
 # Recommendation Building Methods :construction_worker:
 
 The repository provides basic recommendation building methods.
@@ -105,7 +107,24 @@ The repository provides basic recommendation building methods.
 
 The API provides a swagger UI to view all available routes.
 
-## Splitting :left_right_arrow:
+## Collection `api/v1/col`
+
+Collection routes include **item**, **user** and **evidence** services.
+
+### Evidence `/evidence`
+
+Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of `BasicEvidenceModels`.
+
+### Item `/item`
+
+### User `/user`
+
+## Recommendation `api/v1/rec`
+
+Recommendation routes include **splitting** and **item** services. Different to collection route **item services** from
+recommendation route represent **personalized** and **unpersonalized recommendations**.
+
+### Splitting `/split` :left_right_arrow:
 
 *Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
 different recommendation methods. Recommendations retrieved from a splitting setup are called **split recommendations**.
@@ -113,6 +132,8 @@ different recommendation methods. Recommendations retrieved from a splitting set
 To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
 methods `methods`.
+
+### Item `/item`
 
 # Security :lock:
 
@@ -135,6 +156,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Rename recommendations to relations where applicable
 - Fixed missing API response models
 - Add flexible search query scripts to project
+- Return number inserted evidence objects for PUT route
 
 ## Version 0.2
 
