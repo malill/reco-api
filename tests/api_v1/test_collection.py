@@ -16,6 +16,10 @@ class TestCollectionAPI:
         response = test_client.get("/api/v1/col/item", auth=HTTPBasicAuth('admin', 'nimda'))
         assert len(response.json()) == len(test_items)
 
+    def test_delete_item(self, test_client):
+        response = test_client.delete("/api/v1/col/item?item_id=419", auth=HTTPBasicAuth('admin', 'nimda'))
+        assert response.json() == 1
+
     # USER
     def test_post_user(self, test_client, test_user1):
         response = test_client.post("/api/v1/col/user", json=test_user1, auth=HTTPBasicAuth('admin', 'nimda'))
