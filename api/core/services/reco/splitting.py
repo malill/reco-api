@@ -44,7 +44,8 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
                                                    item_id_seed: int,
                                                    n_recos: int):
     """Retrieve recommendations for users with a reco-cookie-id from a split method."""
-    if (reco_cookie_id is None):
+    user = None
+    if reco_cookie_id is None:
         logger.error(f"No {cfg.RECO_COOKIE_ID} found in request header -> returning random recommendations.")
         items = await service_reco.get_random_items(db, n_recos)
         return items
@@ -52,7 +53,7 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
         user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
         if (user.groups is not None) and (split_name in user.groups.keys()):
             logger.info(
-                f"Splitting name [{split_name}] found for user [{str(user._id)}] with value [{user.groups[split_name]}]")
+                f"Splitting name [{split_name}] found in user [{str(user._id)}] with value [{user.groups[split_name]}]")
         else:
             logger.info(f"Splitting name [{split_name}] NOT found for user [{str(user._id)}]")
             # TODO: bad since we make 2 MongoDB calls when user is new (create w/o group and then update group)

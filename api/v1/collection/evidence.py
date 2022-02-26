@@ -36,7 +36,7 @@ async def put_evidence(object_list: List,
         try:
             user_keys = service_misc.get_user_keys_from_request_header(req)
             await service_user.get_or_create_user_by_cookie(db, cookie_value=user_keys.cookie[0])
-        except:
+        except Exception:
             logger.error("Could not get or create user ...")
 
     object_list = await service_evidence.process_evidence(req, object_list)
