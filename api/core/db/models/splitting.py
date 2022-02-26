@@ -4,7 +4,7 @@ from typing import List
 from pydantic import BaseModel, Field
 
 
-class SplittingModel(BaseModel):
+class BasicSplittingModel(BaseModel):
     """Model for A/B (Bayesian, etc.) testing configuration.
 
     Attributes: #noqa

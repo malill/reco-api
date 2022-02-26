@@ -1,10 +1,11 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+import json
+
 from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
+from api.core.db.models.evidence import BasicEvidenceModel
 from api.core.db.models.relation import CollaborativeFilteringRelation
-from api.core.db.mongodb import DataBase
 
 
 @fixture(scope="session")
@@ -22,7 +23,7 @@ def test_user1():
         "keys": {"cookie": ["petes_cookie"], "canvas": ["01234", "56789"]},
         "roles": ['shooter', 'english'],
         "groups": {
-            "ab_test1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
+            "split1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
         }
     }
 
@@ -42,14 +43,9 @@ def test_user2():
 
 @fixture(scope="session")
 def test_items():
-    return [
-        {"id": "1", "type": "product", "name": "Fancy Test Item 1"},
-        {"id": "2", "type": "product", "name": "Fancy Test Item 2"},
-        {"id": "3", "type": "product", "name": "Fancy Test Item 3"},
-        {"id": "4", "type": "product", "name": "Fancy Test Item 4"},
-        {"id": "5", "type": "product", "name": "Fancy Test Item 5"},
-        {"id": "6", "type": "product", "name": "Fancy Test Item 6"},
-    ]
+    with open('tests/mock/items.json') as json_file:
+        data = json.load(json_file)
+    return data
 
 
 @fixture(scope="session")
@@ -68,3 +64,20 @@ def test_relations_ib_cf():
     ]
     res = [CollaborativeFilteringRelation(**rec) for rec in relations]
     return res
+
+
+@fixture(scope="session")
+def test_evidence():
+    with open('tests/mock/evidence.json') as json_file:
+        data = json.load(json_file)
+    return data
+
+
+@fixture(scope="session")
+def test_splitting1():
+    return [cfg.TYPE_RANDOM_RECOMMENDATIONS, cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING]
+
+
+@fixture(scope="session")
+def test_splitting2():
+    return [cfg.TYPE_RANDOM_RECOMMENDATIONS, cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING]

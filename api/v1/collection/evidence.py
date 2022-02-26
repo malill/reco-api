@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
-
+from fastapi import APIRouter, Depends, Request
 import api.core.services.collection.evidence as service_evidence
 from api.core.db.models.evidence import BasicEvidenceModel
 from api.core.services.authentification.basic_auth import check_basic_auth
@@ -20,9 +19,10 @@ async def get_all_evidence(auth: str = Depends(check_basic_auth),
     return await service_evidence.get_all_evidence(db)
 
 
-@api_router.put("", response_model=str)
-async def put_evidence(evidence: List[BasicEvidenceModel],
+@api_router.put("", response_model=int)
+async def put_evidence(object_list: List,
+                       req: Request,
                        db: AsyncIOMotorClient = Depends(get_database)):
-    """Adds a list of evidence models into MongoDB."""
-    evidence = await service_evidence.process_evidence(evidence)
-    return await service_evidence.create_evidence(db, evidence)
+    """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
+    object_list = await service_evidence.process_evidence(req, object_list)
+    return await service_evidence.create_evidence(db, object_list)

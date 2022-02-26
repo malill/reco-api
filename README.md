@@ -21,11 +21,13 @@ Note that the project structure is based on
 [ycd/manage-fastapi][ycd], [tiangolo/full-stack-fastapi-postgresql][tiangolo]
 and [markqiu/fastapi-mongodb-realworld-example-app][markqiu].
 
+> Preview: use **reco-js** frontend framework to consume **reco-api**!
+
 # System Landscape :mag_right:
 
 The basic recommendation system infrastructure is based on Kim Falk's *Practical Recommender Systems* (2019). The
 repository provides services highlighted in red, i.e. **evidence collection**, **recommendation building** and
-**recommendation serving**.
+**recommendation serving**. Currently, the repository uses MongoDB :leaves: for persistence.
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
 <figcaption align = "center"><b>Fig.1 - Recommender System Landscape - based on Falk (2019)</b></figcaption>
@@ -35,9 +37,11 @@ repository provides services highlighted in red, i.e. **evidence collection**, *
 For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
 
 ```text
+# Basic Authentification Credentials
 AUTH_USER=****
 AUTH_PASS=****
 
+# Database Connection Settings
 DB_URL=****
 DB_NAME=****
 ```
@@ -85,6 +89,21 @@ download needed) is provided in the repository (replace credentials where applic
 docker-compose up -d
 ```
 
+# Models :cd:
+
+**BasicEvidenceModel**
+
+**BasicItemModel**
+
+**BasicRelationModel**
+
+**BasicSplittingModel**
+
+**BasicUserKeys**
+(not persisted)
+
+**BasicUserModel**
+
 # Recommendation Building Methods :construction_worker:
 
 The repository provides basic recommendation building methods.
@@ -105,10 +124,36 @@ The repository provides basic recommendation building methods.
 
 The API provides a swagger UI to view all available routes.
 
-## Splitting :left_right_arrow:
+## Collection `api/v1/col`
+
+Collection routes include **item**, **user** and **evidence** services.
+
+### Evidence `/evidence`
+
+Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of `BasicEvidenceModels`.
+
+### Item `/item`
+
+### User `/user`
+
+## Recommendation `api/v1/rec`
+
+Recommendation routes include **splitting** and **item** services. Different to collection route **item services** from
+recommendation route represent **personalized** and **unpersonalized recommendations**.
+
+### Personalized Recommendations Item `/per`
+
+### Unpersonalized Recommendations Item `/unpers`
+
+### Splitting `/split` :left_right_arrow:
 
 *Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
 different recommendation methods. Recommendations retrieved from a splitting setup are called **split recommendations**.
+
+> Splitting is only available for users that provide a `reco-cookie-id` in their request header otherwise a fallback 
+> recommendation method will be used. If `reco-cookie-id` is provided an already existing user will be fetched from DB
+> (or a new user will be created), a splitting method will be drawn from `Splitting` collection and assigned as a 
+> `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
 
 To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
@@ -134,6 +179,11 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Added delete users by cookie value route
 - Rename recommendations to relations where applicable
 - Fixed missing API response models
+- Add flexible search query scripts to project
+- Return number inserted evidence objects for PUT route
+- Add `keys` attribute to `BasicEvidenceModel` to identify user
+- Create `BasicUserKeysModel` to handle user keys
+- Add `updateTime` to `BasicUserModel`
 
 ## Version 0.2
 

@@ -1,4 +1,4 @@
-# "A recommendation is an item"
+# "A recommendation is an item!"
 
 import logging
 import random
@@ -12,7 +12,7 @@ from api.core.db.models.item import BasicItemModel
 logger = logging.getLogger(__name__)
 
 
-async def get_random_items(conn: AsyncIOMotorClient, n_recos=5) -> List[BasicItemModel]:
+async def get_random_items(conn: AsyncIOMotorClient, n_recos=5, **kwargs) -> List[BasicItemModel]:
     """Retrieve random items from 'item' collection.
     Args:
         conn (AsyncIOMotorClient): Session object used for retrieving items from db.
@@ -26,8 +26,7 @@ async def get_random_items(conn: AsyncIOMotorClient, n_recos=5) -> List[BasicIte
     return limit_returned_items(res, n_recos)
 
 
-async def get_latest_items(conn: AsyncIOMotorClient,
-                           n_recos=5) -> List[BasicItemModel]:
+async def get_latest_items(conn: AsyncIOMotorClient, n_recos=5, **kwargs) -> List[BasicItemModel]:
     """Retrieve the latest items from 'item' collection.
     Args:
         conn (AsyncIOMotorClient): Session object used for retrieving items from db.
@@ -95,7 +94,8 @@ def limit_returned_items(items, n_recos) -> List[BasicItemModel]:
     return items[0:n_recos]
 
 
-reco_dict = {
+reco_str2fun = {
     cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING: get_collaborative_filtering_items,
+    cfg.TYPE_LATEST: get_latest_items,
     cfg.TYPE_RANDOM_RECOMMENDATIONS: get_random_items
 }
