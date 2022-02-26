@@ -60,7 +60,7 @@ async def get_split_recos(name: str,
     """Endpoint that returns split recommendations (= recos from a method that is defined in a splitting).
 
     Args:
-        name (str): Name of A/B Test (used to fetch respective reco algorithms).
+        name (str): Name of splitting (used to fetch respective reco algorithms).
         req (Request): Object to retrieve identifying values from call.
         item_id_seed (str): ID of item for which reco are needed.
         db (Session): Session object used for retrieving items from db.
@@ -71,12 +71,12 @@ async def get_split_recos(name: str,
     """
     try:
         user_keys = service_misc.get_user_keys_from_request_header(req)
-        items = await service_split.get_split_recommendations(db, name, user_keys.cookie[0], item_id_seed, n_recos)
-        return items
+        return await service_split.get_split_recommendations_by_user_cookie(db, name, user_keys.cookie[0],
+                                                                            item_id_seed, n_recos)
     except KeyError:
         logger.error("Could not find cookie id in request")
     except NotImplementedError:
-        logger.error(f"No reco method found for A/B test [{name}]")
+        logger.error(f"No reco method found for splitting [{name}]")
 
     logger.error(f"Could not request reco method for A/B test [{name}] ... returning random reco")
     return await service_reco.get_random_items(db, n_recos)

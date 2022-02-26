@@ -150,6 +150,11 @@ recommendation route represent **personalized** and **unpersonalized recommendat
 *Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
 different recommendation methods. Recommendations retrieved from a splitting setup are called **split recommendations**.
 
+> Splitting is only available for users that provide a `reco-cookie-id` in their request header otherwise a fallback 
+> recommendation method will be used. If `reco-cookie-id` is provided an already existing user will be fetched from DB
+> (or a new user will be created), a splitting method will be drawn from `Splitting` collection and assigned as a 
+> `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
+
 To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
 methods `methods`.
