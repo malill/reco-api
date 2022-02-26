@@ -132,22 +132,22 @@ The API provides a swagger UI to view all available routes.
 
 Collection routes include **item**, **user** and **evidence** services.
 
-### Evidence `/evidence`
+### Evidence `/evidence` :page_facing_up:
 
 Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of `BasicEvidenceModels`.
 
-### Item `/item`
+### Item `/item` :shirt:
 
-### User `/user`
+### User `/user` :raising_hand:
 
 ## Recommendation `api/v1/rec`
 
 Recommendation routes include **splitting** and **item** services. Different to collection route **item services** from
 recommendation route represent **personalized** and **unpersonalized recommendations**.
 
-### Personalized Recommendations Item `/per`
+### Personalized Recommendations Item `/per` :monkey_face:
 
-### Unpersonalized Recommendations Item `/unpers`
+### Unpersonalized Recommendations Item `/unpers` :see_no_evil:
 
 ### Splitting `/split` :left_right_arrow:
 
