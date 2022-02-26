@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
-
+import api.core.util.config as cfg
 from api.core.db.models.item import BasicItemModel
 from api.core.db.mongodb import get_database
 import api.core.services.reco.recommendation as rec_service
@@ -15,7 +15,7 @@ api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION + ENDPOINT_PERSONALIZED, t
 @api_router.get(ENDPOINT_COLLABORATIVE_FILTERING, response_model=List[BasicItemModel])
 async def get_collaborative_filtering(item_id_seed: int,
                                       base: str = "item",
-                                      n_recos: int = 5,
+                                      n_recos: int = cfg.N_RECOS_DEFAULT,
                                       db: AsyncIOMotorClient = Depends(get_database)):
     """Return list of items from collaborative filtering given a seed item ID.
     Args:

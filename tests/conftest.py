@@ -4,7 +4,6 @@ from pytest import fixture
 from starlette.testclient import TestClient
 
 import api.core.util.config as cfg
-from api.core.db.models.evidence import BasicEvidenceModel
 from api.core.db.models.relation import CollaborativeFilteringRelation
 
 

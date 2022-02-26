@@ -61,10 +61,12 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
             user = await service_user.update_user_group(db, user,
                                                         group_name=split_name,
                                                         group_value=await draw_splitting_method(db, split_name))
-        reco_method = reco_str2fun[user.groups[split_name]]
-        recommendations = await reco_method(db, item_id_seed=item_id_seed, base="item")
+        reco_method = reco_str2fun[user.groups.get(split_name)]
+        recommendations = await reco_method(db, n_recos=n_recos, item_id_seed=item_id_seed, base="item")
         return recommendations
     except KeyError:
+        logger.error(
+            f"Reco method literal [{user.groups.get(split_name)}] found for splitting [{split_name}] not defined")
         raise NotImplementedError()
 
 

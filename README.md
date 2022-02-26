@@ -184,6 +184,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Add `keys` attribute to `BasicEvidenceModel` to identify user
 - Create `BasicUserKeysModel` to handle user keys
 - Add `updateTime` to `BasicUserModel`
+- Reduce number of default returned recommendations to 3
 
 ## Version 0.2
 

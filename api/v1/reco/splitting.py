@@ -56,7 +56,7 @@ async def get_split_recos(name: str,
                           req: Request,
                           item_id_seed: int,
                           db: AsyncIOMotorClient = Depends(get_database),
-                          n_recos: int = 5):
+                          n_recos: int = cfg.N_RECOS_DEFAULT):
     """Endpoint that returns split recommendations (= recos from a method that is defined in a splitting).
 
     Args:
@@ -75,8 +75,9 @@ async def get_split_recos(name: str,
                                                                             item_id_seed, n_recos)
     except KeyError:
         logger.error("Could not find cookie id in request")
-    except NotImplementedError:
-        logger.error(f"No reco method found for splitting [{name}]")
 
-    logger.error(f"Could not request reco method for A/B test [{name}] ... returning random reco")
+    except NotImplementedError:
+        logger.error("Could not execute reco method")
+
+    logger.error(f"Could not request reco method for splitting [{name}] ... returning random recommendations")
     return await service_reco.get_random_items(db, n_recos)
