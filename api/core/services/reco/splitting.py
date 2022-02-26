@@ -43,9 +43,7 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
                                                    reco_cookie_id: str,
                                                    item_id_seed: int,
                                                    n_recos: int):
-    """For users with a reco-cookie-id recommendations from a split method are retrieved.
-
-    -> Method DOES create a new user if unknown! (<> process_evidence(..))"""
+    """Retrieve recommendations for users with a reco-cookie-id from a split method."""
     if (reco_cookie_id is None):
         logger.error(f"No {cfg.RECO_COOKIE_ID} found in request header -> returning random recommendations.")
         items = await service_reco.get_random_items(db, n_recos)

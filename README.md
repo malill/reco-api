@@ -185,6 +185,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Create `BasicUserKeysModel` to handle user keys
 - Add `updateTime` to `BasicUserModel`
 - Reduce number of default returned recommendations to 3
+- Enable user fetching/inserting for evidence PUT route
 
 ## Version 0.2
 
