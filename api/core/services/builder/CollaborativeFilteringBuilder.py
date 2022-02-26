@@ -5,7 +5,6 @@ import pandas as pd
 import api.core.util.config as cfg
 from api.core.db.models.relation import CollaborativeFilteringRelation
 from api.core.services.builder import BaseRecoBuilder
-from api.core.util.config import COLLECTION_NAME_RELATIONS
 
 
 class CollaborativeFilteringBuilder(BaseRecoBuilder[CollaborativeFilteringRelation]):

@@ -12,14 +12,16 @@ logger = logging.getLogger(__name__)
 
 
 async def get_all_user(conn: AsyncIOMotorClient) -> List[BasicUserModel]:
+    """Returns list of all BasicUserModels in user collection."""
     cursor = get_user_collection(conn).find()
     items = await cursor.to_list(None)
     return items
 
 
 async def get_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> List:
+    """Return list of BasicUserModels that contain a cookie with value [cookie_value]."""
     cursor = get_user_collection(conn).find(filter={'keys.cookie': cookie_value})
-    return await cursor.to_list(None)
+    return [BasicUserModel(**u) for u in await cursor.to_list(None)]
 
 
 async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
@@ -33,7 +35,7 @@ async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: s
         logger.error(f"Found more than one user for cookie_value: {cookie_value}")
         raise HTTPException(status_code=300, detail="Multiple users found")
     else:
-        return BasicUserModel(**users[0])
+        return users[0]
 
 
 async def create_user(conn: AsyncIOMotorClient, user_model: BasicUserModel) -> BasicUserModel:

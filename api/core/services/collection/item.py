@@ -9,24 +9,14 @@ from api.core.db.models.item import BasicItemModel
 
 
 async def get_all_items(conn: AsyncIOMotorClient) -> List[BasicItemModel]:
-    """Returns all objects from item collection.
-
-    Method will throw an error when object different to BasicItemModel are persisted in item collection.
-
-    Returns:
-        List[BasicItemModel]: Complete list of item entries in item collection.
-    """
+    """Returns list of all BasicItemModels from item collection."""
     cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM].find()
     items = await cursor.to_list(None)
     return items
 
 
 async def create_or_update_items(conn: AsyncIOMotorClient, item_models: List[BasicItemModel]):
-    """Inserts or updates an existing (match by uid) item object to db.
-
-    Returns:
-        JSONResponse: Status of insert command.
-    """
+    """Inserts or updates an existing (match by uid) item object to db."""
     t = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM]
     for item_model in item_models:
         entry_req = jsonable_encoder(item_model, exclude_none=True)
