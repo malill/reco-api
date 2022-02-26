@@ -115,14 +115,8 @@ The repository provides basic recommendation building methods.
 > Recommendation entries `REs` always inherit from `BasicRecommendationModel`. If a `RecommendationBuilder` creates new
 > `REs`, old `REs` are kept. Endpoints always return the most recent calculated `REs`.
 
-## Non-Personalized Methods
-
-**Random Items**</br>
-**Latest Items**
-
-## Personalized Methods
-
-**Collaborative Filtering**
+- **Frequently Bought Together** (tbd)
+- **Collaborative Filtering**
 
 # Routes :globe_with_meridians:
 
@@ -140,6 +134,13 @@ Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of
 
 ### User `/user` :raising_hand:
 
+Note that the `GET` method will always return a `BasicUserModel` given a query parameter `cookie_value`. The method
+returns an already persisted user who contains a `key` list entry with respective cookie value, or it will create a new
+user and set the cookie value.
+
+> Note that this method will be replaced with a probabilistic fetch method. Currently `reco-cookie-id` is a
+> deterministic key to identify users. In the future various keys will be used to identify a user.
+
 ## Recommendation `api/v1/rec`
 
 Recommendation routes include **splitting** and **item** services. Different to collection route **item services** from
@@ -147,7 +148,15 @@ recommendation route represent **personalized** and **unpersonalized recommendat
 
 ### Personalized Recommendations Item `/per` :monkey_face:
 
+Utilize the recommendations that can be obtained from **relations** created by the **recommendation builders**.
+
 ### Unpersonalized Recommendations Item `/unpers` :see_no_evil:
+
+Utilize the recommendations that can be obtained from the database itself without the user of **relations**. Available
+non-personalized methods are:
+
+- latest items
+- random items
 
 ### Splitting `/split` :left_right_arrow:
 
