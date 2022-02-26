@@ -37,9 +37,11 @@ repository provides services highlighted in red, i.e. **evidence collection**, *
 For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
 
 ```text
+# Basic Authentification Credentials
 AUTH_USER=****
 AUTH_PASS=****
 
+# Database Connection Settings
 DB_URL=****
 DB_NAME=****
 ```
