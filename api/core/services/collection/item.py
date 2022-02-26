@@ -23,3 +23,8 @@ async def create_or_update_items(conn: AsyncIOMotorClient, item_models: List[Bas
         await t.find_one_and_update({'id': item_model.id, 'type': item_model.type}, {"$set": entry_req},
                                     upsert=True)
     return JSONResponse(status_code=status.HTTP_201_CREATED)
+
+
+async def delete_items_by_item_id(conn: AsyncIOMotorClient, item_id: str) -> int:
+    res = await conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM].delete_many(filter={'id': item_id})
+    return res.deleted_count

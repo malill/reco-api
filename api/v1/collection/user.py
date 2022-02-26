@@ -39,4 +39,5 @@ async def post_user(auth: str = Depends(check_basic_auth),
 async def delete_users_by_cookie(cookie_value: str,
                                  auth: str = Depends(check_basic_auth),
                                  db: AsyncIOMotorClient = Depends(get_database)):
+    """Deletes users that contain a cookie key with value [cookie_value] and returns number of deleted entries."""
     return await service_user.delete_users_by_cookie(db, cookie_value)
