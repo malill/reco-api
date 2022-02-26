@@ -34,12 +34,16 @@ repository provides services highlighted in red, i.e. **evidence collection**, *
 
 # Installation :hammer:
 
-For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
+For installation, you need to create a `.env` file (check `.env.sample`) and provide following information (replace with
+your values respectively).
 
 ```text
 # Basic Authentification Credentials
 AUTH_USER=****
 AUTH_PASS=****
+
+# CORS
+CORS_ORIGIN_REGEX=https://.*\.example\.org
 
 # Database Connection Settings
 DB_URL=****
@@ -150,8 +154,8 @@ recommendation route represent **personalized** and **unpersonalized recommendat
 *Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
 different recommendation methods. Recommendations retrieved from a splitting setup are called **split recommendations**.
 
-> Splitting is currently only available for users that provide a `reco-cookie-id` in their request header otherwise a 
-> fallback recommendation method will be used. If `reco-cookie-id` is provided an already existing user will be fetched 
+> Splitting is currently only available for users that provide a `reco-cookie-id` in their request header otherwise a
+> fallback recommendation method will be used. If `reco-cookie-id` is provided an already existing user will be fetched
 > from DB (or a new user will be created), a splitting method will be drawn from respective `splitting` collection entry
 > and assigned as a `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
 
@@ -186,6 +190,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Add `updateTime` to `BasicUserModel`
 - Reduce number of default returned recommendations to 3
 - Enable user fetching/inserting for evidence PUT route
+- Replace `allow_origins` with `allow_origin_regex` in FastAPI middleware
 
 ## Version 0.2
 

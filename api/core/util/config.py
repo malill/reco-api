@@ -12,7 +12,7 @@ AUTH_USER: str = os.environ.get('AUTH_USER')
 AUTH_PASS: str = os.environ.get('AUTH_PASS')
 
 # CORS
-BACKEND_CORS_ORIGINS: str = os.environ.get('BACKEND_CORS_ORIGINS')
+CORS_ORIGIN_REGEX: str = os.environ.get('CORS_ORIGIN_REGEX')
 
 # Database connection string
 DB_URL: str = os.environ.get('DB_URL')

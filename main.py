@@ -18,15 +18,13 @@ app = FastAPI(title="Recommendation API",
               description=f"REST API that exposes calculated recommendations from Recommender Builder. "
                           f"App is running in {cfg.ENVIRONMENT} mode.")
 
-# Set all CORS enabled origins
-if cfg.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=cfg.CORS_ORIGIN_REGEX,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 app.add_event_handler("startup", connect_to_mongo_db)
 app.add_event_handler("shutdown", close_mongo_db_connection)
