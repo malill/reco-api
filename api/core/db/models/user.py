@@ -41,6 +41,9 @@ class BasicUserModel(BaseModel):
     groups: Optional[dict]
     update_time: datetime = Field(default_factory=datetime.utcnow)
 
+    def get_uid(self):
+        return self.__getattribute__('_id')
+
     def __str__(self):
         return str(self.__getattribute__('_id'))
 

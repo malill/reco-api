@@ -62,9 +62,7 @@ def add_evidence_model_to_list(evidence_list: List, o: dict):
 
 
 async def process_evidence(conn: AsyncIOMotorClient, req: Request, object_list: List) -> List[BasicEvidenceModel]:
-    """Modify objects to prepare list of BasicEvidenceModels. For each RequestBody entry a check if 'keys' are provided
-    is performed and if so these keys are used for EvidenceModel. If user_id is provided in entry this is used for
-    user keys. If both checks wrong the request header is checked for keys and if available these keys are used."""
+    """Adds user UID to evidence objects. Creates new user if necessary."""
     user_keys = service_misc.get_user_keys_from_request_header(req)
     user = await service_user.get_or_create_user_by_cookie(conn, cookie_value=user_keys.cookie[0])
     return [BasicEvidenceModel(**o, user_uid=user.__str__()) for o in object_list]

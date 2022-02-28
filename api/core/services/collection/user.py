@@ -26,19 +26,17 @@ async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> List:
 
 async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
     """Probabilistic fetch method for user based on cookie. Method will insert a new BasicUserModel when not found."""
-    user = BasicUserModel(keys=BasicUserKeys(cookie=[cookie_value]))
-    entry_req = jsonable_encoder(user, exclude_none=True)
+    entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(cookie=[cookie_value])), exclude_none=True)
     # TODO: handle multiple user / probabilistic fetch
     user = await get_user_collection(conn).find_one_and_update({'keys.cookie': cookie_value},
                                                                {"$set": entry_req},
                                                                upsert=True,
                                                                return_document=ReturnDocument.AFTER)
-
     return BasicUserModel(**user)
 
 
 async def create_user(conn: AsyncIOMotorClient, user_model: BasicUserModel) -> BasicUserModel:
-    """Create a new user object."""
+    """Create a new user object without checking of already existence."""
     res = await get_user_collection(conn).insert_one(document=jsonable_encoder(user_model, exclude_none=True))
     user_model._id = res.inserted_id
     return user_model
@@ -49,7 +47,7 @@ async def update_user_group(conn: AsyncIOMotorClient, user: BasicUserModel, grou
     """Adds user to group 'group_name' with 'group_value' and stores results in MongoDB."""
     if user.groups is None:
         user.groups = {}
-    await get_user_collection(conn).update_one(filter={'_id': user._id},
+    await get_user_collection(conn).update_one(filter={'_id': user.get_uid()},
                                                update={'$set': {f"groups.{group_name}": group_value}})
     user.groups[group_name] = group_value
     return user
