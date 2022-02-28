@@ -207,6 +207,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Reduce number of default returned recommendations to 3
 - Enable user fetching/inserting for evidence PUT route
 - Replace `allow_origins` with `allow_origin_regex` in FastAPI middleware
+- Add string representation of user _id to evidence object  
 
 ## Version 0.2
 

@@ -4,8 +4,6 @@ from datetime import datetime
 from bson import ObjectId
 from pydantic import BaseModel, Field, Extra
 
-from api.core.db.models.PydanticObjectId import PydanticObjectId
-
 
 class BasicUserKeys(BaseModel):
     """Identifier(1 - n assignments) for user, e.g.cookie values, device information, etc. Class is only used to
@@ -42,6 +40,9 @@ class BasicUserModel(BaseModel):
     roles: Optional[list]
     groups: Optional[dict]
     update_time: datetime = Field(default_factory=datetime.utcnow)
+
+    def __str__(self):
+        return str(self.__getattribute__('_id'))
 
     class Config:
         allow_population_by_field_name = True

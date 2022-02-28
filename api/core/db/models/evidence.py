@@ -32,7 +32,7 @@ class BasicEvidenceModel(BaseModel):
         schema_extra = {
             "example": {
                 "name": "view details",
-                "user_uid": "621cc1e14beaaff305cced28",
+                "user": "123456789",
                 "item_id": "item1234",
                 "device_info": {
                     "width": 500,

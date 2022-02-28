@@ -67,4 +67,4 @@ async def process_evidence(conn: AsyncIOMotorClient, req: Request, object_list: 
     user keys. If both checks wrong the request header is checked for keys and if available these keys are used."""
     user_keys = service_misc.get_user_keys_from_request_header(req)
     user = await service_user.get_or_create_user_by_cookie(conn, cookie_value=user_keys.cookie[0])
-    return [BasicEvidenceModel(**o, user_uid=str(user._id)) for o in object_list]
+    return [BasicEvidenceModel(**o, user_uid=user.__str__()) for o in object_list]
