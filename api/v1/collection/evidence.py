@@ -3,8 +3,6 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Request
 import api.core.services.collection.evidence as service_evidence
-import api.core.services.misc.misc as service_misc
-import api.core.services.collection.user as service_user
 from api.core.db.models.evidence import BasicEvidenceModel
 from api.core.services.authentification.basic_auth import check_basic_auth
 
