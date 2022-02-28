@@ -49,10 +49,6 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
         items = await service_reco.get_random_items(db, n_recos)
         return items
     user = await service_user.get_user_by_keys(db, cookie_value=reco_cookie_id)
-    if user is None:
-        # TODO: this can happen when the split call arrives prior to evidence -> should not be the case
-        logger.error("Could not find a user for split call -> use fallback reco method")
-        return reco_str2fun.get(cfg.TYPE_FALLBACK)(db, n_recos)
     if (user.groups is not None) and (split_name in user.groups.keys()):
         logger.info(f"Splitting [{split_name}] found in user [{str(user)}]")
     else:

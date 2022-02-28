@@ -163,21 +163,26 @@ non-personalized methods are:
 different recommendation methods. Recommendations retrieved from a splitting setup are called **split recommendations**.
 
 > Splitting is currently only available for users that provide a `reco-cookie-id` in their request header. If
-`reco-cookie-id` is provided an already existing user will be fetched from DB (or a new user will be created), a splitting method will be drawn from respective `splitting` collection entry and assigned as a `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
+> `reco-cookie-id` is provided an already existing user will be fetched from DB, a splitting method will be drawn from
+> respective `splitting` collection entry and assigned as a `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
 
 To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
 methods `methods`.
 
+As mentioned it is assumed that a user already exists in DB. All user creating services are delegated to the collection
+route: **Only collection routes are able to create a user!**
+
 **Error Handling**
 
-- If `reco-cookie-id` is not available in request header, the fallback method will be used, a user is not created.
+- If `reco-cookie-id` is not available in request header, the fallback method will be used, a user is **not** created.
 - If the splitting name from the request query is
     - not found in DB collection, or
     - is found in DB collection but the drawn recommendation method string from the retrieved object is not assigned to
       a recommendation method,
 
   the fallback method will be used **and** this user will be added to the fallback group for this particular splitting
+- If no user can be found in user collection matching the keys from request a dummy user will be used
 
 # Security :lock:
 
@@ -207,7 +212,7 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Reduce number of default returned recommendations to 3
 - Enable user fetching/inserting for evidence PUT route
 - Replace `allow_origins` with `allow_origin_regex` in FastAPI middleware
-- Add string representation of user _id to evidence object  
+- Add string representation of user _id to evidence object
 
 ## Version 0.2
 
