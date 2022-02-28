@@ -49,7 +49,8 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
         logger.error(f"No {cfg.RECO_COOKIE_ID} found in request header -> returning random recommendations.")
         items = await service_reco.get_random_items(db, n_recos)
         return items
-    user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
+    user = await service_user.get_user_by_keys(db, cookie_value=reco_cookie_id)
+    user = user[0]
     if (user.groups is not None) and (split_name in user.groups.keys()):
         logger.info(
             f"Splitting [{split_name}] found in user [{str(user._id)}]")

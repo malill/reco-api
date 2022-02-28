@@ -3,9 +3,9 @@ from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
-from fastapi import HTTPException
+from pymongo import ReturnDocument
 
-from api.core.db.models.user import BasicUserModel
+from api.core.db.models.user import BasicUserModel, BasicUserKeys
 import api.core.util.config as cfg
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ async def get_all_user(conn: AsyncIOMotorClient) -> List[BasicUserModel]:
     return items
 
 
-async def get_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> List:
+async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> List:
     """Return list of BasicUserModels that contain a cookie with value [cookie_value]."""
     cursor = get_user_collection(conn).find(filter={'keys.cookie': cookie_value})
     return [BasicUserModel(**u) for u in await cursor.to_list(None)]
@@ -26,16 +26,15 @@ async def get_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> Li
 
 async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
     """Probabilistic fetch method for user based on cookie. Method will insert a new BasicUserModel when not found."""
-    users = await get_users_by_cookie(conn, cookie_value)
-    if len(users) == 0:
-        logger.info(f"No user found for cookie_value {cookie_value} -> creating new user")
-        return await create_user(conn, BasicUserModel(keys={"cookie": [cookie_value]}))
-    elif len(users) > 1:
-        # TODO: handle multiple users -> maybe probabilistic fetch?
-        logger.error(f"Found {len(users)} users for reco-cookie-id: {cookie_value} -> return 1st user from collection")
-        return users[0]
-    else:
-        return users[0]
+    user = BasicUserModel(keys=BasicUserKeys(cookie=[cookie_value]))
+    entry_req = jsonable_encoder(user, exclude_none=True)
+    # TODO: handle multiple user / probabilistic fetch
+    user = await get_user_collection(conn).find_one_and_update({'keys.cookie': cookie_value},
+                                                               {"$set": entry_req},
+                                                               upsert=True,
+                                                               return_document=ReturnDocument.AFTER)
+
+    return BasicUserModel(**user)
 
 
 async def create_user(conn: AsyncIOMotorClient, user_model: BasicUserModel) -> BasicUserModel:

@@ -27,7 +27,7 @@ async def get_all_evidence(auth: str = Depends(check_basic_auth),
 @api_router.put("", response_model=int)
 async def put_evidence(object_list: List,
                        req: Request,
-                       db: AsyncIOMotorClient = Depends(get_database)):
+                       conn: AsyncIOMotorClient = Depends(get_database)):
     """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
     # FOLLOWING IS NOT WORKING STABLE SINCE CONCURRING WITH SPLIT ROUTE (WHICH ALSO CREATES USER)
     # if attach_user:
@@ -38,6 +38,5 @@ async def put_evidence(object_list: List,
     #         await service_user.get_or_create_user_by_cookie(db, cookie_value=user_keys.cookie[0])
     #     except Exception:
     #         logger.error("Could not get or create user ...")
-
-    object_list = await service_evidence.process_evidence(req, object_list)
-    return await service_evidence.create_evidence(db, object_list)
+    object_list = await service_evidence.process_evidence(conn, req, object_list)
+    return await service_evidence.create_evidence(conn, object_list)
