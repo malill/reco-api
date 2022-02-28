@@ -19,6 +19,14 @@ async def get_all_user(auth: str = Depends(check_basic_auth),
     return await service_user.get_all_user(db)
 
 
+@api_router.get("/id", response_model=BasicUserModel)
+async def get_user_by_keys(auth: str = Depends(check_basic_auth),
+                           db: AsyncIOMotorClient = Depends(get_database),
+                           cookie_value: str = None):
+    """Returns most probabilistic user matching keys. Returns dummy user when none is found."""
+    return await service_user.get_user_by_keys(db, cookie_value)
+
+
 @api_router.get("", response_model=BasicUserModel)
 async def get_or_create_user_by_keys(auth: str = Depends(check_basic_auth),
                                      db: AsyncIOMotorClient = Depends(get_database),
