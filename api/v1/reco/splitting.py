@@ -76,8 +76,5 @@ async def get_split_recos(name: str,
     except KeyError:
         logger.error("Could not find cookie id in request")
 
-    except NotImplementedError:
-        logger.error("Could not execute reco method")
-
     logger.error(f"Could not request reco method for splitting [{name}] ... returning random recommendations")
     return await service_reco.get_random_items(db, n_recos)

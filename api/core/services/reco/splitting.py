@@ -49,24 +49,17 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
         logger.error(f"No {cfg.RECO_COOKIE_ID} found in request header -> returning random recommendations.")
         items = await service_reco.get_random_items(db, n_recos)
         return items
-    try:
-        user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
-        if (user.groups is not None) and (split_name in user.groups.keys()):
-            logger.info(
-                f"Splitting name [{split_name}] found in user [{str(user._id)}] with value [{user.groups[split_name]}]")
-        else:
-            logger.info(f"Splitting name [{split_name}] NOT found for user [{str(user._id)}]")
-            # TODO: bad since we make 2 MongoDB calls when user is new (create w/o group and then update group)
-            user = await service_user.update_user_group(db, user,
-                                                        group_name=split_name,
-                                                        group_value=await draw_splitting_method(db, split_name))
-        reco_method = reco_str2fun[user.groups.get(split_name)]
-        recommendations = await reco_method(db, n_recos=n_recos, item_id_seed=item_id_seed, base="item")
-        return recommendations
-    except KeyError:
-        logger.error(
-            f"Reco method literal [{user.groups.get(split_name)}] found for splitting [{split_name}] not defined")
-        raise NotImplementedError()
+    user = await service_user.get_or_create_user_by_cookie(db, cookie_value=reco_cookie_id)
+    if (user.groups is not None) and (split_name in user.groups.keys()):
+        logger.info(
+            f"Splitting [{split_name}] found in user [{str(user._id)}]")
+    else:
+        logger.info(f"Splitting [{split_name}] NOT found for user [{str(user._id)}]")
+        user = await service_user.update_user_group(db, user,
+                                                    group_name=split_name,
+                                                    group_value=await draw_splitting_method(db, split_name))
+    reco_method = reco_str2fun.get(user.groups.get(split_name))
+    return await reco_method(db, n_recos=n_recos, item_id_seed=item_id_seed, base="item")
 
 
 async def draw_splitting_method(conn: AsyncIOMotorClient,
@@ -74,9 +67,8 @@ async def draw_splitting_method(conn: AsyncIOMotorClient,
     """Draw a reco method from splitting."""
     splitting = await get_splitting(conn, split_name)
     if splitting is None:
-        logger.error(f"Requested splitting with name [{split_name}] not found in available splittings..."
-                     f"return random recommendations")
-        return cfg.TYPE_RANDOM_RECOMMENDATIONS
+        logger.error(f"Splitting [{split_name}] not found in collection -> use fallback recommendation method")
+        return cfg.TYPE_FALLBACK
     split_model = BasicSplittingModel(**splitting)
     method_str = np.random.choice(split_model.methods)
     if method_str in reco_str2fun.keys():
@@ -84,8 +76,8 @@ async def draw_splitting_method(conn: AsyncIOMotorClient,
     else:
         logger.error(
             f"Recommendation method shortcut drawn from splitting [{split_name}] with value [{method_str}] "
-            f"is unknown ... using random recommendations as fallback")
-        return cfg.TYPE_RANDOM_RECOMMENDATIONS
+            f"is unknown ... using fallback recommendations")
+        return cfg.TYPE_FALLBACK
 
 
 def get_splitting_collection(conn: AsyncIOMotorClient):
