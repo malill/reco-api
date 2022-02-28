@@ -4,6 +4,8 @@ from datetime import datetime
 from bson import ObjectId
 from pydantic import BaseModel, Field, Extra
 
+from api.core.db.models.PydanticObjectId import PydanticObjectId
+
 
 class BasicUserKeys(BaseModel):
     """Identifier(1 - n assignments) for user, e.g.cookie values, device information, etc. Class is only used to

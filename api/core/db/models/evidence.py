@@ -3,8 +3,6 @@ from bson import ObjectId
 from typing import Optional
 from datetime import datetime
 
-from api.core.db.models.PydanticObjectId import PydanticObjectId
-
 
 class BasicEvidenceModel(BaseModel):
     """Basic class that is used for persisting information on user behaviour.
@@ -19,7 +17,7 @@ class BasicEvidenceModel(BaseModel):
     """
 
     name: str = Field(...)
-    user_uid: PydanticObjectId = Field()
+    user_uid: str = Field()
     item_id: Optional[str]
     device_info: Optional[dict]
     path: Optional[str]
@@ -34,11 +32,7 @@ class BasicEvidenceModel(BaseModel):
         schema_extra = {
             "example": {
                 "name": "view details",
-                "keys": {
-                    'cookie': ['cookie_a', 'cookie_b'],
-                    'canvas': ['canvas_a', 'canvas_b'],
-                    'gp_id': ['123456789']
-                },
+                "user_uid": "621cc1e14beaaff305cced28",
                 "item_id": "item1234",
                 "device_info": {
                     "width": 500,

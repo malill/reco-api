@@ -53,9 +53,9 @@ async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
     user = user[0]
     if (user.groups is not None) and (split_name in user.groups.keys()):
         logger.info(
-            f"Splitting [{split_name}] found in user [{str(user._id)}]")
+            f"Splitting [{split_name}] found in user [{str(user)}]")
     else:
-        logger.info(f"Splitting [{split_name}] NOT found for user [{str(user._id)}]")
+        logger.info(f"Splitting [{split_name}] NOT found for user [{str(user)}]")
         user = await service_user.update_user_group(db, user,
                                                     group_name=split_name,
                                                     group_value=await draw_splitting_method(db, split_name))
