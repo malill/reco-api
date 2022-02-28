@@ -1,11 +1,13 @@
+import asyncio
 import logging
+import time
 from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
 
-from api.core.db.models.user import BasicUserModel, BasicUserKeys
+from api.core.db.models.user import BasicUserModel, BasicUserKeys, dummy_user_dict
 import api.core.util.config as cfg
 
 logger = logging.getLogger(__name__)
@@ -18,16 +20,25 @@ async def get_all_user(conn: AsyncIOMotorClient) -> List[BasicUserModel]:
     return items
 
 
-async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> List:
-    """Return list of BasicUserModels that contain a cookie with value [cookie_value]."""
-    cursor = get_user_collection(conn).find(filter={'keys.cookie': cookie_value})
-    return [BasicUserModel(**u) for u in await cursor.to_list(None)]
+async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
+    """Probabilistic fetch method for user by keys (currently only cookie value is used). If none is found dummy user
+    will be returned."""
+    u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
+    if u is None:
+        # If evidence call (creates user) is to close to other calls the user might not be found initially
+        logger.warning(f"Could not find a user for keys {cookie_value} -> try again...")
+        await asyncio.sleep(2)
+        u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
+    if u is None:
+        logger.error(f"No user found for keys {cookie_value} -> return dummy user")
+        u = dummy_user_dict
+    return BasicUserModel(**u)
 
 
 async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
-    """Probabilistic fetch method for user based on cookie. Method will insert a new BasicUserModel when not found."""
+    """Probabilistic fetch method for user by keys (currently only cookie value is used). Method will insert a new
+     BasicUserModel when not found."""
     entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(cookie=[cookie_value])), exclude_none=True)
-    # TODO: handle multiple user / probabilistic fetch
     user = await get_user_collection(conn).find_one_and_update({'keys.cookie': cookie_value},
                                                                {"$set": entry_req},
                                                                upsert=True,

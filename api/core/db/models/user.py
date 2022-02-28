@@ -67,3 +67,6 @@ class BasicUserModel(BaseModel):
                 }
             }
         }
+
+
+dummy_user_dict = {"_id": "Dummy", "first_name": "Dummy", "last_name": "Dummy", "keys": BasicUserKeys()}
