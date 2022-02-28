@@ -27,7 +27,7 @@ async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> Basic
     if u is None:
         # If evidence call (creates user) is to close to other calls the user might not be found initially
         logger.warning(f"Could not find a user for keys {cookie_value} -> try again...")
-        await asyncio.sleep(2)
+        await asyncio.sleep(2)  # bad implementation
         u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
     if u is None:
         logger.error(f"No user found for keys {cookie_value} -> return dummy user")
