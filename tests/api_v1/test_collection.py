@@ -26,12 +26,12 @@ class TestCollectionAPI:
         assert response.json()["first_name"] == "Pete"
 
     def test_get_existing_user(self, test_client):
-        response = test_client.get("/api/v1/col/user?cookie_value=petes_cookie", auth=HTTPBasicAuth('admin', 'nimda'))
+        response = test_client.get("/api/v1/col/user/id?cookie_value=petes_cookie", auth=HTTPBasicAuth('admin', 'nimda'))
         assert response.json()["first_name"] == "Pete"
 
     def test_get_or_create_user(self, test_client):
         response = test_client.get("/api/v1/col/user?cookie_value=steffis_cookie", auth=HTTPBasicAuth('admin', 'nimda'))
-        assert "steffis_cookie" in response.json()["keys"]["cookie"]
+        assert response.status_code == 200
 
     def test_delete_user_by_cookie(self, test_client):
         response = test_client.delete("/api/v1/col/user?cookie_value=steffis_cookie",
