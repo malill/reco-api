@@ -1,5 +1,5 @@
 from typing import List
-
+import api.core.util.config as cfg
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorClient
 import api.core.services.reco.recommendation as rec_service
@@ -11,7 +11,7 @@ api_router = APIRouter(prefix=ENDPOINT_RECOMMENDATION + ENDPOINT_UNPERSONALIZED,
 
 
 @api_router.get("/random", response_model=List[BasicItemModel])
-async def get_random_items(db: AsyncIOMotorClient = Depends(get_database), n_recos: int = 5):
+async def get_random_items(db: AsyncIOMotorClient = Depends(get_database), n_recos: int = cfg.N_RECOS_DEFAULT):
     """Return list of random items.
 
     Args:
@@ -25,7 +25,7 @@ async def get_random_items(db: AsyncIOMotorClient = Depends(get_database), n_rec
 
 
 @api_router.get("/latest", response_model=List[BasicItemModel])
-async def get_latest_items(db: AsyncIOMotorClient = Depends(get_database), n_recos: int = 5):
+async def get_latest_items(db: AsyncIOMotorClient = Depends(get_database), n_recos: int = cfg.N_RECOS_DEFAULT):
     """Return list of most recently added items.
 
     Args:

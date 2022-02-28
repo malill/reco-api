@@ -3,15 +3,13 @@ from bson import ObjectId
 from typing import Optional
 from datetime import datetime
 
-from api.core.db.models.user import BasicUserKeys
-
 
 class BasicEvidenceModel(BaseModel):
     """Basic class that is used for persisting information on user behaviour.
 
     Attributes: #noqa
         name (str): Description of collection that is tracked (e.g. 'view_details', 'purchase', 'order_entry).
-        keys (BasicUserKeys): Identifier (1-n assignments) for user, e.g. cookie values, device information, etc.
+        user_uid (str): Unique identifier for user object.
         item_id (str, optional): Can be used when tracking collection for interaction with items.
         device_info (dict, optional): Capture devices infos to detect mobile/tablet/desktop views.
         path (str, optional): Specific URL path.
@@ -19,7 +17,7 @@ class BasicEvidenceModel(BaseModel):
     """
 
     name: str = Field(...)
-    keys: BasicUserKeys = Field()
+    user_uid: str = Field()
     item_id: Optional[str]
     device_info: Optional[dict]
     path: Optional[str]
@@ -34,11 +32,7 @@ class BasicEvidenceModel(BaseModel):
         schema_extra = {
             "example": {
                 "name": "view details",
-                "keys": {
-                    'cookie': ['cookie_a', 'cookie_b'],
-                    'canvas': ['canvas_a', 'canvas_b'],
-                    'gp_id': ['123456789']
-                },
+                "user": "123456789",
                 "item_id": "item1234",
                 "device_info": {
                     "width": 500,

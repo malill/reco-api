@@ -34,12 +34,16 @@ repository provides services highlighted in red, i.e. **evidence collection**, *
 
 # Installation :hammer:
 
-For installation, you need to create a `.env` file (check `.env.sample`) and provide following information.
+For installation, you need to create a `.env` file (check `.env.sample`) and provide following information (replace with
+your values respectively).
 
 ```text
 # Basic Authentification Credentials
 AUTH_USER=****
 AUTH_PASS=****
+
+# CORS
+CORS_ORIGIN_REGEX=https://.*\.example\.org
 
 # Database Connection Settings
 DB_URL=****
@@ -109,16 +113,10 @@ docker-compose up -d
 The repository provides basic recommendation building methods.
 
 > Recommendation entries `REs` always inherit from `BasicRecommendationModel`. If a `RecommendationBuilder` creates new
-> `REs`, old `REs` are kept. Endpoints always return the most recent calculated `REs`.
+`REs`, old `REs` are kept. Endpoints always return the most recent calculated `REs`.
 
-## Non-Personalized Methods
-
-**Random Items**</br>
-**Latest Items**
-
-## Personalized Methods
-
-**Collaborative Filtering**
+- **Frequently Bought Together** (tbd)
+- **Collaborative Filtering**
 
 # Routes :globe_with_meridians:
 
@@ -128,36 +126,63 @@ The API provides a swagger UI to view all available routes.
 
 Collection routes include **item**, **user** and **evidence** services.
 
-### Evidence `/evidence`
+### Evidence `/evidence` :page_facing_up:
 
 Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of `BasicEvidenceModels`.
 
-### Item `/item`
+### Item `/item` :shirt:
 
-### User `/user`
+### User `/user` :raising_hand:
+
+Note that the `GET` method will always return a `BasicUserModel` given a query parameter `cookie_value`. The method
+returns an already persisted user who contains a `key` list entry with respective cookie value, or it will create a new
+user and set the cookie value.
+
+> Note that this method will be replaced with a probabilistic fetch method. Currently `reco-cookie-id` is a deterministic key to identify users. In the future various keys will be used to identify a user.
 
 ## Recommendation `api/v1/rec`
 
 Recommendation routes include **splitting** and **item** services. Different to collection route **item services** from
 recommendation route represent **personalized** and **unpersonalized recommendations**.
 
-### Personalized Recommendations Item `/per`
+### Personalized Recommendations Item `/per` :monkey_face:
 
-### Unpersonalized Recommendations Item `/unpers`
+Utilize the recommendations that can be obtained from **relations** created by the **recommendation builders**.
+
+### Unpersonalized Recommendations Item `/unpers` :see_no_evil:
+
+Utilize the recommendations that can be obtained from the database itself without the user of **relations**. Available
+non-personalized methods are:
+
+- latest items
+- random items
 
 ### Splitting `/split` :left_right_arrow:
 
 *Splitting* refers to testing different recommendation approaches, e.g. A/B testing. You can run A/B tests to evaluate
 different recommendation methods. Recommendations retrieved from a splitting setup are called **split recommendations**.
 
-> Splitting is only available for users that provide a `reco-cookie-id` in their request header otherwise a fallback 
-> recommendation method will be used. If `reco-cookie-id` is provided an already existing user will be fetched from DB
-> (or a new user will be created), a splitting method will be drawn from `Splitting` collection and assigned as a 
-> `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
+> Splitting is currently only available for users that provide a `reco-cookie-id` in their request header. If
+> `reco-cookie-id` is provided an already existing user will be fetched from DB, a splitting method will be drawn from
+> respective `splitting` collection entry and assigned as a `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
 
 To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
 methods `methods`.
+
+As mentioned it is assumed that a user already exists in DB. All user creating services are delegated to the collection
+route: **Only collection routes are able to create a user!**
+
+**Error Handling**
+
+- If `reco-cookie-id` is not available in request header, the fallback method will be used, a user is **not** created.
+- If the splitting name from the request query is
+    - not found in DB collection, or
+    - is found in DB collection but the drawn recommendation method string from the retrieved object is not assigned to
+      a recommendation method,
+
+  the fallback method will be used **and** this user will be added to the fallback group for this particular splitting
+- If no user can be found in user collection matching the keys from request a dummy user will be used
 
 # Security :lock:
 
@@ -184,6 +209,10 @@ under `AUTH_USER` and `AUTH_PASS`.
 - Add `keys` attribute to `BasicEvidenceModel` to identify user
 - Create `BasicUserKeysModel` to handle user keys
 - Add `updateTime` to `BasicUserModel`
+- Reduce number of default returned recommendations to 3
+- Enable user fetching/inserting for evidence PUT route
+- Replace `allow_origins` with `allow_origin_regex` in FastAPI middleware
+- Add string representation of user _id to evidence object
 
 ## Version 0.2
 

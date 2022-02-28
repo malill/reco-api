@@ -95,6 +95,7 @@ def limit_returned_items(items, n_recos) -> List[BasicItemModel]:
 
 
 reco_str2fun = {
+    cfg.TYPE_FALLBACK: get_random_items,
     cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING: get_collaborative_filtering_items,
     cfg.TYPE_LATEST: get_latest_items,
     cfg.TYPE_RANDOM_RECOMMENDATIONS: get_random_items

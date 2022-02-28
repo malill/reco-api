@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from fastapi import APIRouter, Depends, Request
@@ -11,6 +12,8 @@ from api.core.db.mongodb import AsyncIOMotorClient, get_database
 
 api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_EVIDENCE, tags=[TAG_EVIDENCE])
 
+logger = logging.getLogger(__name__)
+
 
 @api_router.get("", response_model=List[BasicEvidenceModel])
 async def get_all_evidence(auth: str = Depends(check_basic_auth),
@@ -22,7 +25,7 @@ async def get_all_evidence(auth: str = Depends(check_basic_auth),
 @api_router.put("", response_model=int)
 async def put_evidence(object_list: List,
                        req: Request,
-                       db: AsyncIOMotorClient = Depends(get_database)):
+                       conn: AsyncIOMotorClient = Depends(get_database)):
     """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
-    object_list = await service_evidence.process_evidence(req, object_list)
-    return await service_evidence.create_evidence(db, object_list)
+    object_list = await service_evidence.process_evidence(conn, req, object_list)
+    return await service_evidence.create_evidence(conn, object_list)

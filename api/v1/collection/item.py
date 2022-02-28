@@ -25,3 +25,11 @@ async def post_items(auth: str = Depends(check_basic_auth),
                      item_models: List[BasicItemModel] = Body(...)):
     """Adds a list of item model entries into database."""
     return await service_item.create_or_update_items(db, item_models)
+
+
+@api_router.delete("", response_model=int)
+async def delete_items_by_item_id(item_id: str,
+                                  auth: str = Depends(check_basic_auth),
+                                  db: AsyncIOMotorClient = Depends(get_database)):
+    """Deletes items with id [item_id] and returns number of deleted entries."""
+    return await service_item.delete_items_by_item_id(db, item_id)

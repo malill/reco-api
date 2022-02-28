@@ -29,7 +29,7 @@ services:
     environment:
       API_V1_STR: /api/v1
       ENVIRONMENT: DOCKER_TEST
-      BACKEND_CORS_ORIGINS: "True"
+      CORS_ORIGIN_REGEX: "True"
       DB_URL: mongodb://root:example@mongo:27017/
       DB_NAME: environment_t
     ports:
