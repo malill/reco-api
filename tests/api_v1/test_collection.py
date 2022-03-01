@@ -4,7 +4,7 @@ from requests.auth import HTTPBasicAuth
 class TestCollectionAPI:
     # EVIDENCE
     def test_insert_evidence(self, test_client, test_evidence):
-        response = test_client.put("/api/v1/col/evidence", json=test_evidence)
+        response = test_client.put("/api/v1/col/evidence", json=test_evidence, headers={"reco-user-uid": "external"})
         assert response.json() == len(test_evidence)
 
     # ITEMS

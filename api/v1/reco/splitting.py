@@ -6,8 +6,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import Request
 
 import api.core.services.reco.splitting as service_split
-import api.core.services.reco.recommendation as service_reco
-import api.core.services.misc.misc as service_misc
 from api.core.db.models.item import BasicItemModel
 from api.core.db.models.splitting import BasicSplittingModel
 
@@ -69,12 +67,6 @@ async def get_split_recos(name: str,
     Returns:
         List[Item]: List of recommendations.
     """
-    try:
-        user_keys = service_misc.get_user_keys_from_request_header(req)
-        return await service_split.get_split_recommendations_by_user_cookie(db, name, user_keys.cookie[0],
-                                                                            item_id_seed, n_recos)
-    except KeyError:
-        logger.error("Could not find cookie id in request")
-
-    logger.error(f"Could not request reco method for splitting [{name}] ... returning random recommendations")
-    return await service_reco.get_random_items(db, n_recos)
+    user_uid = req.headers.get(cfg.RECO_USER_UID)
+    return await service_split.get_split_recommendations_by_user_uid(db, name, user_uid,
+                                                                         item_id_seed, n_recos)

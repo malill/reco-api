@@ -27,5 +27,5 @@ async def put_evidence(object_list: List,
                        req: Request,
                        conn: AsyncIOMotorClient = Depends(get_database)):
     """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
-    object_list = await service_evidence.process_evidence(conn, req, object_list)
+    object_list = await service_evidence.process_evidence(req, object_list)
     return await service_evidence.create_evidence(conn, object_list)

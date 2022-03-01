@@ -9,8 +9,6 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 
 import api.core.util.config as cfg
-import api.core.services.misc.misc as service_misc
-import api.core.services.collection.user as service_user
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.core.db.models.evidence import BasicEvidenceModel
@@ -61,8 +59,6 @@ def add_evidence_model_to_list(evidence_list: List, o: dict):
         logger.warning(f"Invalid object provided in collection list:{o}", e)
 
 
-async def process_evidence(conn: AsyncIOMotorClient, req: Request, object_list: List) -> List[BasicEvidenceModel]:
+async def process_evidence(req: Request, object_list: List) -> List[BasicEvidenceModel]:
     """Adds user UID to evidence objects. Creates new user if necessary."""
-    user_keys = service_misc.get_user_keys_from_request_header(req)
-    user = await service_user.get_or_create_user_by_cookie(conn, cookie_value=user_keys.cookie[0])
-    return [BasicEvidenceModel(**o, user_uid=user.__str__()) for o in object_list]
+    return [BasicEvidenceModel(**o, user_uid=req.headers.get(cfg.RECO_USER_UID)) for o in object_list]
