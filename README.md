@@ -93,7 +93,15 @@ download needed) is provided in the repository (replace credentials where applic
 docker-compose up -d
 ```
 
-# Models :cd:
+# Basic Usage
+
+![bla](https://docs.google.com/drawings/d/e/2PACX-1vTmTmiNSEPv2LY3Ns6Nlvq8y0RU_yjIZfMbc6GKX5vi90V-MgO_aThHO4sVFF3GeS4uiNZMqnk5Lce_/pub?w=960&h=720)
+
+# Demo :cd:
+
+Access to a demo version can be found here: https://reco-api-q.herokuapp.com/
+
+# Models :minidisc:
 
 **BasicEvidenceModel**
 
@@ -189,10 +197,6 @@ calling `api/v1/col/user`.**
 
 Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file
 under `AUTH_USER` and `AUTH_PASS`.
-
-# Basic Usage
-
-![bla](https://docs.google.com/drawings/d/e/2PACX-1vTmTmiNSEPv2LY3Ns6Nlvq8y0RU_yjIZfMbc6GKX5vi90V-MgO_aThHO4sVFF3GeS4uiNZMqnk5Lce_/pub?w=960&h=720)
 
 # Change History :arrows_counterclockwise:
 
