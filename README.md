@@ -45,7 +45,7 @@ AUTH_PASS=****
 # CORS
 CORS_ORIGIN_REGEX=https://.*\.example\.org
 
-# Database Connection Settings
+# MongoDB Connection Settings
 DB_URL=****
 DB_NAME=****
 ```
@@ -192,6 +192,10 @@ calling `api/v1/col/user`.**
       a recommendation method,
 
   the fallback method will be used **and** this user will be added to the fallback group for this particular splitting
+
+> To prevent spillover effects (i.e. users switching groups for a particular splitting), group assignments are not 
+> updated even when user was assigned to the fallback group. Once a splitting method is assigned to a user it won't
+> be changed.
 
 # Security :lock:
 

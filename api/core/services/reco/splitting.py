@@ -45,11 +45,11 @@ async def get_split_recommendations_by_user_uid(db: AsyncIOMotorClient,
     """Retrieve recommendations for users with a reco-user-id from a split method."""
     if user_uid is None:
         logger.error(f"No {cfg.RECO_USER_UID} found in request header -> returning random recommendations.")
-        return await reco_str2fun(cfg.TYPE_FALLBACK)(db, n_recos)
+        return await reco_str2fun.get(cfg.TYPE_FALLBACK)(db, n_recos)
     user = await service_user.get_user_by_uid(db, user_uid)
     if user is None:
         logger.error(f"No user found for {cfg.RECO_COOKIE_ID} request header -> returning random recommendations.")
-        return await reco_str2fun(cfg.TYPE_FALLBACK)(db, n_recos)
+        return await reco_str2fun.get(cfg.TYPE_FALLBACK)(db, n_recos)
     if (user.groups is not None) and (split_name in user.groups.keys()):
         logger.info(f"Splitting [{split_name}] found in user [{str(user)}]")
     else:
