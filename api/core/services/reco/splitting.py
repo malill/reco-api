@@ -5,7 +5,6 @@ import numpy as np
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
 
-import api.core.services.reco.recommendation as service_reco
 import api.core.services.collection.user as service_user
 import api.core.util.config as cfg
 from api.core.db.models.splitting import BasicSplittingModel
@@ -38,17 +37,19 @@ async def delete_splitting(conn: AsyncIOMotorClient, name: str) -> int:
     return res.deleted_count
 
 
-async def get_split_recommendations_by_user_cookie(db: AsyncIOMotorClient,
-                                                   split_name: str,
-                                                   reco_cookie_id: str,
-                                                   item_id_seed: int,
-                                                   n_recos: int):
-    """Retrieve recommendations for users with a reco-cookie-id from a split method."""
-    if reco_cookie_id is None:
-        logger.error(f"No {cfg.RECO_COOKIE_ID} found in request header -> returning random recommendations.")
-        items = await service_reco.get_random_items(db, n_recos)
-        return items
-    user = await service_user.get_user_by_keys(db, cookie_value=reco_cookie_id)
+async def get_split_recommendations_by_user_uid(db: AsyncIOMotorClient,
+                                                split_name: str,
+                                                user_uid: str,
+                                                item_id_seed: int,
+                                                n_recos: int):
+    """Retrieve recommendations for users with a reco-user-id from a split method."""
+    if user_uid is None:
+        logger.error(f"No {cfg.RECO_USER_UID} found in request header -> returning random recommendations.")
+        return await reco_str2fun(cfg.TYPE_FALLBACK)(db, n_recos)
+    user = await service_user.get_user_by_uid(db, user_uid)
+    if user is None:
+        logger.error(f"No user found for {cfg.RECO_COOKIE_ID} request header -> returning random recommendations.")
+        return await reco_str2fun(cfg.TYPE_FALLBACK)(db, n_recos)
     if (user.groups is not None) and (split_name in user.groups.keys()):
         logger.info(f"Splitting [{split_name}] found in user [{str(user)}]")
     else:

@@ -1,8 +1,8 @@
 import asyncio
 import logging
-import time
 from typing import List
 
+from bson import ObjectId
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
@@ -20,14 +20,19 @@ async def get_all_user(conn: AsyncIOMotorClient) -> List[BasicUserModel]:
     return items
 
 
+async def get_user_by_uid(conn: AsyncIOMotorClient, user_uid: str) -> BasicUserModel:
+    doc = await get_user_collection(conn).find_one(ObjectId(user_uid))
+    return BasicUserModel(**doc)
+
+
 async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
     """Probabilistic fetch method for user by keys (currently only cookie value is used). If none is found dummy user
-    will be returned."""
+    will be returned. This method should only be called when user is available in collection."""
     u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
-    if u is None:
+    if u is None:  # should never happen
         # If evidence call (creates user) is to close to other calls the user might not be found initially
         logger.warning(f"Could not find a user for keys {cookie_value} -> try again...")
-        await asyncio.sleep(2)
+        await asyncio.sleep(2)  # bad implementation
         u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
     if u is None:
         logger.error(f"No user found for keys {cookie_value} -> return dummy user")
@@ -35,7 +40,7 @@ async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> Basic
     return BasicUserModel(**u)
 
 
-async def get_or_create_user_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
+async def get_or_create_unique_user(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
     """Probabilistic fetch method for user by keys (currently only cookie value is used). Method will insert a new
      BasicUserModel when not found."""
     entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(cookie=[cookie_value])), exclude_none=True)
