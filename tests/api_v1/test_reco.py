@@ -27,15 +27,15 @@ class TestRecommendationAPI:
 
     def test_splitting_assigned_user(self, test_client):
         res = test_client.get("/api/v1/rec/split?name=split1&item_id_seed=419",
-                              cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
+                              cookies={cfg.RECO2JS_ID: "petes_cookie"})
         assert len(res.json()) == cfg.N_RECOS_DEFAULT
 
     def test_splitting_unassigned_user(self, test_client):
         res = test_client.get("/api/v1/rec/split?name=split2&item_id_seed=419",
-                              cookies={cfg.RECO_COOKIE_ID: "petes_cookie"})
+                              cookies={cfg.RECO2JS_ID: "petes_cookie"})
         assert len(res.json()) == cfg.N_RECOS_DEFAULT
 
     def test_splitting_new_user(self, test_client):
         res = test_client.get("/api/v1/rec/split?name=split11&item_id_seed=1",
-                              cookies={cfg.RECO_COOKIE_ID: "andres_cookie"})
+                              cookies={cfg.RECO2JS_ID: "andres_cookie"})
         assert len(res.json()) == cfg.N_RECOS_DEFAULT

@@ -1,5 +1,5 @@
 from requests.auth import HTTPBasicAuth
-
+import api.core.util.config as cfg
 
 class TestCollectionAPI:
     # EVIDENCE
@@ -21,19 +21,18 @@ class TestCollectionAPI:
         assert response.json() == 1
 
     # USER
-    def test_post_user(self, test_client, test_user1):
-        response = test_client.post("/api/v1/col/user", json=test_user1, auth=HTTPBasicAuth('admin', 'nimda'))
-        assert response.json()["first_name"] == "Pete"
-
-    def test_get_existing_user(self, test_client):
-        response = test_client.get("/api/v1/col/user/id?cookie_value=petes_cookie", auth=HTTPBasicAuth('admin', 'nimda'))
-        assert response.json()["first_name"] == "Pete"
-
-    def test_get_or_create_user(self, test_client):
-        response = test_client.get("/api/v1/col/user?cookie_value=steffis_cookie", auth=HTTPBasicAuth('admin', 'nimda'))
+    def test_post_new_user(self, test_client, test_user1):
+        response = test_client.post("/api/v1/col/user",
+                                    headers={cfg.RECO2JS_ID: "petes_reco2js_id"},
+                                    json=test_user1,
+                                    auth=HTTPBasicAuth('admin', 'nimda'))
         assert response.status_code == 200
 
+    def test_get_existing_user(self, test_client):
+        response = test_client.get("/api/v1/col/user/id?reco2js_id=petes_reco2js_id", auth=HTTPBasicAuth('admin', 'nimda'))
+        assert response.json()["first_name"] == "Pete"
+
     def test_delete_user_by_cookie(self, test_client):
-        response = test_client.delete("/api/v1/col/user?cookie_value=steffis_cookie",
+        response = test_client.delete("/api/v1/col/user?reco2js_id=petes_reco2js_id",
                                       auth=HTTPBasicAuth('admin', 'nimda'))
         assert response.json() == 1

@@ -44,7 +44,8 @@ N_RECOS_DEFAULT = 3
 # reco-js
 RECO_COOKIE_ID = "reco-cookie-id"
 RECO_CANVAS_ID = "reco-canvas-id"
-RECO_USER_UID = "reco-user-uid"
+RECO2JS_ID = "reco2js_id"
+RECO_USER_UID = "reco_user_uid"
 
 # Recommendation types
 TYPE_COLLABORATIVE_FILTERING = "cf"

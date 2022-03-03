@@ -23,7 +23,7 @@ async def get_all_evidence(auth: str = Depends(check_basic_auth),
 
 
 @api_router.put("", response_model=int)
-async def put_evidence(object_list: List,
+async def put_evidence(object_list: List[BasicEvidenceModel],
                        req: Request,
                        conn: AsyncIOMotorClient = Depends(get_database)):
     """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
