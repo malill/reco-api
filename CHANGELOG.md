@@ -23,6 +23,7 @@
 - Replace `allow_origins` with `allow_origin_regex` in FastAPI middleware
 - Add string representation of user _id to evidence object
 - Use user uid in splitting (:exclamation:)
+- Use `reco2js_id` as deterministic user search (:exclamation:)
 
 ## Version 0.2
 

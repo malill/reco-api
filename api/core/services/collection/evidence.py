@@ -59,6 +59,6 @@ def add_evidence_model_to_list(evidence_list: List, o: dict):
         logger.warning(f"Invalid object provided in collection list:{o}", e)
 
 
-async def process_evidence(req: Request, object_list: List) -> List[BasicEvidenceModel]:
+async def process_evidence(req: Request, object_list: List[BasicEvidenceModel]) -> List[BasicEvidenceModel]:
     """Adds user UID to evidence objects. Creates new user if necessary."""
-    return [BasicEvidenceModel(**o, user_uid=req.headers.get(cfg.RECO_USER_UID)) for o in object_list]
+    return [BasicEvidenceModel(**o.dict(skip_defaults=True), user_uid=req.headers.get(cfg.RECO_USER_UID)) for o in object_list]

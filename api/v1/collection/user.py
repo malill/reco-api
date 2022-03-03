@@ -51,5 +51,5 @@ async def user_unique_identifier(req: Request,
 async def delete_users_by_reco2js_id(reco2js_id: str,
                                      auth: str = Depends(check_basic_auth),
                                      db: AsyncIOMotorClient = Depends(get_database)):
-    """Deletes users that contain a cookie key with value [cookie_value] and returns number of deleted entries."""
+    """Deletes users that contain reco2js_id and returns number of deleted entries."""
     return await service_user.delete_users_by_reco2js_id(db, reco2js_id)

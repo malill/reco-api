@@ -17,7 +17,7 @@ class BasicEvidenceModel(BaseModel):
     """
 
     name: str = Field(...)
-    user_uid: str = Field()
+    user_uid: Optional[str] = Field()
     item_id: Optional[str]
     device_info: Optional[dict]
     path: Optional[str]
@@ -27,6 +27,7 @@ class BasicEvidenceModel(BaseModel):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+        exclude_none = True
         extra = Extra.allow  # additional attributes (not defined above) can also be inserted/retrieved
         schema_extra = {
             "example": {
