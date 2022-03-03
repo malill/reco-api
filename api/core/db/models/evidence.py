@@ -21,7 +21,6 @@ class BasicEvidenceModel(BaseModel):
     item_id: Optional[str]
     device_info: Optional[dict]
     path: Optional[str]
-    cookies: Optional[dict]
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:

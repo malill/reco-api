@@ -1,13 +1,14 @@
 import asyncio
 import logging
-from typing import List
-
+from typing import List, Optional
+from fastapi import Request, Body
 from bson import ObjectId
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
+from pydantic import BaseModel
 from pymongo import ReturnDocument
 
-from api.core.db.models.user import BasicUserModel, BasicUserKeys, dummy_user_dict
+from api.core.db.models.user import BasicUserModel, BasicUserKeys, dummy_user_dict, Reco2jsModel
 import api.core.util.config as cfg
 
 logger = logging.getLogger(__name__)
@@ -25,26 +26,36 @@ async def get_user_by_uid(conn: AsyncIOMotorClient, user_uid: str) -> BasicUserM
     return BasicUserModel(**doc)
 
 
-async def get_user_by_keys(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
-    """Probabilistic fetch method for user by keys (currently only cookie value is used). If none is found dummy user
+async def get_user_by_reco2js_id(conn: AsyncIOMotorClient, reco2js_id: str) -> BasicUserModel:
+    """Probabilistic fetch method for user by keys (currently only reco2js_id is used). If none is found dummy user
     will be returned. This method should only be called when user is available in collection."""
-    u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
+    # TODO: currently reco2js.id is the only deterministic identifier
+    u = await get_user_collection(conn).find_one(filter={'keys.reco2js_ids': reco2js_id})
     if u is None:  # should never happen
         # If evidence call (creates user) is to close to other calls the user might not be found initially
-        logger.warning(f"Could not find a user for keys {cookie_value} -> try again...")
+        logger.warning(f"Could not find a user for reco2js_id key {reco2js_id} -> try again...")
         await asyncio.sleep(2)  # bad implementation
-        u = await get_user_collection(conn).find_one(filter={'keys.cookie': cookie_value})
+        u = await get_user_collection(conn).find_one(filter={'keys.reco2js_ids': reco2js_id})
     if u is None:
-        logger.error(f"No user found for keys {cookie_value} -> return dummy user")
+        logger.error(f"No user found for reco2js_id key {reco2js_id} -> return dummy user")
         u = dummy_user_dict
     return BasicUserModel(**u)
 
 
-async def get_or_create_unique_user(conn: AsyncIOMotorClient, cookie_value: str) -> BasicUserModel:
-    """Probabilistic fetch method for user by keys (currently only cookie value is used). Method will insert a new
+async def get_or_upsert_unique_user(conn: AsyncIOMotorClient, req: Request, user: dict) -> BasicUserModel:
+    """Probabilistic fetch method for user by keys (currently only reco2js_id value is used). Method will insert a new
      BasicUserModel when not found."""
-    entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(cookie=[cookie_value])), exclude_none=True)
-    user = await get_user_collection(conn).find_one_and_update({'keys.cookie': cookie_value},
+    reco2js_id = req.headers.get(cfg.RECO2JS_ID)
+    if reco2js_id is None:
+        return BasicUserModel(**dummy_user_dict)
+    if user is not None:
+        entry_req = jsonable_encoder(BasicUserModel(**user, keys=BasicUserKeys(reco2js_ids=[reco2js_id])),
+                                     exclude_none=True)
+    else:
+        entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(reco2js_ids=[reco2js_id])),
+                                     exclude_none=True)
+    # TODO: currently reco2js.id is the only deterministic identifier
+    user = await get_user_collection(conn).find_one_and_update({'keys.reco2js_ids': reco2js_id},
                                                                {"$set": entry_req},
                                                                upsert=True,
                                                                return_document=ReturnDocument.AFTER)
@@ -69,9 +80,9 @@ async def update_user_group(conn: AsyncIOMotorClient, user: BasicUserModel, grou
     return user
 
 
-async def delete_users_by_cookie(conn: AsyncIOMotorClient, cookie_value: str) -> int:
-    """Deletes user(s) by cookie value and returns number of deleted objects."""
-    res = await get_user_collection(conn).delete_many(filter={'keys.cookie': cookie_value})
+async def delete_users_by_reco2js_id(conn: AsyncIOMotorClient, reco2js_id: str) -> int:
+    """Deletes user(s) by reco2js_id value and returns number of deleted objects."""
+    res = await get_user_collection(conn).delete_many(filter={'keys.reco2js_ids': reco2js_id})
     return res.deleted_count
 
 

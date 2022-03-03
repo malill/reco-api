@@ -19,7 +19,6 @@ def test_user1():
     return {
         "first_name": "Pete",
         "last_name": "Sampras",
-        "keys": {"cookie": ["petes_cookie"], "canvas": ["01234", "56789"]},
         "roles": ['shooter', 'english'],
         "groups": {
             "split1": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING
@@ -32,7 +31,6 @@ def test_user2():
     return {
         "first_name": "Raphael",
         "last_name": "Nadal",
-        "keys": {"cookie": ["raphaels_cookie"], "canvas": ["abcde", "fghij"]},
         "roles": ['left_handed'],
         "groups": {
             "ab_test2": cfg.TYPE_ITEM_BASED_COLLABORATIVE_FILTERING

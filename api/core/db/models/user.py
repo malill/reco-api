@@ -5,10 +5,20 @@ from bson import ObjectId
 from pydantic import BaseModel, Field, Extra
 
 
+class Reco2jsModel(BaseModel):
+    """This is the hash that will be send to API for unique user identification. Created a class since hash might
+    require postprocessing (to encrypt canvas-, cookie-, audio- etc. keys).
+
+    Attributes: #noqa
+        id (str): Identifier created by reco2.js."""
+    id: Optional[str] = Field(...)
+
+
 class BasicUserKeys(BaseModel):
     """Identifier(1 - n assignments) for user, e.g.cookie values, device information, etc. Class is only used to
     handle user keys, not persisted in MongoDB."""
-    cookie: Optional[list]
+    reco2js_ids: Optional[list]  # list of reco2.js IDs
+    cookies: Optional[list]
     canvas: Optional[list]
 
     class Config:

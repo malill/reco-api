@@ -1,6 +1,8 @@
-from typing import Optional, List
+from typing import List
 
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Request, Body
+from pydantic import BaseModel
+
 import api.core.services.collection.user as service_user
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -22,30 +24,32 @@ async def get_all_user(auth: str = Depends(check_basic_auth),
 @api_router.get("/id", response_model=BasicUserModel)
 async def get_user(auth: str = Depends(check_basic_auth),
                    db: AsyncIOMotorClient = Depends(get_database),
-                   cookie_value: str = None):
+                   reco2js_id: str = None):
     """Returns most probabilistic user matching keys. Returns dummy user when none is found."""
-    return await service_user.get_user_by_keys(db, cookie_value)
+    return await service_user.get_user_by_reco2js_id(db, reco2js_id)
 
 
-@api_router.get("", response_model=str)
-async def get_user_uid(db: AsyncIOMotorClient = Depends(get_database),
-                       cookie_value: Optional[str] = None):
-    """Returns most probabilistic user uid matching keys or creates new user when none is found."""
-    user = await service_user.get_or_create_unique_user(db, cookie_value)
+@api_router.post("", response_model=str)
+async def user_unique_identifier(req: Request,
+                                 user: dict = Body(None),
+                                 db: AsyncIOMotorClient = Depends(get_database)):
+    """Returns most probabilistic user uid matching reco2js_id from header or creates new user when none is found,
+    takes body and inserts or updates data."""
+    user = await service_user.get_or_upsert_unique_user(db, req, user)
     return str(user.get_uid())
 
 
-@api_router.post("")
-async def post_user(auth: str = Depends(check_basic_auth),
-                    db: AsyncIOMotorClient = Depends(get_database),
-                    user: BasicUserModel = Body(...)):
-    """Adds a new user model entry into database (no identity check)."""
-    return await service_user.create_user(db, user)
+# @api_router.post("")
+# async def post_user(auth: str = Depends(check_basic_auth),
+#                     db: AsyncIOMotorClient = Depends(get_database),
+#                     user: BasicUserModel = Body(...)):
+#     """Adds a new user model entry into database (no identity check)."""
+#     return await service_user.create_user(db, user)
 
 
 @api_router.delete("", response_model=int)
-async def delete_users_by_cookie(cookie_value: str,
-                                 auth: str = Depends(check_basic_auth),
-                                 db: AsyncIOMotorClient = Depends(get_database)):
+async def delete_users_by_reco2js_id(reco2js_id: str,
+                                     auth: str = Depends(check_basic_auth),
+                                     db: AsyncIOMotorClient = Depends(get_database)):
     """Deletes users that contain a cookie key with value [cookie_value] and returns number of deleted entries."""
-    return await service_user.delete_users_by_cookie(db, cookie_value)
+    return await service_user.delete_users_by_reco2js_id(db, reco2js_id)
