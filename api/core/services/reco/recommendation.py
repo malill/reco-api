@@ -36,7 +36,7 @@ async def get_latest_items(conn: AsyncIOMotorClient, n_recos=5, **kwargs) -> Lis
     """
     cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM] \
         .find() \
-        .sort([('update_time', pymongo.DESCENDING)])  # TODO: needs to be changed into create_time -> is part of _id
+        .sort([('created_time', pymongo.DESCENDING)])
     res = await cursor.to_list(n_recos)  # TODO: check if this returns sorted products of all or n_reco documents
     res = [BasicItemModel(**i) for i in res]
     return limit_returned_items(res, n_recos)

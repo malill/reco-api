@@ -15,6 +15,7 @@ class BasicItemModel(BaseModel):
     price: Optional[decimal.Decimal]
     url: Optional[str]
     image_url: Optional[str]
+    created_time: Optional[datetime]
     update_time: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:

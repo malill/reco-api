@@ -25,6 +25,7 @@
 - Use user uid in splitting (:exclamation:)
 - Use `reco2js_id` as deterministic user search (:exclamation:)
 - Add get item by ID route
+- Create attribute `created_time` for `BasicItemModel` and use for latest items route
 
 ## Version 0.2
 
