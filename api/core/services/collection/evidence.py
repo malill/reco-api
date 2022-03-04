@@ -55,3 +55,8 @@ async def create_evidence(conn: AsyncIOMotorClient, evidence_list: List[BasicEvi
     t = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_EVIDENCE]
     res = await t.insert_many([jsonable_encoder(e, exclude_none=True) for e in evidence_list])
     return len(res.inserted_ids)
+
+
+async def delete_evidence(conn: AsyncIOMotorClient, user_uid: str):
+    res = await conn[cfg.DB_NAME][cfg.COLLECTION_NAME_EVIDENCE].delete_many(filter={'user_uid': user_uid})
+    return res.deleted_count
