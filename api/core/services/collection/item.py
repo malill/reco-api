@@ -15,6 +15,11 @@ async def get_all_items(conn: AsyncIOMotorClient) -> List[BasicItemModel]:
     return items
 
 
+async def get_item_by_item_id(conn: AsyncIOMotorClient, item_id: str) -> BasicItemModel:
+    doc = await conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM].find_one(filter={'id': item_id})
+    return BasicItemModel(**doc)
+
+
 async def create_or_update_items(conn: AsyncIOMotorClient, item_models: List[BasicItemModel]):
     """Inserts or updates an existing (match by uid) item object to db."""
     t = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM]

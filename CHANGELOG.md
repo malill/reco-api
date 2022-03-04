@@ -24,6 +24,7 @@
 - Add string representation of user _id to evidence object
 - Use user uid in splitting (:exclamation:)
 - Use `reco2js_id` as deterministic user search (:exclamation:)
+- Add get item by ID route
 
 ## Version 0.2
 
