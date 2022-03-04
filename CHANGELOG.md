@@ -26,6 +26,7 @@
 - Use `reco2js_id` as deterministic user search (:exclamation:)
 - Add get item by ID route
 - Create attribute `created_time` for `BasicItemModel` and use for latest items route
+- Create delete by user uid for evidence
 
 ## Version 0.2
 

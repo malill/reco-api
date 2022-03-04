@@ -29,3 +29,11 @@ async def put_evidence(object_list: List[BasicEvidenceModel],
     """Adds a list of evidence models into MongoDB, returns number of inserted evidence objects."""
     object_list = await service_evidence.process_evidence(req, object_list)
     return await service_evidence.create_evidence(conn, object_list)
+
+
+@api_router.delete("", response_model=int)
+async def delete_evidence_for_user(user_uid: str,
+                                   auth: str = Depends(check_basic_auth),
+                                   conn: AsyncIOMotorClient = Depends(get_database)):
+    """Deletes all evidence entries for given user uid and returns number of deleted documents."""
+    return await service_evidence.delete_evidence(conn, user_uid)
