@@ -6,7 +6,6 @@ from fastapi import Request
 from typing import List
 
 from fastapi.encoders import jsonable_encoder
-from pydantic import ValidationError
 
 import api.core.util.config as cfg
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -42,6 +41,11 @@ async def get_all_evidence(conn: AsyncIOMotorClient) -> List[BasicEvidenceModel]
     cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_EVIDENCE].find()
     evidence = await cursor.to_list(None)
     return evidence
+
+
+async def get_evidence_for_user(conn: AsyncIOMotorClient, user_uid: str) -> List[BasicEvidenceModel]:
+    res = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_EVIDENCE].find(filter={'user_uid': user_uid})
+    return await res.to_list(None)
 
 
 async def process_evidence(req: Request, object_list: List[BasicEvidenceModel]) -> List[BasicEvidenceModel]:

@@ -15,11 +15,18 @@ api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_EVIDENCE, tags=[TAG
 logger = logging.getLogger(__name__)
 
 
-@api_router.get("", response_model=List[BasicEvidenceModel])
+@api_router.get("/all", response_model=List[BasicEvidenceModel])
 async def get_all_evidence(auth: str = Depends(check_basic_auth),
                            db: AsyncIOMotorClient = Depends(get_database)):
     """Lists all evidence objects from db."""
     return await service_evidence.get_all_evidence(db)
+
+
+@api_router.get("", response_model=List[BasicEvidenceModel])
+async def get_evidence_for_user(user_uid: str,
+                                auth: str = Depends(check_basic_auth),
+                                db: AsyncIOMotorClient = Depends(get_database)):
+    return await service_evidence.get_evidence_for_user(db, user_uid)
 
 
 @api_router.put("", response_model=int)
