@@ -31,7 +31,7 @@ async def get_user(auth: str = Depends(check_basic_auth),
 
 @api_router.post("", response_model=str)
 async def user_unique_identifier(req: Request,
-                                 user: dict = Body(None),
+                                 user: dict = Body(...),
                                  db: AsyncIOMotorClient = Depends(get_database)):
     """Returns most probabilistic user uid matching reco2js_id from header or creates new user when none is found,
     takes body and inserts or updates data."""
