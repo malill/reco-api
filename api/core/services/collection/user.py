@@ -48,12 +48,9 @@ async def get_or_upsert_unique_user(conn: AsyncIOMotorClient, req: Request, user
     reco2js_id = req.headers.get(cfg.RECO2JS_ID)
     if reco2js_id is None:
         return BasicUserModel(**dummy_user_dict)
-    if user is not None:
-        entry_req = jsonable_encoder(BasicUserModel(**user, keys=BasicUserKeys(reco2js_ids=[reco2js_id])),
-                                     exclude_none=True)
-    else:
-        entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(reco2js_ids=[reco2js_id])),
-                                     exclude_none=True)
+
+    entry_req = prepareBasicUserModel(reco2js_id, user)
+
     # TODO: currently reco2js.id is the only deterministic identifier
     user = await get_user_collection(conn).find_one_and_update({'keys.reco2js_ids': reco2js_id},
                                                                {"$set": entry_req},
@@ -84,6 +81,16 @@ async def delete_users_by_reco2js_id(conn: AsyncIOMotorClient, reco2js_id: str) 
     """Deletes user(s) by reco2js_id value and returns number of deleted objects."""
     res = await get_user_collection(conn).delete_many(filter={'keys.reco2js_ids': reco2js_id})
     return res.deleted_count
+
+
+def prepareBasicUserModel(reco2js_id: str, user: dict):
+    if user is not None:
+        entry_req = jsonable_encoder(BasicUserModel(**user, keys=BasicUserKeys(reco2js_ids=[reco2js_id])),
+                                     exclude_none=True)
+    else:
+        entry_req = jsonable_encoder(BasicUserModel(keys=BasicUserKeys(reco2js_ids=[reco2js_id])),
+                                     exclude_none=True)
+    return entry_req
 
 
 def get_user_collection(conn: AsyncIOMotorClient):

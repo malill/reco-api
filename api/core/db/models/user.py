@@ -43,12 +43,14 @@ class BasicUserModel(BaseModel):
         last_name (str, optional): User last name
         roles (list, optional): User roles, e.g. membership(s), preference(s) etc.
         groups (dict(str, str), optional): 1-1 assignments of user to groups with values
+        devices: (dict(str, dict), optional): Dictionary of user devices {reco2jsID1: {**device1Info}}, reco2jsID2: ...
     """
     keys: BasicUserKeys = Field()
     first_name: Optional[str]
     last_name: Optional[str]
     roles: Optional[list]
     groups: Optional[dict]
+    devices: Optional[dict]
     update_time: datetime = Field(default_factory=datetime.utcnow)
 
     def get_uid(self):
