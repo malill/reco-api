@@ -27,6 +27,7 @@
 - Add get item by ID route
 - Create attribute `created_time` for `BasicItemModel` and use for latest items route
 - Create delete by user uid for evidence
+- Get list of `BasicEvidenceModel` for `user_uid`
 - Store device info at user and not at evidence
 
 ## Version 0.2
