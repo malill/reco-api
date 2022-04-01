@@ -58,6 +58,7 @@ TYPE_LATEST = "latest"
 TYPE_RANDOM_RECOMMENDATIONS = "random"
 
 # Routes 1st level
+ENDPOINT_ANALYTICS = "/analytics"
 ENDPOINT_BUILDER = "/bld"
 ENDPOINT_COLLECTION = "/col"
 ENDPOINT_RECOMMENDATION = "/rec"
@@ -72,6 +73,7 @@ ENDPOINT_USER = "/user"
 ENDPOINT_COLLABORATIVE_FILTERING = "/cf"
 
 # Tags
+TAG_ANALYTICS = "Analytics"
 TAG_BUILDER = "Builder"
 TAG_COLLECTION = "Collection"
 TAG_EVIDENCE = "Evidence"

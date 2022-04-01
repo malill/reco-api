@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from api.v1.analytics import analytics
 from api.v1.builder import builder
 from api.v1.collection import user, item, evidence
 from api.v1.reco import splitting
@@ -7,6 +8,9 @@ from api.v1.reco import collaborative_filtering
 from api.v1.reco import unpersonalized
 
 api_router = APIRouter()
+
+# Analytics router
+api_router.include_router(analytics.api_router)
 
 # Builder router
 api_router.include_router(builder.api_router)
