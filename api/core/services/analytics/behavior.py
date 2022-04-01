@@ -26,8 +26,8 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
     # Create columns
     df['duration'] = (df.data.apply(lambda d: d['duration']).astype('float32') / 1000).astype('int32')
     df['reco_items'] = df.data.apply(lambda d: [int(i) for i in d['items']] if 'items' in d.keys() else "")
-    df['click_item'] = df.data.apply(lambda d: d['item'] if 'item' in d.keys() else np.NaN)
-    df['focal_product'] = df.path.apply(lambda p: convert_path_to_item_id(p))
+    df['click_item'] = df.data.apply(lambda d: d['item'] if 'item' in d.keys() else 0).astype('int16')
+    df['focal_item'] = df.path.apply(lambda p: convert_path_to_item_id(p))
     df['is_mobile'] = df.device_info.apply(lambda d: d['is_mobile'])
 
     # Convert mobile
@@ -37,7 +37,6 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
 
     # Delete columns
     df = df.drop(columns=['_id', 'device_info', 'path', 'data'])
-    stream = io.StringIO()
 
     ## Merge User Info ##
     user = await service_user.get_all_user(conn)
@@ -66,15 +65,13 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
 
     # Aggregate user click behavior
     df = pd.DataFrame(
-        df.groupby(['user_uid', 'group', 'is_mobile', 'focal_product', 'reco_items'])[
-            'click_item'].count()).reset_index()
-
-    # Translate reco_items back to list of ints
-    df['reco_items'] = df['reco_items'].apply(lambda i: [int(a) for a in i.split(',') if len(a) > 0])
+        df.groupby(['user_uid', 'group', 'is_mobile', 'focal_item', 'reco_items'])[
+            'click_item'].max()).reset_index()
 
     # Set to click yes/no
-    df['click_item'] = df['click_item'].apply(lambda c: 1 if c > 0 else 0)
+    # df['click_item'] = df['click_item'].apply(lambda c: 1 if c > 0 else 0)
 
+    stream = io.StringIO()
     df.to_csv(stream, index=False)
 
     response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
