@@ -68,8 +68,18 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
         df.groupby(['user_uid', 'group', 'is_mobile', 'focal_item', 'reco_items'])[
             'click_item'].max()).reset_index()
 
-    # Set to click yes/no
-    # df['click_item'] = df['click_item'].apply(lambda c: 1 if c > 0 else 0)
+    # Get a click yes/no column
+    df['click'] = (df['click_item'] > 0).astype('int8')
+
+    # Caculate a click position column
+    df['click_pos'] = 0
+    df['reco_items_h'] = df['reco_items'].apply(lambda i: [int(a) for a in i.split(',') if len(a) > 0])
+    for index, row in df[['click_item', 'reco_items_h']].iterrows():
+        try:
+            df.loc[index, 'click_pos'] = row['reco_items_h'].index(row['click_item']) + 1
+        except:
+            pass
+    df = df.drop(columns=['reco_items_h'])
 
     stream = io.StringIO()
     df.to_csv(stream, index=False)
