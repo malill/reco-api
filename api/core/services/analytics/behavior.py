@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 import api.core.services.collection.evidence as service_evidence
 import api.core.services.collection.user as service_user
+import api.core.services.collection.item as service_item
 from fastapi.responses import StreamingResponse
 import pandas as pd
 
@@ -58,7 +59,10 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
     df = df[df['reco_items'] != '']
 
     # Remove missing reco items for clicks
-    df = df[~((df['reco_items'].str.len() == 0) & (df['name'] == 'click'))]
+    #df = df[~((df['reco_items'].str.len() == 0) & (df['name'] == 'click'))]
+
+    # Remove rows with missing recommended items
+    df = df[df['reco_items'].str.len() != 0]
 
     # Since you can not group a list you need to convert to string
     df['reco_items'] = [','.join(map(str, l)) for l in df['reco_items']]
@@ -71,7 +75,7 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
     # Get a click yes/no column
     df['click'] = (df['click_item'] > 0).astype('int8')
 
-    # Caculate a click position column
+    # Calculate a click position column
     df['click_pos'] = 0
     df['reco_items_h'] = df['reco_items'].apply(lambda i: [int(a) for a in i.split(',') if len(a) > 0])
     for index, row in df[['click_item', 'reco_items_h']].iterrows():
@@ -80,6 +84,22 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
         except:
             pass
     df = df.drop(columns=['reco_items_h'])
+
+    # Create column for each recommended item
+    N_RECOS = 3
+    df['reco_items'] = df['reco_items'].apply(lambda i: [int(a) for a in i.split(',') if len(a) > 0])
+    for i in range(N_RECOS):
+        df[f'reco_item{i + 1}'] = df.reco_items.apply(lambda r: r[i])
+    df = df.drop(columns=['reco_items'])
+
+    ## Merge Item Info ##
+    item = await service_item.get_all_items(conn)
+    df_item = pd.DataFrame(item)[['id', 'created_time', 'price']]
+    df_item['id'] = df_item['id'].astype('int16')
+    df['focal_item_price'] = df.merge(df_item, how='left', left_on='focal_item', right_on='id')['price']
+    df['reco_item1_price'] = df.merge(df_item, how='left', left_on='reco_item1', right_on='id')['price']
+    df['reco_item2_price'] = df.merge(df_item, how='left', left_on='reco_item2', right_on='id')['price']
+    df['reco_item3_price'] = df.merge(df_item, how='left', left_on='reco_item3', right_on='id')['price']
 
     stream = io.StringIO()
     df.to_csv(stream, index=False)

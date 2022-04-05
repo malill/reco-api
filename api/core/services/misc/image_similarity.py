@@ -2,6 +2,7 @@ import glob
 
 from sentence_transformers import SentenceTransformer, util
 from PIL import Image
+import pandas as pd
 
 # packages needed: sentence-transformers/pillow/torchvision/pytorch
 
@@ -22,10 +23,16 @@ img_emb = model.encode([Image.open(filepath) for filepath in image_names],
 processed_images = util.paraphrase_mining_embeddings(img_emb)
 NUM_SIMILAR_IMAGES = 10
 
+d = []
 # Output the top X duplicate images
 for score, image_id1, image_id2 in processed_images:
-    print("\nScore: {:.3f}%".format(score * 100))
-    print(image_names[image_id1])
-    print(image_names[image_id2])
+    # d[(image_names[image_id1][4:-7], image_names[image_id2][4:-7])] = round(score * 100, 3)
+    d.append([image_names[image_id1][4:-7], image_names[image_id2][4:-7], round(score, 5)])
+    # if (score * 100) > 90:
+    #     print("\nScore: {:.3f}%".format(score * 100))
+    #     print(image_names[image_id1])
+    #     print(image_names[image_id2])
 
-print('Cone....')
+a = pd.DataFrame(d, columns=['item1', 'item2', 'sim'])
+a.to_csv('img_sim.csv', index=False)
+print('Done....')
