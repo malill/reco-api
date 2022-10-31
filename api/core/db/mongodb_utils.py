@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class MongoDBHelper:
     """Helper class for Recommendation Builder Class(!) to connect to MongoDB.
 
-    Use class in 'with' construct. Note, that builder classes store reco synchronous into
+    Use class in 'with' construct. Note, that builder classes store reco synchronous (TODO: should also be async) into
     MongoDB (<> collection-/reco-services store/retrieve asynchronous)
     """
 
