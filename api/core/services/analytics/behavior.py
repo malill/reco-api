@@ -58,26 +58,28 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
     # Remove double clicks
     df = df[df['reco_items'] != '']
 
-    # Remove missing reco items for clicks
-    #df = df[~((df['reco_items'].str.len() == 0) & (df['name'] == 'click'))]
-
     # Remove rows with missing recommended items
-    df = df[df['reco_items'].str.len() != 0]
+    # df = df[df['reco_items'].str.len() != 0]
 
     # Since you can not group a list you need to convert to string
     df['reco_items'] = [','.join(map(str, l)) for l in df['reco_items']]
 
     # Aggregate user click behavior
-    df = pd.DataFrame(
-        df.groupby(['user_uid', 'group', 'is_mobile', 'focal_item', 'reco_items'])[
-            'click_item'].max()).reset_index()
+    x = df.groupby(['user_uid', 'group', 'is_mobile', 'focal_item', 'reco_items'])['click_item'].idxmax()
+    y = df.loc[x]
+    df = y.sort_values(['user_uid', 'timestamp']).reset_index(drop=False)
+    df = df[['user_uid', 'group', 'is_mobile', 'timestamp', 'focal_item', 'reco_items', 'click_item']]
+    # df = pd.DataFrame(
+    #     df.groupby(['user_uid', 'group', 'is_mobile', 'focal_item', 'reco_items'])[
+    #         'click_item'].max()).reset_index()
 
     # Get a click yes/no column
     df['click'] = (df['click_item'] > 0).astype('int8')
 
     # Calculate a click position column
     df['click_pos'] = 0
-    df['reco_items_h'] = df['reco_items'].apply(lambda i: [int(a) for a in i.split(',') if len(a) > 0])
+    df['reco_items_h'] = df['reco_items'].apply(
+        lambda i: [int(a) for a in i.split(',') if len(a) > 0])  # create list of ints
     for index, row in df[['click_item', 'reco_items_h']].iterrows():
         try:
             df.loc[index, 'click_pos'] = row['reco_items_h'].index(row['click_item']) + 1
@@ -89,7 +91,7 @@ async def get_click_behavior(conn: AsyncIOMotorClient):
     N_RECOS = 3
     df['reco_items'] = df['reco_items'].apply(lambda i: [int(a) for a in i.split(',') if len(a) > 0])
     for i in range(N_RECOS):
-        df[f'reco_item{i + 1}'] = df.reco_items.apply(lambda r: r[i])
+        df[f'reco_item{i + 1}'] = df.reco_items.apply(lambda r: r[i] if len(r)>0 else 0)
     df = df.drop(columns=['reco_items'])
 
     ## Merge Item Info ##
