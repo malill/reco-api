@@ -1,6 +1,7 @@
 # Recommendation API - Wiki
 
 ![version](https://img.shields.io/badge/version-0.2-blue)
+
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
@@ -30,11 +31,12 @@ repository provides services highlighted in red, i.e. **evidence collection**, *
 **recommendation serving**. Currently, the repository uses MongoDB :leaves: for persistence.
 
 ![bla](https://docs.google.com/drawings/d/e/2PACX-1vS9i7dEq_v3Q5sZl99youzzXaFWZBnz5ZRjE_02TE-ZGKP8PJQ9QTFmJ8CwUBxbPMEYl1e3bXcJgZCa/pub?w=1440&h=810)
+
 <figcaption align = "center"><b>Fig.1 - Recommender System Landscape - based on Falk (2019)</b></figcaption>
 
 # Installation :hammer:
 
-For installation, you need to create a `.env` file (check `.env.sample`) and provide following information (replace with
+For installation, you need to create a `.env` file (check `.env.sample` ) and provide following information (replace with
 your values respectively).
 
 ```text
@@ -66,6 +68,10 @@ To run reco-api on port `[PORT]` from command line execute
 ```shell
 uvicorn main:app --reload --port [PORT]
 ```
+
+### Debugging | Visual Studio Code :ant:
+
+To debug reco-api from VS Code, simply go to the "Run & Debug" tab from the navigation slider and run "Python: FastAPI". The configuration (e.g. port) is stored inside `.vscode/launch.json` .
 
 ## Docker :whale:
 
@@ -120,12 +126,12 @@ Access to a demo version can be found here: https://reco-api-q.herokuapp.com/
 
 The repository provides basic recommendation building methods.
 
-> Recommendation entries `REs` always inherit from `BasicRecommendationModel`. If a `RecommendationBuilder` creates new
-`REs`, old `REs` are kept. Endpoints always return the most recent calculated `REs`.
+> Recommendation entries `REs` always inherit from `BasicRecommendationModel` . If a `RecommendationBuilder` creates new
 
-- **Frequently Bought Together** (tbd)
-- **Collaborative Filtering**
+`REs` , old `REs` are kept. Endpoints always return the most recent calculated `REs` .
 
+* **Frequently Bought Together** (tbd)
+* **Collaborative Filtering**
 # Routes :globe_with_meridians:
 
 The API provides a swagger UI to view all available routes.
@@ -136,13 +142,13 @@ Collection routes include **item**, **user** and **evidence** services.
 
 ### Evidence `/evidence` :page_facing_up:
 
-Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of `BasicEvidenceModels`.
+Basic `GET` and `PUT` methods. Note that `PUT` route always consumes a `List` of `BasicEvidenceModels` .
 
 ### Item `/item` :shirt:
 
 ### User `/user` :raising_hand:
 
-Note that the `GET` method will always return a `BasicUserModel` given a query parameter `cookie_value`. The method
+Note that the `GET` method will always return a `BasicUserModel` given a query parameter `cookie_value` . The method
 returns an already persisted user who contains a `key` list entry with respective cookie value, or it will create a new
 user and set the cookie value.
 
@@ -162,8 +168,8 @@ Utilize the recommendations that can be obtained from **relations** created by t
 Utilize the recommendations that can be obtained from the database itself without the user of **relations**. Available
 non-personalized methods are:
 
-- latest items
-- random items
+* latest items
+* random items
 
 ### Splitting `/split` :left_right_arrow:
 
@@ -172,21 +178,21 @@ different recommendation methods. Recommendations retrieved from a splitting set
 
 > Splitting is currently only available for users that provide a `reco-user-uid` in their request header. If
 > `reco-user-uid` is provided an already existing user will be fetched from DB, a splitting method will be drawn from
-> respective `splitting` collection entry and assigned as a `group` entry to the user object, e.g. `{split_name: 'cf_ib'}`.
+> respective `splitting` collection entry and assigned as a `group` entry to the user object, e.g. `{split_name: 'cf_ib'}` .
 
-To create a simple A/B test you have to provide an instance of a `SplittingModel`. To create such an object you can
+To create a simple A/B test you have to provide an instance of a `SplittingModel` . To create such an object you can
 call `/api/v1/rec/split/conf` and provide a path parameter `name` and request body with a list of recommendation
-methods `methods`.
+methods `methods` .
 
 As mentioned it is assumed that a user already exists in DB. **User creation from frontend is expected through
-calling `api/v1/col/user`.**
+calling `api/v1/col/user` .**
 
 **Error Handling**
 
-- If `reco-user-uid` is not available in request header, the fallback method will be used, a user is **not** created.
-- If no user can be found in user collection matching the `reco-user-uid` from request header, the fallback method will
+* If `reco-user-uid` is not available in request header, the fallback method will be used, a user is **not** created.
+* If no user can be found in user collection matching the `reco-user-uid` from request header, the fallback method will
   be used
-- If the splitting name from the request query is
+* If the splitting name from the request query is
     - not found in DB collection, or
     - is found in DB collection but the drawn recommendation method string from the retrieved object is not assigned to
       a recommendation method,
@@ -200,7 +206,7 @@ calling `api/v1/col/user`.**
 # Security :lock:
 
 Basic Authentication is provided for specific routes. Username and password need to be provided in `.env` file
-under `AUTH_USER` and `AUTH_PASS`.
+under `AUTH_USER` and `AUTH_PASS` .
 
 # References :books:
 
@@ -211,4 +217,3 @@ Falk, Kim. **Practical recommender systems**. Simon and Schuster, 2019.
 [tiangolo]: https://github.com/tiangolo/full-stack-fastapi-postgresql/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app
 
 [ycd]: https://github.com/ycd/manage-fastapi
-
