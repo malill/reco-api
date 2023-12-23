@@ -21,7 +21,7 @@ DB_NAME: str = os.environ.get('DB_NAME')
 # Database collection names
 COLLECTION_NAME_EVIDENCE = "evidence"
 COLLECTION_NAME_ITEM = "item"
-COLLECTION_NAME_RELATIONS = "relation"
+COLLECTION_NAME_RELATIONS = "relation" # TODO: rename to "recommendation"
 COLLECTION_NAME_SPLITTING_CONFIG = "splitting"
 COLLECTION_NAME_USER = "user"
 
@@ -58,6 +58,7 @@ TYPE_LATEST = "latest"
 TYPE_RANDOM_RECOMMENDATIONS = "random"
 
 # Routes 1st level
+ENDPOINT_ANALYTICS = "/analytics"
 ENDPOINT_BUILDER = "/bld"
 ENDPOINT_COLLECTION = "/col"
 ENDPOINT_RECOMMENDATION = "/rec"
@@ -72,6 +73,7 @@ ENDPOINT_USER = "/user"
 ENDPOINT_COLLABORATIVE_FILTERING = "/cf"
 
 # Tags
+TAG_ANALYTICS = "Analytics"
 TAG_BUILDER = "Builder"
 TAG_COLLECTION = "Collection"
 TAG_EVIDENCE = "Evidence"

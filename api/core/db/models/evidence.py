@@ -30,7 +30,7 @@ class BasicEvidenceModel(BaseModel):
         schema_extra = {
             "example": {
                 "name": "view details",
-                "user": "123456789",
+                "user_uid": "123456789",
                 "item_id": "item1234",
                 "path": "https://path-to-step.com"
             }
