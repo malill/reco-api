@@ -12,7 +12,7 @@ from api.core.util.config import ENDPOINT_ITEM, ENDPOINT_COLLECTION, TAG_ITEM
 api_router = APIRouter(prefix=ENDPOINT_COLLECTION + ENDPOINT_ITEM, tags=[TAG_ITEM])
 
 
-@api_router.get("/all", response_model=List[BasicItemModel])
+@api_router.get("/all", response_model=List)
 async def get_all_items(auth: str = Depends(check_basic_auth),
                         db: AsyncIOMotorClient = Depends(get_database)):
     """Lists all evidence objects from db."""

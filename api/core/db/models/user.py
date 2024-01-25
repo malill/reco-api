@@ -17,21 +17,21 @@ class Reco2jsModel(BaseModel):
 class BasicUserKeys(BaseModel):
     """Identifier(1 - n assignments) for user, e.g.cookie values, device information, etc. Class is only used to
     handle user keys, not persisted in MongoDB."""
-    reco2js_ids: Optional[list]  # list of reco2.js IDs
-    cookies: Optional[list]
-    canvas: Optional[list]
+    reco2js_ids: list | None = None  # list of reco2.js IDs
+    cookies: list | None = None
+    canvas: list | None = None
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
         extra = Extra.allow
-        schema_extra = {
-            "example": {
-                'cookie': ['cookie_a', 'cookie_b'],
-                'canvas': ['canvas_a', 'canvas_b'],
-            }
-        }
+        # json_schema_extra = {
+        #     "example": {
+        #         'cookie': ['cookie_a', 'cookie_b'],
+        #         'canvas': ['canvas_a', 'canvas_b'],
+        #     }
+        # }
 
 
 class BasicUserModel(BaseModel):
@@ -60,25 +60,25 @@ class BasicUserModel(BaseModel):
         return str(self.__getattribute__('_id'))
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
         extra = Extra.allow
-        schema_extra = {
-            "example": {
-                "first_name": "Jane",
-                "last_name": "Doe",
-                "keys": {
-                    'cookie': ['cookie_a', 'cookie_b'],
-                    'canvas': ['canvas_a', 'canvas_b'],
-                    'gp_id': ['123456789']
-                },
-                "roles": {"fantasy_league", "b2b_customer"},
-                "groups": {
-                    "splitting1": "cf_ib"
-                }
-            }
-        }
+        # json_schema_extra = {
+        #     "example": {
+        #         "first_name": "Jane",
+        #         "last_name": "Doe",
+        #         "keys": {
+        #             'cookie': ['cookie_a', 'cookie_b'],
+        #             'canvas': ['canvas_a', 'canvas_b'],
+        #             'gp_id': ['123456789']
+        #         },
+        #         "roles": {"fantasy_league", "b2b_customer"},
+        #         "groups": {
+        #             "splitting1": "cf_ib"
+        #         }
+        #     }
+        # }
 
 
 dummy_user_dict = {"_id": "Dummy", "first_name": "Dummy", "last_name": "Dummy", "keys": BasicUserKeys()}

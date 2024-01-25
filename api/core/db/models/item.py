@@ -19,11 +19,11 @@ class BasicItemModel(BaseModel):
     update_time: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-        extra = Extra.allow
-        schema_extra = {
+        populate_by_name = True
+        # arbitrary_types_allowed = True
+        # json_encoders = {ObjectId: str}
+        # extra = Extra.allow
+        json_schema_extra = {
             "example": {
                 "id": "12345",
                 "type": "product",

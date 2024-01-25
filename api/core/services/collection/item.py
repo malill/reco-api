@@ -12,7 +12,7 @@ async def get_all_items(conn: AsyncIOMotorClient) -> List[BasicItemModel]:
     """Returns list of all BasicItemModels from item collection."""
     cursor = conn[cfg.DB_NAME][cfg.COLLECTION_NAME_ITEM].find()
     items = await cursor.to_list(None)
-    return items
+    return [BasicItemModel(**i) for i in items]
 
 
 async def get_item_by_item_id(conn: AsyncIOMotorClient, item_id: str) -> BasicItemModel:
